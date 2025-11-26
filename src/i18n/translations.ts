@@ -1,0 +1,799 @@
+export type Language = 'en' | 'zh-TW' | 'zh-CN';
+
+export interface Translations {
+  // Navigation
+  home: string;
+  itinerary: string;
+  map: string;
+  budget: string;
+  profile: string;
+  
+  // Common
+  save: string;
+  cancel: string;
+  delete: string;
+  edit: string;
+  add: string;
+  search: string;
+  loading: string;
+  confirm: string;
+  back: string;
+  next: string;
+  done: string;
+  close: string;
+  
+  // Auth
+  login: string;
+  register: string;
+  logout: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  displayName: string;
+  welcomeBack: string;
+  createAccount: string;
+  continueAsGuest: string;
+  dontHaveAccount: string;
+  alreadyHaveAccount: string;
+  forgotPassword: string;
+  fullName: string;
+  enterPassword: string;
+  
+  // Trip
+  myTrips: string;
+  createTrip: string;
+  tripTitle: string;
+  destination: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  coverImage: string;
+  days: string;
+  places: string;
+  day: string;
+  
+  // Itinerary
+  dayPlanner: string;
+  addPlace: string;
+  addDay: string;
+  noPlacesYet: string;
+  viewFullRoute: string;
+  viewOnMap: string;
+  startTime: string;
+  endTime: string;
+  duration: string;
+  notes: string;
+  addNotes: string;
+  editDestination: string;
+  deleteDestination: string;
+  moveUp: string;
+  moveDown: string;
+  
+  // Map
+  searchPlaces: string;
+  addToDay: string;
+  tapToExplore: string;
+  
+  // Budget
+  totalBudget: string;
+  expenses: string;
+  remaining: string;
+  addExpense: string;
+  
+  // Categories
+  restaurant: string;
+  attraction: string;
+  hotel: string;
+  shopping: string;
+  transport: string;
+  activity: string;
+  other: string;
+  accommodation: string;
+  food: string;
+  
+  // Time
+  morning: string;
+  afternoon: string;
+  evening: string;
+  night: string;
+  
+  // Language Selector
+  language: string;
+  english: string;
+  traditionalChinese: string;
+  simplifiedChinese: string;
+  
+  // Summary
+  totalPlaces: string;
+  totalDistance: string;
+  totalDuration: string;
+  estimatedCost: string;
+  
+  // Profile Stats
+  countries: string;
+  cities: string;
+  
+  // Menu Items
+  accountSettings: string;
+  notifications: string;
+  privacySecurity: string;
+  helpSupport: string;
+  
+  // Itinerary Specific
+  optimizeRoute: string;
+  optimizing: string;
+  addDestinationToDay: string;
+  searchDestination: string;
+  typeToSearchPlaces: string;
+  searching: string;
+  saving: string;
+  selectedPlace: string;
+  category: string;
+  timeRange: string;
+  start: string;
+  end: string;
+  notesOptional: string;
+  addNotesAboutDestination: string;
+  addDestination: string;
+  noDestinationsAdded: string;
+  viewDetails: string;
+  overview: string;
+  itineraries: string;
+  trip: string;
+  startTimeLabelColon: string;
+  noDestinationsYet: string;
+  startPlanningDay: string;
+  addFirstDestination: string;
+  addAttractions: string;
+  addHotel: string;
+  ticketsAndTours: string;
+  addDestinationsToSeeMap: string;
+  comments: string;
+  leaveComment: string;
+  instantConfirmation: string;
+  takeMinsToGetThere: string;
+  hideMenu: string;
+  closeMenu: string;
+  downloadPDF: string;
+  
+  // Travel Mode
+  travelMode: string;
+  driving: string;
+  walking: string;
+  transit: string;
+  calculating: string;
+  
+  // Sidebar Quick Actions
+  findFlights: string;
+  findHotels: string;
+  carRental: string;
+  
+  // Sidebar Stats
+  filesAndNotes: string;
+  journals: string;
+  packingList: string;
+  expense: string;
+  
+  // HomeScreen
+  exploreAdventures: string;
+  noTripsYet: string;
+  startPlanningAdventure: string;
+  createFirstTrip: string;
+  createNewTrip: string;
+  tripTitleRequired: string;
+  destinationRequired: string;
+  startDateRequired: string;
+  endDateRequired: string;
+  descriptionOptional: string;
+  tripTitlePlaceholder: string;
+  searchForDestination: string;
+  addNotesAboutTrip: string;
+  creating: string;
+  searchDestinationTitle: string;
+  searchForCityOrPlace: string;
+  noTripSelected: string;
+  selectTripToViewItinerary: string;
+  goToHome: string;
+  
+  // Carbon emissions
+  carbonEmissionsText: string;
+}
+
+export const translations: Record<Language, Translations> = {
+  'en': {
+    // Navigation
+    home: 'Home',
+    itinerary: 'Itinerary',
+    map: 'Map',
+    budget: 'Budget',
+    profile: 'Profile',
+    
+    // Common
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    edit: 'Edit',
+    add: 'Add',
+    search: 'Search',
+    loading: 'Loading...',
+    confirm: 'Confirm',
+    back: 'Back',
+    next: 'Next',
+    done: 'Done',
+    close: 'Close',
+    
+    // Auth
+    login: 'Login',
+    register: 'Sign Up',
+    logout: 'Logout',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    displayName: 'Display Name',
+    welcomeBack: 'Welcome Back!',
+    createAccount: 'Create Account',
+    continueAsGuest: 'Continue as Guest',
+    dontHaveAccount: "Don't have an account?",
+    alreadyHaveAccount: 'Already have an account?',
+    forgotPassword: 'Forgot Password?',
+    fullName: 'Full Name',
+    enterPassword: 'Enter your password',
+    
+    // Trip
+    myTrips: 'My Trips',
+    createTrip: 'Create Trip',
+    tripTitle: 'Trip Title',
+    destination: 'Destination',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    description: 'Description',
+    coverImage: 'Cover Image',
+    days: 'Days',
+    places: 'Places',
+    day: 'Day',
+    
+    // Itinerary
+    dayPlanner: 'Day Planner',
+    addPlace: 'Add Place',
+    addDay: 'Add Day',
+    noPlacesYet: 'No places added yet',
+    viewFullRoute: 'View Full Route',
+    viewOnMap: 'View on Map',
+    startTime: 'Start Time',
+    endTime: 'End Time',
+    duration: 'Duration',
+    notes: 'Notes',
+    addNotes: 'Add Notes',
+    editDestination: 'Edit Destination',
+    deleteDestination: 'Delete Destination',
+    moveUp: 'Move Up',
+    moveDown: 'Move Down',
+    
+    // Map
+    searchPlaces: 'Search places...',
+    addToDay: 'Add to Day',
+    tapToExplore: 'Tap to explore',
+    
+    // Budget
+    totalBudget: 'Total Budget',
+    expenses: 'Expenses',
+    remaining: 'Remaining',
+    addExpense: 'Add Expense',
+    
+    // Categories
+    restaurant: 'Restaurant',
+    attraction: 'Attraction',
+    hotel: 'Hotel',
+    shopping: 'Shopping',
+    transport: 'Transport',
+    activity: 'Activity',
+    other: 'Other',
+    accommodation: 'Accommodation',
+    food: 'Food',
+    
+    // Time
+    morning: 'Morning',
+    afternoon: 'Afternoon',
+    evening: 'Evening',
+    night: 'Night',
+    
+    // Language Selector
+    language: 'Language',
+    english: 'English',
+    traditionalChinese: '繁體中文',
+    simplifiedChinese: '简体中文',
+    
+    // Summary
+    totalPlaces: 'Total Places',
+    totalDistance: 'Total Distance',
+    totalDuration: 'Total Duration',
+    estimatedCost: 'Estimated Cost',
+    
+    // Profile Stats
+    countries: 'Countries',
+    cities: 'Cities',
+    
+    // Menu Items
+    accountSettings: 'Account Settings',
+    notifications: 'Notifications',
+    privacySecurity: 'Privacy & Security',
+    helpSupport: 'Help & Support',
+    
+    // Itinerary Specific
+    optimizeRoute: '🎯 Optimize Route',
+    optimizing: '⏳ Optimizing...',
+    addDestinationToDay: 'Add Destination to Day',
+    searchDestination: 'Search Destination',
+    typeToSearchPlaces: 'Type to search places...',
+    searching: 'Searching...',
+    saving: 'Saving...',
+    selectedPlace: 'Selected Place',
+    category: 'Category',
+    timeRange: 'Time Range',
+    start: 'Start',
+    end: 'End',
+    notesOptional: 'Notes (Optional)',
+    addNotesAboutDestination: 'Add notes about this destination...',
+    addDestination: 'Add Destination',
+    noDestinationsAdded: 'No destinations added yet',
+    viewDetails: 'View Details →',
+    overview: 'Overview',
+    itineraries: 'Itineraries',
+    trip: 'Trip',
+    startTimeLabelColon: 'Start Time:',
+    noDestinationsYet: 'No destinations yet',
+    startPlanningDay: 'Start planning your day by adding attractions',
+    addFirstDestination: '+ Add First Destination',
+    addAttractions: 'Add attractions',
+    addHotel: 'Add hotel',
+    ticketsAndTours: 'Tickets & Tours',
+    addDestinationsToSeeMap: 'Add destinations to see map',
+    comments: 'Comments',
+    leaveComment: 'Leave a comment...',
+    instantConfirmation: '⚡ Instant confirmation',
+    takeMinsToGetThere: 'take 3 mins to get there',
+    hideMenu: '← Hide menu',
+    closeMenu: '✓ Close Menu',
+    downloadPDF: 'Download PDF',
+    
+    // Travel Mode
+    travelMode: 'Travel Mode',
+    driving: 'Driving',
+    walking: 'Walking',
+    transit: 'Transit',
+    calculating: 'Calculating...',
+    
+    // Sidebar Quick Actions
+    findFlights: 'Find\nFlights',
+    findHotels: 'Find\nHotels',
+    carRental: 'Car rental',
+    
+    // Sidebar Stats
+    filesAndNotes: 'Files and notes',
+    journals: 'Journals',
+    packingList: 'Packing List',
+    expense: 'Expense',
+    
+    // HomeScreen
+    exploreAdventures: 'Explore your adventures',
+    noTripsYet: 'No trips yet',
+    startPlanningAdventure: 'Start planning your next adventure',
+    createFirstTrip: '+ Create Your First Trip',
+    createNewTrip: 'Create New Trip',
+    tripTitleRequired: 'Trip Title *',
+    destinationRequired: 'Destination *',
+    startDateRequired: 'Start Date *',
+    endDateRequired: 'End Date *',
+    descriptionOptional: 'Description (Optional)',
+    tripTitlePlaceholder: 'e.g., Summer Europe Adventure',
+    searchForDestination: 'Search for destination...',
+    addNotesAboutTrip: 'Add notes about your trip...',
+    creating: 'Creating...',
+    searchDestinationTitle: 'Search Destination',
+    searchForCityOrPlace: 'Search for a city or place...',
+    noTripSelected: 'No Trip Selected',
+    selectTripToViewItinerary: 'Please select a trip from the Home screen to view its itinerary.',
+    goToHome: 'Go to Home',
+    
+    // Carbon emissions
+    carbonEmissionsText: 'The total carbon emissions for this trip are approximately {emissions} kg, covering {places} attractions and traveling a total of {distance} kilometers.',
+  },
+  
+  'zh-TW': {
+    // Navigation
+    home: '首頁',
+    itinerary: '行程',
+    map: '地圖',
+    budget: '預算',
+    profile: '個人',
+    
+    // Common
+    save: '儲存',
+    cancel: '取消',
+    delete: '刪除',
+    edit: '編輯',
+    add: '新增',
+    search: '搜尋',
+    loading: '載入中...',
+    confirm: '確認',
+    back: '返回',
+    next: '下一步',
+    done: '完成',
+    close: '關閉',
+    
+    // Auth
+    login: '登入',
+    register: '註冊',
+    logout: '登出',
+    email: '電子郵件',
+    password: '密碼',
+    confirmPassword: '確認密碼',
+    displayName: '顯示名稱',
+    welcomeBack: '歡迎回來！',
+    createAccount: '建立帳號',
+    continueAsGuest: '以訪客身份繼續',
+    dontHaveAccount: '還沒有帳號？',
+    alreadyHaveAccount: '已有帳號？',
+    forgotPassword: '忘記密碼？',
+    fullName: '姓名',
+    enterPassword: '輸入您的密碼',
+    
+    // Trip
+    myTrips: '我的旅程',
+    createTrip: '建立旅程',
+    tripTitle: '旅程標題',
+    destination: '目的地',
+    startDate: '開始日期',
+    endDate: '結束日期',
+    description: '描述',
+    coverImage: '封面圖片',
+    days: '天',
+    places: '地點',
+    day: '第',
+    
+    // Itinerary
+    dayPlanner: '每日行程',
+    addPlace: '新增地點',
+    addDay: '新增天數',
+    noPlacesYet: '尚未新增地點',
+    viewFullRoute: '查看完整路線',
+    viewOnMap: '在地圖上查看',
+    startTime: '開始時間',
+    endTime: '結束時間',
+    duration: '時長',
+    notes: '備註',
+    addNotes: '新增備註',
+    editDestination: '編輯目的地',
+    deleteDestination: '刪除目的地',
+    moveUp: '上移',
+    moveDown: '下移',
+    
+    // Map
+    searchPlaces: '搜尋地點...',
+    addToDay: '加入第',
+    tapToExplore: '點擊探索',
+    
+    // Budget
+    totalBudget: '總預算',
+    expenses: '支出',
+    remaining: '剩餘',
+    addExpense: '新增支出',
+    
+    // Categories
+    restaurant: '餐廳',
+    attraction: '景點',
+    hotel: '住宿',
+    shopping: '購物',
+    transport: '交通',
+    activity: '活動',
+    other: '其他',
+    accommodation: '住宿',
+    food: '飲食',
+    
+    // Time
+    morning: '早上',
+    afternoon: '下午',
+    evening: '傍晚',
+    night: '晚上',
+    
+    // Language Selector
+    language: '語言',
+    english: 'English',
+    traditionalChinese: '繁體中文',
+    simplifiedChinese: '简体中文',
+    
+    // Summary
+    totalPlaces: '總地點數',
+    totalDistance: '總距離',
+    totalDuration: '總時長',
+    estimatedCost: '預估費用',
+    
+    // Profile Stats
+    countries: '國家',
+    cities: '城市',
+    
+    // Menu Items
+    accountSettings: '帳號設定',
+    notifications: '通知',
+    privacySecurity: '隱私與安全',
+    helpSupport: '幫助與支援',
+    
+    // Itinerary Specific
+    optimizeRoute: '🎯 優化路線',
+    optimizing: '⏳ 優化中...',
+    addDestinationToDay: '新增目的地至第',
+    searchDestination: '搜尋目的地',
+    typeToSearchPlaces: '輸入以搜尋地點...',
+    searching: '搜尋中...',
+    saving: '儲存中...',
+    selectedPlace: '已選地點',
+    category: '類別',
+    timeRange: '時間範圍',
+    start: '開始',
+    end: '結束',
+    notesOptional: '備註（選填）',
+    addNotesAboutDestination: '新增關於此目的地的備註...',
+    addDestination: '新增目的地',
+    noDestinationsAdded: '尚未新增目的地',
+    viewDetails: '查看詳情 →',
+    overview: '總覽',
+    itineraries: '行程表',
+    trip: '旅程',
+    startTimeLabelColon: '開始時間：',
+    noDestinationsYet: '尚無目的地',
+    startPlanningDay: '開始規劃您的一天，新增景點',
+    addFirstDestination: '+ 新增第一個目的地',
+    addAttractions: '新增景點',
+    addHotel: '新增住宿',
+    ticketsAndTours: '票券與行程',
+    addDestinationsToSeeMap: '新增目的地以查看地圖',
+    comments: '評論',
+    leaveComment: '留下評論...',
+    instantConfirmation: '⚡ 即時確認',
+    takeMinsToGetThere: '需3分鐘到達',
+    hideMenu: '← 隱藏選單',
+    closeMenu: '✓ 關閉選單',
+    downloadPDF: '下載PDF',
+    
+    // Travel Mode
+    travelMode: '交通方式',
+    driving: '駕車',
+    walking: '步行',
+    transit: '大眾運輸',
+    calculating: '計算中...',
+    
+    // Sidebar Quick Actions
+    findFlights: '尋找\n航班',
+    findHotels: '尋找\n住宿',
+    carRental: '租車',
+    
+    // Sidebar Stats
+    filesAndNotes: '檔案與筆記',
+    journals: '日誌',
+    packingList: '行李清單',
+    expense: '支出',
+    
+    // HomeScreen
+    exploreAdventures: '探索您的冒險',
+    noTripsYet: '尚無旅程',
+    startPlanningAdventure: '開始規劃您的下一次冒險',
+    createFirstTrip: '+ 建立您的第一個旅程',
+    createNewTrip: '建立新旅程',
+    tripTitleRequired: '旅程標題 *',
+    destinationRequired: '目的地 *',
+    startDateRequired: '開始日期 *',
+    endDateRequired: '結束日期 *',
+    descriptionOptional: '描述（選填）',
+    tripTitlePlaceholder: '例如：夏季歐洲冒險',
+    searchForDestination: '搜尋目的地...',
+    addNotesAboutTrip: '新增關於您旅程的備註...',
+    creating: '建立中...',
+    searchDestinationTitle: '搜尋目的地',
+    searchForCityOrPlace: '搜尋城市或地點...',
+    noTripSelected: '未選擇旅程',
+    selectTripToViewItinerary: '請從首頁選擇一個旅程以查看其行程。',
+    goToHome: '前往首頁',
+    
+    // Carbon emissions
+    carbonEmissionsText: '此旅程的總碳排放量約為 {emissions} 公斤，涵蓋 {places} 個景點，總旅行距離為 {distance} 公里。',
+  },
+  
+  'zh-CN': {
+    // Navigation
+    home: '首页',
+    itinerary: '行程',
+    map: '地图',
+    budget: '预算',
+    profile: '个人',
+    
+    // Common
+    save: '保存',
+    cancel: '取消',
+    delete: '删除',
+    edit: '编辑',
+    add: '添加',
+    search: '搜索',
+    loading: '加载中...',
+    confirm: '确认',
+    back: '返回',
+    next: '下一步',
+    done: '完成',
+    close: '关闭',
+    
+    // Auth
+    login: '登录',
+    register: '注册',
+    logout: '登出',
+    email: '电子邮箱',
+    password: '密码',
+    confirmPassword: '确认密码',
+    displayName: '显示名称',
+    welcomeBack: '欢迎回来！',
+    createAccount: '创建账户',
+    continueAsGuest: '以访客身份继续',
+    dontHaveAccount: '还没有账号？',
+    alreadyHaveAccount: '已有账号？',
+    forgotPassword: '忘记密码？',
+    fullName: '姓名',
+    enterPassword: '输入您的密码',
+    
+    // Trip
+    myTrips: '我的旅程',
+    createTrip: '创建旅程',
+    tripTitle: '旅程标题',
+    destination: '目的地',
+    startDate: '开始日期',
+    endDate: '结束日期',
+    description: '描述',
+    coverImage: '封面图片',
+    days: '天',
+    places: '地点',
+    day: '第',
+    
+    // Itinerary
+    dayPlanner: '每日行程',
+    addPlace: '添加地点',
+    addDay: '添加天数',
+    noPlacesYet: '尚未添加地点',
+    viewFullRoute: '查看完整路线',
+    viewOnMap: '在地图上查看',
+    startTime: '开始时间',
+    endTime: '结束时间',
+    duration: '时长',
+    notes: '备注',
+    addNotes: '添加备注',
+    editDestination: '编辑目的地',
+    deleteDestination: '删除目的地',
+    moveUp: '上移',
+    moveDown: '下移',
+    
+    // Map
+    searchPlaces: '搜索地点...',
+    addToDay: '加入第',
+    tapToExplore: '点击探索',
+    
+    // Budget
+    totalBudget: '总预算',
+    expenses: '支出',
+    remaining: '剩余',
+    addExpense: '添加支出',
+    
+    // Categories
+    restaurant: '餐厅',
+    attraction: '景点',
+    hotel: '住宿',
+    shopping: '购物',
+    transport: '交通',
+    activity: '活动',
+    other: '其他',
+    accommodation: '住宿',
+    food: '饮食',
+    
+    // Time
+    morning: '早上',
+    afternoon: '下午',
+    evening: '傍晚',
+    night: '晚上',
+    
+    // Language Selector
+    language: '语言',
+    english: 'English',
+    traditionalChinese: '繁體中文',
+    simplifiedChinese: '简体中文',
+    
+    // Summary
+    totalPlaces: '总地点数',
+    totalDistance: '总距离',
+    totalDuration: '总时长',
+    estimatedCost: '预估费用',
+    
+    // Profile Stats
+    countries: '国家',
+    cities: '城市',
+    
+    // Menu Items
+    accountSettings: '账号设定',
+    notifications: '通知',
+    privacySecurity: '隐私与安全',
+    helpSupport: '帮助与支持',
+    
+    // Itinerary Specific
+    optimizeRoute: '🎯 优化路线',
+    optimizing: '⏳ 优化中...',
+    addDestinationToDay: '添加目的地至第',
+    searchDestination: '搜索目的地',
+    typeToSearchPlaces: '输入以搜索地点...',
+    searching: '搜索中...',
+    saving: '保存中...',
+    selectedPlace: '已选地点',
+    category: '类别',
+    timeRange: '时间范围',
+    start: '开始',
+    end: '结束',
+    notesOptional: '备注（选填）',
+    addNotesAboutDestination: '添加关于此目的地的备注...',
+    addDestination: '添加目的地',
+    noDestinationsAdded: '尚未添加目的地',
+    viewDetails: '查看详情 →',
+    overview: '总览',
+    itineraries: '行程表',
+    trip: '旅程',
+    startTimeLabelColon: '开始时间：',
+    noDestinationsYet: '尚无目的地',
+    startPlanningDay: '开始规划您的一天，添加景点',
+    addFirstDestination: '+ 添加第一个目的地',
+    addAttractions: '添加景点',
+    addHotel: '添加住宿',
+    ticketsAndTours: '票券与行程',
+    addDestinationsToSeeMap: '添加目的地以查看地图',
+    comments: '评论',
+    leaveComment: '留下评论...',
+    instantConfirmation: '⚡ 即时确认',
+    takeMinsToGetThere: '需3分钟到达',
+    hideMenu: '← 隐藏菜单',
+    closeMenu: '✓ 关闭菜单',
+    downloadPDF: '下载PDF',
+    
+    // Travel Mode
+    travelMode: '交通方式',
+    driving: '驾车',
+    walking: '步行',
+    transit: '公共交通',
+    calculating: '计算中...',
+    
+    // Sidebar Quick Actions
+    findFlights: '寻找\n航班',
+    findHotels: '寻找\n住宿',
+    carRental: '租车',
+    
+    // Sidebar Stats
+    filesAndNotes: '档案与笔记',
+    journals: '日志',
+    packingList: '行李清单',
+    expense: '支出',
+    
+    // HomeScreen
+    exploreAdventures: '探索您的冒险',
+    noTripsYet: '尚无旅程',
+    startPlanningAdventure: '开始规划您的下一次冒险',
+    createFirstTrip: '+ 创建您的第一个旅程',
+    createNewTrip: '创建新旅程',
+    tripTitleRequired: '旅程标题 *',
+    destinationRequired: '目的地 *',
+    startDateRequired: '开始日期 *',
+    endDateRequired: '结束日期 *',
+    descriptionOptional: '描述（选填）',
+    tripTitlePlaceholder: '例如：夏季欧洲冒险',
+    searchForDestination: '搜索目的地...',
+    addNotesAboutTrip: '添加关于您旅程的备注...',
+    creating: '创建中...',
+    searchDestinationTitle: '搜索目的地',
+    searchForCityOrPlace: '搜索城市或地点...',
+    noTripSelected: '未选择旅程',
+    selectTripToViewItinerary: '请从首页选择一个旅程以查看其行程。',
+    goToHome: '前往首页',
+    
+    // Carbon emissions
+    carbonEmissionsText: '此旅程的总碳排放量约为 {emissions} 公斤，涵盖 {places} 个景点，总旅行距离为 {distance} 公里。',
+  },
+};
