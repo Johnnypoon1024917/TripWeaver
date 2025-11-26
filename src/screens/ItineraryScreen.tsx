@@ -11,6 +11,7 @@ import realtimeService from '../services/realtimeService';
 import pdfExportService from '../services/pdfExportService';
 import shareService from '../services/shareService';
 import DatePicker from '../components/DatePicker';
+import PackingListModal from '../components/PackingListModal';
 import placesService from '../services/placesService';
 import { Destination, DayItinerary } from '../types';
 import { tripAPI } from '../services/api';
@@ -44,6 +45,9 @@ export default function ItineraryScreen({ navigation }: any) {
   const currentDay = useSelector((state: RootState) => state.itinerary.selectedDay);
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const isGuest = useSelector((state: RootState) => state.auth.isGuest);
+  const packingList = useSelector((state: RootState) => 
+    selectedTrip ? state.packing.packingLists.find(p => p.tripId === selectedTrip.id) : null
+  );
 
   // Responsive window dimensions
   const [windowWidth, setWindowWidth] = useState(width);
@@ -71,6 +75,7 @@ export default function ItineraryScreen({ navigation }: any) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMoveToDayModal, setShowMoveToDayModal] = useState(false);
   const [destinationToMove, setDestinationToMove] = useState<any>(null);
+  const [showPackingList, setShowPackingList] = useState(false);
   const sidebarAnim = useRef(new Animated.Value(1)).current;
   const [dayStartTime, setDayStartTime] = useState(new Date());
   const [showDayStartPicker, setShowDayStartPicker] = useState(false);
@@ -660,6 +665,18 @@ export default function ItineraryScreen({ navigation }: any) {
     return icons[category] || icons.other;
   };
 
+  // Get packing list stats
+  const getPackingStats = () => {
+    if (!packingList) return { checked: 0, total: 0 };
+    let total = 0;
+    let checked = 0;
+    packingList.categories.forEach(cat => {
+      total += cat.items.length;
+      checked += cat.items.filter(item => item.checked).length;
+    });
+    return { checked, total };
+  };
+
   // Generate Google Maps URL for web with all destinations
   const getGoogleMapsEmbedUrl = () => {
     const currentDayData = itinerary.find(d => d.dayNumber === selectedDayView);
@@ -896,11 +913,11 @@ export default function ItineraryScreen({ navigation }: any) {
                 <Text style={styles.statLabel}>{t.journals}</Text>
                 <Text style={styles.statValue}>{0}</Text>
               </View>
-              <View style={styles.statCard}>
+              <TouchableOpacity style={styles.statCard} onPress={() => setShowPackingList(true)}>
                 <Text style={styles.statIcon}>🎒</Text>
                 <Text style={styles.statLabel}>{t.packingList}</Text>
-                <Text style={styles.statValue}>{0} / {24}</Text>
-              </View>
+                <Text style={styles.statValue}>{getPackingStats().checked} / {getPackingStats().total}</Text>
+              </TouchableOpacity>
               <View style={styles.statCard}>
                 <Text style={styles.statIcon}>💰</Text>
                 <Text style={styles.statLabel}>{t.expense}</Text>
@@ -1578,7 +1595,7 @@ export default function ItineraryScreen({ navigation }: any) {
             <TouchableOpacity style={styles.mapControl} onPress={handleRecenter}>
               <Text style={styles.mapControlIcon}>🧭</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.mapControl} onPress={() => alert('Packing list coming soon!')}>
+            <TouchableOpacity style={styles.mapControl} onPress={() => setShowPackingList(true)}>
               <Text style={styles.mapControlIcon}>🎒</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.mapControl} onPress={() => alert('Notes feature coming soon!')}>
@@ -2054,11 +2071,17 @@ export default function ItineraryScreen({ navigation }: any) {
               <Text style={styles.statLabel}>{t.journals}</Text>
               <Text style={styles.statValue}>{0}</Text>
             </View>
-            <View style={styles.statCard}>
+            <TouchableOpacity 
+              style={styles.statCard}
+              onPress={() => {
+                setShowMobileMenu(false);
+                setShowPackingList(true);
+              }}
+            >
               <Text style={styles.statIcon}>🎒</Text>
               <Text style={styles.statLabel}>{t.packingList}</Text>
-              <Text style={styles.statValue}>{0} / {24}</Text>
-            </View>
+              <Text style={styles.statValue}>{getPackingStats().checked} / {getPackingStats().total}</Text>
+            </TouchableOpacity>
             <View style={styles.statCard}>
               <Text style={styles.statIcon}>💰</Text>
               <Text style={styles.statLabel}>{t.expense}</Text>
@@ -2081,6 +2104,15 @@ export default function ItineraryScreen({ navigation }: any) {
           </TouchableOpacity>
         </ScrollView>
       </Modal>
+      )}
+
+      {/* Packing List Modal */}
+      {selectedTrip && (
+        <PackingListModal
+          visible={showPackingList}
+          tripId={selectedTrip.id}
+          onClose={() => setShowPackingList(false)}
+        />
       )}
     </View>
   );

@@ -174,6 +174,50 @@ export interface Translations {
   packingList: string;
   expense: string;
   
+  // Packing List
+  packingListTitle: string;
+  addItem: string;
+  addCategory: string;
+  itemName: string;
+  categoryName: string;
+  categoryIcon: string;
+  enterItemName: string;
+  enterCategoryName: string;
+  enterCategoryIcon: string;
+  importantDocuments: string;
+  clothing: string;
+  electronics: string;
+  toiletries: string;
+  otherItems: string;
+  passport: string;
+  creditCard: string;
+  foreignCurrency: string;
+  internationalDriverLicense: string;
+  topClothing: string;
+  pants: string;
+  underwear: string;
+  pajamas: string;
+  shoesAndSlippers: string;
+  socks: string;
+  smartphone: string;
+  powerBank: string;
+  phoneCharger: string;
+  wifiDeviceOrSimCard: string;
+  earphones: string;
+  toothbrushToothpasteTowel: string;
+  facialCleanserBodyWash: string;
+  sunscreen: string;
+  personalMedicine: string;
+  waterBottleOrThermos: string;
+  pen: string;
+  plasticBags: string;
+  umbrella: string;
+  reusableUtensils: string;
+  checkedItems: string;
+  totalItems: string;
+  nothingPacked: string;
+  startAddingItems: string;
+  
   // HomeScreen
   exploreAdventures: string;
   noTripsYet: string;
@@ -374,6 +418,50 @@ export const translations: Record<Language, Translations> = {
     packingList: 'Packing List',
     expense: 'Expense',
     
+    // Packing List
+    packingListTitle: 'Packing List',
+    addItem: 'Add Item',
+    addCategory: 'Add Category',
+    itemName: 'Item Name',
+    categoryName: 'Category Name',
+    categoryIcon: 'Icon',
+    enterItemName: 'Enter item name...',
+    enterCategoryName: 'Enter category name...',
+    enterCategoryIcon: 'Enter icon (e.g., 📝)',
+    importantDocuments: 'Important Documents',
+    clothing: 'Clothing',
+    electronics: '3C Items',
+    toiletries: 'Toiletries',
+    otherItems: 'Other Items',
+    passport: 'Passport',
+    creditCard: 'Credit Card',
+    foreignCurrency: 'Foreign Currency',
+    internationalDriverLicense: 'International Driver License',
+    topClothing: 'Top Clothing',
+    pants: 'Pants',
+    underwear: 'Underwear',
+    pajamas: 'Pajamas',
+    shoesAndSlippers: 'Shoes & Slippers',
+    socks: 'Socks',
+    smartphone: 'Smartphone',
+    powerBank: 'Power Bank',
+    phoneCharger: 'Phone Charger',
+    wifiDeviceOrSimCard: 'Wi-Fi Device / SIM Card',
+    earphones: 'Earphones',
+    toothbrushToothpasteTowel: 'Toothbrush / Toothpaste / Towel',
+    facialCleanserBodyWash: 'Facial Cleanser / Body Wash',
+    sunscreen: 'Sunscreen',
+    personalMedicine: 'Personal Medicine',
+    waterBottleOrThermos: 'Water Bottle / Thermos',
+    pen: 'Pen',
+    plasticBags: 'Plastic Bags',
+    umbrella: 'Umbrella',
+    reusableUtensils: 'Reusable Utensils',
+    checkedItems: 'checked',
+    totalItems: 'total',
+    nothingPacked: 'Nothing packed yet',
+    startAddingItems: 'Start adding items to your packing list',
+    
     // HomeScreen
     exploreAdventures: 'Explore your adventures',
     noTripsYet: 'No trips yet',
@@ -573,6 +661,50 @@ export const translations: Record<Language, Translations> = {
     packingList: '行李清單',
     expense: '支出',
     
+    // Packing List
+    packingListTitle: '行李清單',
+    addItem: '新增物品',
+    addCategory: '新增類別',
+    itemName: '物品名稱',
+    categoryName: '類別名稱',
+    categoryIcon: '圖示',
+    enterItemName: '輸入物品名稱...',
+    enterCategoryName: '輸入類別名稱...',
+    enterCategoryIcon: '輸入圖示 (例如：📝)',
+    importantDocuments: '重要證件',
+    clothing: '衣物類',
+    electronics: '3C物品',
+    toiletries: '日常盥洗用品',
+    otherItems: '其他物品',
+    passport: '護照',
+    creditCard: '信用卡',
+    foreignCurrency: '外幣',
+    internationalDriverLicense: '國際駕照',
+    topClothing: '上服',
+    pants: '褲子',
+    underwear: '內衣褲',
+    pajamas: '睡衣',
+    shoesAndSlippers: '鞋子與拖鞋',
+    socks: '襪子',
+    smartphone: '手機',
+    powerBank: '行動電源',
+    phoneCharger: '手機充電器',
+    wifiDeviceOrSimCard: 'Wi-Fi分享器/上網卡',
+    earphones: '耳機',
+    toothbrushToothpasteTowel: '牙刷/牙膏/毛巾',
+    facialCleanserBodyWash: '洗面乳/沐浴乳',
+    sunscreen: '防曬油',
+    personalMedicine: '隨身藥品',
+    waterBottleOrThermos: '水瓶或保溫瓶',
+    pen: '筆',
+    plasticBags: '塑膠袋',
+    umbrella: '雨傘',
+    reusableUtensils: '環保餐具',
+    checkedItems: '已勾選',
+    totalItems: '總數',
+    nothingPacked: '尚未打包任何物品',
+    startAddingItems: '開始新增您的行李清單項目',
+    
     // HomeScreen
     exploreAdventures: '探索您的冒險',
     noTripsYet: '尚無旅程',
@@ -771,6 +903,50 @@ export const translations: Record<Language, Translations> = {
     journals: '日志',
     packingList: '行李清单',
     expense: '支出',
+    
+    // Packing List
+    packingListTitle: '行李清单',
+    addItem: '添加物品',
+    addCategory: '添加类别',
+    itemName: '物品名称',
+    categoryName: '类别名称',
+    categoryIcon: '图示',
+    enterItemName: '输入物品名称...',
+    enterCategoryName: '输入类别名称...',
+    enterCategoryIcon: '输入图示 (例如：📝)',
+    importantDocuments: '重要证件',
+    clothing: '衣物类',
+    electronics: '3C物品',
+    toiletries: '日常盥洗用品',
+    otherItems: '其他物品',
+    passport: '护照',
+    creditCard: '信用卡',
+    foreignCurrency: '外币',
+    internationalDriverLicense: '国际驾照',
+    topClothing: '上服',
+    pants: '裤子',
+    underwear: '内衣裤',
+    pajamas: '睡衣',
+    shoesAndSlippers: '鞋子与拖鞋',
+    socks: '袜子',
+    smartphone: '手机',
+    powerBank: '行动电源',
+    phoneCharger: '手机充电器',
+    wifiDeviceOrSimCard: 'Wi-Fi分享器/上网卡',
+    earphones: '耳机',
+    toothbrushToothpasteTowel: '牙刷/牙膏/毛巾',
+    facialCleanserBodyWash: '洗面乳/沐浴乳',
+    sunscreen: '防晒油',
+    personalMedicine: '随身药品',
+    waterBottleOrThermos: '水瓶或保温瓶',
+    pen: '笔',
+    plasticBags: '塑胶袋',
+    umbrella: '雨伞',
+    reusableUtensils: '环保餐具',
+    checkedItems: '已勾选',
+    totalItems: '总数',
+    nothingPacked: '尚未打包任何物品',
+    startAddingItems: '开始添加您的行李清单项目',
     
     // HomeScreen
     exploreAdventures: '探索您的冒险',
