@@ -1,135 +1,186 @@
+import { db, auth } from '../../App';
+import { 
+  doc, 
+  setDoc, 
+  updateDoc, 
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from 'firebase/firestore';
 import { Trip } from '../types';
+import { generateInviteToken } from '../utils/auth';
 
 interface ShareOptions {
-  title: string;
-  message: string;
-  url?: string;
-  subject?: string;
+  visibility: 'private' | 'link' | 'public';
+  allowEdit: boolean;
+  expireAt?: Date;
 }
 
-class ShareService {
+export class ShareService {
   /**
-   * Generate shareable link for trip
+   * Generate an invite link for a trip
    */
-  generateShareLink(tripId: string): string {
-    const baseUrl = process.env.APP_URL || 'https://tripweaver.app';
-    return `${baseUrl}/trip/${tripId}`;
-  }
-
-  /**
-   * Share trip via native share dialog
-   */
-  async shareTrip(trip: Trip): Promise<boolean> {
-    const shareUrl = this.generateShareLink(trip.id);
-    const message = `Check out my trip to ${trip.destination}!\n\n${trip.title}\n${new Date(trip.startDate).toLocaleDateString()} - ${new Date(trip.endDate).toLocaleDateString()}`;
-
-    const options: ShareOptions = {
-      title: trip.title,
-      message: message,
-      url: shareUrl,
-      subject: `Trip Invitation: ${trip.title}`,
-    };
-
+  static async generateInviteLink(tripId: string): Promise<string> {
     try {
-      // For web
-      if (typeof navigator !== 'undefined' && navigator.share) {
-        await navigator.share({
-          title: options.title,
-          text: options.message,
-          url: options.url,
+      const inviteToken = generateInviteToken();
+      
+      // Store the invite token in Firestore
+      const inviteRef = doc(collection(db, 'invites'));
+      await setDoc(inviteRef, {
+        tripId,
+        token: inviteToken,
+        createdBy: auth.currentUser?.uid,
+        createdAt: new Date(),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      });
+      
+      // Update trip with invite token
+      const tripRef = doc(db, 'trips', tripId);
+      await updateDoc(tripRef, {
+        inviteLinkToken: inviteToken,
+      });
+      
+      // Return the deep link
+      return `tripweaver://invite/${inviteToken}`;
+    } catch (error) {
+      console.error('Error generating invite link:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Validate an invite token
+   */
+  static async validateInviteToken(token: string): Promise<{ isValid: boolean; tripId?: string }> {
+    try {
+      const invitesRef = collection(db, 'invites');
+      const q = query(invitesRef, where('token', '==', token));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        return { isValid: false };
+      }
+      
+      const inviteDoc = querySnapshot.docs[0];
+      const inviteData = inviteDoc.data();
+      
+      // Check if expired
+      if (inviteData.expiresAt && inviteData.expiresAt.toDate() < new Date()) {
+        return { isValid: false };
+      }
+      
+      return { 
+        isValid: true, 
+        tripId: inviteData.tripId 
+      };
+    } catch (error) {
+      console.error('Error validating invite token:', error);
+      return { isValid: false };
+    }
+  }
+  
+  /**
+   * Share a trip with specific users
+   */
+  static async shareWithUsers(tripId: string, userIds: string[]): Promise<void> {
+    try {
+      const tripRef = doc(db, 'trips', tripId);
+      
+      // Get current shared users
+      const tripSnap = await getDoc(tripRef);
+      if (!tripSnap.exists()) {
+        throw new Error('Trip not found');
+      }
+      
+      const tripData = tripSnap.data() as Trip;
+      const currentSharedWith = tripData.collaborators || [];
+      
+      // Merge and deduplicate
+      const newSharedWith = [...new Set([...currentSharedWith, ...userIds])];
+      
+      // Update trip
+      await updateDoc(tripRef, {
+        collaborators: newSharedWith,
+        visibility: 'link', // Change visibility to link when shared
+      });
+    } catch (error) {
+      console.error('Error sharing trip with users:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Update trip sharing settings
+   */
+  static async updateSharingSettings(tripId: string, options: ShareOptions): Promise<void> {
+    try {
+      const tripRef = doc(db, 'trips', tripId);
+      await updateDoc(tripRef, {
+        visibility: options.visibility,
+        allowEdit: options.allowEdit,
+        ...(options.expireAt && { expireAt: options.expireAt }),
+      });
+    } catch (error) {
+      console.error('Error updating sharing settings:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Make a trip public
+   */
+  static async makePublic(tripId: string): Promise<void> {
+    try {
+      const tripRef = doc(db, 'trips', tripId);
+      await updateDoc(tripRef, {
+        visibility: 'public',
+      });
+      
+      // Also add to public trips collection
+      const publicTripRef = doc(collection(db, 'publicTrips'), tripId);
+      const tripSnap = await getDoc(doc(db, 'trips', tripId));
+      if (tripSnap.exists()) {
+        await setDoc(publicTripRef, {
+          ...tripSnap.data(),
+          publishedAt: new Date(),
         });
-        return true;
       }
-
-      // Fallback: Copy to clipboard
-      if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        await navigator.clipboard.writeText(`${message}\n\n${shareUrl}`);
-        alert('Link copied to clipboard!');
-        return true;
-      }
-
-      return false;
     } catch (error) {
-      console.error('Share error:', error);
-      return false;
+      console.error('Error making trip public:', error);
+      throw error;
     }
   }
-
+  
   /**
-   * Share via WhatsApp
+   * Remove a user from a shared trip
    */
-  shareViaWhatsApp(trip: Trip): void {
-    const shareUrl = this.generateShareLink(trip.id);
-    const message = encodeURIComponent(
-      `Check out my trip to ${trip.destination}! ${trip.title}\n${shareUrl}`
-    );
-    const whatsappUrl = `https://wa.me/?text=${message}`;
-
-    if (typeof window !== 'undefined') {
-      window.open(whatsappUrl, '_blank');
-    }
-  }
-
-  /**
-   * Share via Email
-   */
-  shareViaEmail(trip: Trip): void {
-    const shareUrl = this.generateShareLink(trip.id);
-    const subject = encodeURIComponent(`Trip Invitation: ${trip.title}`);
-    const body = encodeURIComponent(
-      `Hi!
-
-I'd like to share my trip with you:
-
-${trip.title}
-Destination: ${trip.destination}
-Dates: ${new Date(trip.startDate).toLocaleDateString()} - ${new Date(trip.endDate).toLocaleDateString()}
-
-${trip.description || ''}
-
-View and collaborate: ${shareUrl}
-
-Best regards`
-    );
-
-    const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
-
-    if (typeof window !== 'undefined') {
-      window.location.href = mailtoUrl;
-    }
-  }
-
-  /**
-   * Generate QR code data URL
-   */
-  async generateQRCode(tripId: string): Promise<string> {
-    const shareUrl = this.generateShareLink(tripId);
-    
-    // In a real implementation, use a QR code library
-    // For now, return a placeholder or use an API
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(shareUrl)}`;
-    
-    return qrApiUrl;
-  }
-
-  /**
-   * Copy trip link to clipboard
-   */
-  async copyLink(trip: Trip): Promise<boolean> {
-    const shareUrl = this.generateShareLink(trip.id);
-
+  static async removeUserFromTrip(tripId: string, userId: string): Promise<void> {
     try {
-      if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        await navigator.clipboard.writeText(shareUrl);
-        return true;
+      const tripRef = doc(db, 'trips', tripId);
+      
+      // Get current shared users
+      const tripSnap = await getDoc(tripRef);
+      if (!tripSnap.exists()) {
+        throw new Error('Trip not found');
       }
-      return false;
+      
+      const tripData = tripSnap.data() as Trip;
+      const currentSharedWith = tripData.collaborators || [];
+      
+      // Remove user
+      const newSharedWith = currentSharedWith.filter(id => id !== userId);
+      
+      // Update trip
+      await updateDoc(tripRef, {
+        collaborators: newSharedWith,
+      });
     } catch (error) {
-      console.error('Copy error:', error);
-      return false;
+      console.error('Error removing user from trip:', error);
+      throw error;
     }
   }
 }
 
-export const shareService = new ShareService();
-export default shareService;
+export default ShareService;

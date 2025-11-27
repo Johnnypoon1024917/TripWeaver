@@ -7,6 +7,18 @@ import { store, persistor } from './src/store';
 import AppNavigator from './src/navigation/AppNavigator';
 import { initAuthToken, loadUserData } from './src/services/api';
 import { setUser } from './src/store/slices/authSlice';
+import NotificationProvider from './src/components/NotificationProvider';
+
+// Firebase initialization
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { firebaseConfig } from './src/config/firebase';
+
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+export const db = getFirestore(firebaseApp);
+export const auth = getAuth(firebaseApp);
 
 function AppContent() {
   const [loading, setLoading] = useState(true);
@@ -56,7 +68,9 @@ export default function App() {
           } 
           persistor={persistor}
         >
-          <AppContent />
+          <NotificationProvider>
+            <AppContent />
+          </NotificationProvider>
         </PersistGate>
       </Provider>
     </GestureHandlerRootView>

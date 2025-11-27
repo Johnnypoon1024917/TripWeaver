@@ -88,7 +88,16 @@ export interface Expense {
   description: string;
   date: Date;
   paidBy: string;
+  splitType: 'even' | 'percentage' | 'exact' | 'shares';
+  splitDetails: SplitDetail[];
   splitWith?: string[];
+}
+
+export interface SplitDetail {
+  userId: string;
+  amount: number;
+  percentage?: number;
+  shares?: number;
 }
 
 export interface Memory {

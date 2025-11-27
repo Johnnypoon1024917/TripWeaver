@@ -8,11 +8,15 @@ import itineraryReducer from './slices/itinerarySlice';
 import budgetReducer from './slices/budgetSlice';
 import settingsReducer from './slices/settingsSlice';
 import packingReducer from './slices/packingSlice';
+import placesReducer from './slices/placesSlice';
+import collaborationReducer from './slices/collaborationSlice';
+import tripSyncReducer from './slices/tripSyncSlice';
+import notificationsReducer from './slices/notificationsSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'trips', 'itinerary', 'packing'], // Only persist these reducers
+  whitelist: ['auth', 'trips', 'itinerary', 'packing', 'places', 'collaboration', 'tripSync', 'notifications'], // Only persist these reducers
   timeout: 10000, // 10 seconds timeout
 };
 
@@ -23,6 +27,10 @@ const rootReducer = combineReducers({
   budget: budgetReducer,
   settings: settingsReducer,
   packing: packingReducer,
+  places: placesReducer,
+  collaboration: collaborationReducer,
+  tripSync: tripSyncReducer,
+  notifications: notificationsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

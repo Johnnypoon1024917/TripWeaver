@@ -4,11 +4,24 @@ interface PerformanceMetric {
   endTime?: number;
   duration?: number;
   metadata?: any;
+  traceId?: string;
 }
 
 class PerformanceMonitor {
   private metrics: Map<string, PerformanceMetric> = new Map();
   private enabled: boolean = true;
+  private firebasePerf: any = null;
+  private traces: Map<string, any> = new Map();
+
+  constructor() {
+    // Try to initialize Firebase Performance Monitoring
+    try {
+      // This would be implemented if Firebase is available
+      // this.firebasePerf = getPerformance();
+    } catch (error) {
+      console.debug('Firebase Performance Monitoring not available');
+    }
+  }
 
   /**
    * Start measuring performance
@@ -16,10 +29,23 @@ class PerformanceMonitor {
   startMeasure(name: string, metadata?: any): void {
     if (!this.enabled) return;
 
+    // Start Firebase trace if available
+    let trace: any = null;
+    if (this.firebasePerf) {
+      try {
+        trace = (window as any).firebase.performance.trace(name);
+        trace.start();
+        this.traces.set(name, trace);
+      } catch (error) {
+        console.debug('Failed to start Firebase trace:', error);
+      }
+    }
+
     this.metrics.set(name, {
       name,
       startTime: Date.now(),
       metadata,
+      traceId: trace ? name : undefined,
     });
   }
 
@@ -37,6 +63,20 @@ class PerformanceMonitor {
 
     metric.endTime = Date.now();
     metric.duration = metric.endTime - metric.startTime;
+
+    // End Firebase trace if available
+    if (metric.traceId && this.firebasePerf) {
+      try {
+        const trace = this.traces.get(metric.traceId);
+        if (trace) {
+          trace.putMetric('duration', metric.duration || 0);
+          trace.stop();
+          this.traces.delete(metric.traceId);
+        }
+      } catch (error) {
+        console.debug('Failed to stop Firebase trace:', error);
+      }
+    }
 
     // Log if duration exceeds threshold
     if (metric.duration > 2000) {

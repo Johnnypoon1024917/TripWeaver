@@ -26,6 +26,7 @@ import { colors, spacing, typography, shadows, borderRadius } from '../utils/the
 import { useTranslation } from '../i18n/useTranslation';
 import placesService from '../services/placesService';
 import DatePicker from '../components/DatePicker';
+import NotificationDemo from '../components/NotificationDemo';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - spacing.lg * 3) / 2;
@@ -335,6 +336,9 @@ export default function HomeScreen({ navigation }: any) {
           />
         </View>
       </LinearGradient>
+
+      {/* Notification Demo */}
+      <NotificationDemo />
 
       {/* Filters */}
       <ScrollView 

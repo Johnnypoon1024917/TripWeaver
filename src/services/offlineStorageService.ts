@@ -6,6 +6,9 @@ const STORAGE_KEYS = {
   OFFLINE_QUEUE: 'tripweaver_offline_queue',
   USER_PREFERENCES: 'tripweaver_preferences',
   LAST_SYNC: 'tripweaver_last_sync',
+  OFFLINE_MAPS: 'tripweaver_offline_maps',
+  WEATHER_DATA: 'tripweaver_weather_data',
+  PLACE_PHOTOS: 'tripweaver_place_photos',
 };
 
 interface OfflineAction {
@@ -217,6 +220,111 @@ class OfflineStorageService {
       console.error('Failed to get last sync:', error);
     }
     return null;
+  }
+
+  /**
+   * Save offline map data
+   */
+  async saveOfflineMap(mapId: string, mapData: any): Promise<void> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const existingMaps = await this.getOfflineMaps();
+        existingMaps[mapId] = {
+          ...mapData,
+          timestamp: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEYS.OFFLINE_MAPS, JSON.stringify(existingMaps));
+      }
+    } catch (error) {
+      console.error('Failed to save offline map:', error);
+    }
+  }
+
+  /**
+   * Get offline maps
+   */
+  async getOfflineMaps(): Promise<Record<string, any>> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const data = localStorage.getItem(STORAGE_KEYS.OFFLINE_MAPS);
+        if (data) {
+          return JSON.parse(data);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to get offline maps:', error);
+    }
+    return {};
+  }
+
+  /**
+   * Save weather data for a trip
+   */
+  async saveWeatherData(tripId: string, weatherData: any): Promise<void> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const existingWeather = await this.getWeatherData();
+        existingWeather[tripId] = {
+          ...weatherData,
+          timestamp: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEYS.WEATHER_DATA, JSON.stringify(existingWeather));
+      }
+    } catch (error) {
+      console.error('Failed to save weather data:', error);
+    }
+  }
+
+  /**
+   * Get weather data
+   */
+  async getWeatherData(): Promise<Record<string, any>> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const data = localStorage.getItem(STORAGE_KEYS.WEATHER_DATA);
+        if (data) {
+          return JSON.parse(data);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to get weather data:', error);
+    }
+    return {};
+  }
+
+  /**
+   * Save place photos
+   */
+  async savePlacePhotos(placeId: string, photos: any[]): Promise<void> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const existingPhotos = await this.getPlacePhotos();
+        existingPhotos[placeId] = {
+          photos,
+          timestamp: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEYS.PLACE_PHOTOS, JSON.stringify(existingPhotos));
+      }
+    } catch (error) {
+      console.error('Failed to save place photos:', error);
+    }
+  }
+
+  /**
+   * Get place photos
+   */
+  async getPlacePhotos(): Promise<Record<string, any>> {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const data = localStorage.getItem(STORAGE_KEYS.PLACE_PHOTOS);
+        if (data) {
+          return JSON.parse(data);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to get place photos:', error);
+    }
+    return {};
   }
 
   /**

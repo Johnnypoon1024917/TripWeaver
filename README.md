@@ -11,34 +11,74 @@ A comprehensive cross-platform trip planning application similar to Funliday, bu
 - 💰 **Budget Tracking**: Track expenses and manage trip budgets by category
 - 👤 **User Authentication**: Login and registration system
 - 📱 **Cross-Platform**: Works on iOS, Android, and Web
+- 🔔 **Notification System**: Comprehensive notification management
+- 👥 **Real-time Collaboration**: Share trips and collaborate with others
+- 🌍 **Global Attractions**: Search and add places from around the world
+- 📊 **Advanced Budgeting**: Split bills and visualize spending
+- 🌐 **Community Features**: Share trips and discover others' adventures
 
 ### Detailed Features
 - **Trip Planning**
   - Create trips with title, destination, dates, and descriptions
   - View trip details with cover images
   - Track trip duration and dates
+  - Global attractions search with Google Places API
+  - Place caching for offline access
   
 - **Itinerary Builder**
   - Add destinations to specific days
   - Categorize places (attractions, restaurants, hotels, shopping, activities)
   - Add notes and time slots for each destination
   - Visual day-by-day organization
+  - Drag-and-drop reordering
 
 - **Map Integration**
   - Interactive map view with markers
-  - Location-based destination search (ready for Google Maps/Mapbox integration)
+  - Location-based destination search
   - Route planning capabilities
+  - Mapbox GL integration for enhanced features
+  - Offline map capabilities
+  - Drag-to-reorder functionality
 
 - **Budget Management**
   - Set budget by categories
   - Track expenses in real-time
   - Visual progress bars showing spent vs. budgeted amounts
   - Recent expenses list
+  - Split bill functionality (even, percentage, exact, shares)
+  - Chart visualizations of spending
 
 - **User Profile**
   - Personal statistics (trips count, countries, cities)
   - Account settings
   - Logout functionality
+  - Notification preferences
+  - Language settings
+
+- **Real-time Collaboration**
+  - Share trips with others via invite links
+  - Real-time updates with Firebase
+  - Online presence indicators
+  - Permission management
+
+- **Community Features**
+  - Discover public trips
+  - Like and comment on trips
+  - Auto-generated travel journals
+  - Search and filter trips
+
+- **Notification System**
+  - Trip reminders (1 day, 1 hour before)
+  - Budget alerts (75%, 90% thresholds)
+  - Collaboration updates
+  - Weather alerts
+  - Customizable settings
+  - Visual badge indicators
+
+- **Export & Sharing**
+  - PDF export for itineraries and journals
+  - Print support for web
+  - Responsive layouts for all devices
 
 ## Tech Stack 🛠️
 
@@ -46,9 +86,12 @@ A comprehensive cross-platform trip planning application similar to Funliday, bu
 - **Language**: TypeScript
 - **State Management**: Redux Toolkit
 - **Navigation**: React Navigation (Stack & Bottom Tabs)
-- **Maps**: React Native Maps
+- **Maps**: Mapbox GL
 - **UI Components**: React Native Paper
-- **Storage**: AsyncStorage (ready for offline mode)
+- **Storage**: AsyncStorage (enhanced for offline mode)
+- **Real-time**: Firebase (Auth, Firestore)
+- **Charting**: React Native SVG Charts
+- **PDF Export**: jsPDF
 - **Platforms**: iOS, Android, Web
 
 ## Prerequisites 📋
@@ -102,9 +145,16 @@ TripWeaver/
 │   │   ├── CreateTripScreen.tsx
 │   │   ├── ItineraryScreen.tsx
 │   │   ├── MapScreen.tsx
+│   │   ├── MapboxMapScreen.tsx
 │   │   ├── BudgetScreen.tsx
+│   │   ├── EnhancedBudgetScreen.tsx
 │   │   ├── ProfileScreen.tsx
-│   │   └── AddDestinationScreen.tsx
+│   │   ├── AddDestinationScreen.tsx
+│   │   ├── PlaceSearchScreen.tsx
+│   │   ├── DiscoveryScreen.tsx
+│   │   ├── NotificationsScreen.tsx
+│   │   ├── NotificationSettingsScreen.tsx
+│   │   └── TravelJournalScreen.tsx
 │   ├── navigation/        # Navigation configuration
 │   │   └── AppNavigator.tsx
 │   ├── store/            # Redux store and slices
@@ -113,11 +163,34 @@ TripWeaver/
 │   │       ├── authSlice.ts
 │   │       ├── tripsSlice.ts
 │   │       ├── itinerarySlice.ts
-│   │       └── budgetSlice.ts
+│   │       ├── budgetSlice.ts
+│   │       ├── placesSlice.ts
+│   │       ├── collaborationSlice.ts
+│   │       ├── tripSyncSlice.ts
+│   │       └── notificationsSlice.ts
 │   ├── types/            # TypeScript type definitions
 │   │   └── index.ts
 │   ├── services/         # API and external services
-│   └── utils/            # Utility functions
+│   │   ├── api.ts
+│   │   ├── realtimeService.ts
+│   │   ├── placesService.ts
+│   │   ├── routeOptimizationService.ts
+│   │   ├── pdfExportService.ts
+│   │   ├── printService.ts
+│   │   ├── offlineStorageService.ts
+│   │   ├── weatherService.ts
+│   │   ├── calendarService.ts
+│   │   ├── shareService.ts
+│   │   ├── feedbackService.ts
+│   │   ├── crashReportingService.ts
+│   │   ├── analyticsService.ts
+│   │   └── notificationService.ts
+│   ├── utils/            # Utility functions
+│   │   ├── theme.ts
+│   │   ├── accessibility.ts
+│   │   └── performanceMonitor.ts
+│   └── hooks/            # Custom hooks
+│       └── useNotifications.ts
 ├── assets/               # Images, fonts, and static files
 ├── App.tsx              # Root component
 ├── app.json             # Expo configuration
@@ -161,18 +234,16 @@ npm run build:web
 
 ## Future Enhancements 🔮
 
-- [ ] Firebase/Backend integration for data persistence
-- [ ] Real-time collaboration with other users
-- [ ] Offline mode with data synchronization
+- [ ] Native push notification support
+- [ ] Machine learning-based trip recommendations
+- [ ] Native mobile calendar integration
+- [ ] More external service integrations (Evernote, Notes)
+- [ ] Advanced analytics dashboard
+- [ ] Social features (following, messaging)
 - [ ] Photo gallery and memory sharing
-- [ ] Social sharing features
-- [ ] Weather integration
 - [ ] Flight and hotel booking integration
-- [ ] Google Maps/Mapbox API integration
-- [ ] Push notifications for trip reminders
 - [ ] Multi-language support
 - [ ] Dark mode theme
-- [ ] Export itinerary as PDF
 - [ ] Native desktop app with Electron
 
 ## API Integration Notes 📝
@@ -193,6 +264,11 @@ To fully implement the app with real data:
 3. **Weather API** (optional)
    - OpenWeatherMap API
    - WeatherAPI
+
+4. **Mapbox API** (for enhanced maps)
+   - Create Mapbox account
+   - Get API access token
+   - Configure map styles and offline capabilities
 
 ## Contributing 🤝
 

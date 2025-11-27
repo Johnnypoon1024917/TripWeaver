@@ -391,12 +391,7 @@ export default function ItineraryScreen({ navigation }: any) {
   const handleExportPDF = async () => {
     if (selectedTrip) {
       try {
-        await pdfExportService.generatePDF({
-          trip: selectedTrip,
-          itinerary,
-          totalPlaces: getTotalPlaces(),
-          totalDays: getDuration(),
-        });
+        await pdfExportService.exportTripItinerary(selectedTrip, itinerary);
         alert('PDF exported successfully!');
       } catch (error) {
         alert('Failed to export PDF');

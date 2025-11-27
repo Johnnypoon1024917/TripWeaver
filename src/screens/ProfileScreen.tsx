@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { RootState } from '../store';
 import { clearUser } from '../store/slices/authSlice';
 import { clearAuthData } from '../services/api';
@@ -19,6 +20,7 @@ import { Language } from '../i18n/translations';
 
 export default function ProfileScreen() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { t, language, changeLanguage } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
   const trips = useSelector((state: RootState) => state.trips.items);
@@ -204,7 +206,10 @@ export default function ProfileScreen() {
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity 
+          style={styles.menuItem}
+          onPress={() => navigation.navigate('NotificationSettings' as never)}
+        >
           <View style={styles.menuLeft}>
             <Text style={styles.menuIcon}>🔔</Text>
             <Text style={styles.menuText}>{t.notifications}</Text>

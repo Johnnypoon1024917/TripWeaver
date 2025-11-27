@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText } from 'react-native';
+import { Text as RNText, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,13 +13,20 @@ import HomeScreen from '../screens/HomeScreen';
 import TripDetailScreen from '../screens/TripDetailScreen';
 import ItineraryScreen from '../screens/ItineraryScreen';
 import MapScreen from '../screens/MapScreen';
+import MapboxMapScreen from '../screens/MapboxMapScreen';
 import BudgetScreen from '../screens/BudgetScreen';
+import EnhancedBudgetScreen from '../screens/EnhancedBudgetScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import CreateTripScreen from '../screens/CreateTripScreen';
 import AddDestinationScreen from '../screens/AddDestinationScreen';
 import CollaboratorsScreen from '../screens/CollaboratorsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
+import DiscoveryScreen from '../screens/DiscoveryScreen';
 import TravelJournalScreen from '../screens/TravelJournalScreen';
+import NotificationsScreen from '../screens/NotificationsScreen';
+import NotificationBadge from '../components/NotificationBadge';
+import NotificationSettingsScreen from '../screens/NotificationSettingsScreen';
+import NotificationTestScreen from '../screens/NotificationTestScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -30,6 +37,8 @@ export type RootStackParamList = {
   AddDestination: { tripId: string; dayNumber: number };
   Collaborators: { tripId: string };
   Explore: undefined;
+  NotificationSettings: undefined;
+  NotificationTest: undefined;
 };
 
 export type TabParamList = {
@@ -38,6 +47,8 @@ export type TabParamList = {
   Journal: undefined;
   Map: undefined;
   Budget: undefined;
+  Discovery: undefined;
+  Notifications: undefined;
   Profile: undefined;
 };
 
@@ -79,7 +90,7 @@ function TabNavigator() {
       />
       <Tab.Screen 
         name="Map" 
-        component={MapScreen}
+        component={MapboxMapScreen}
         options={{ 
           tabBarLabel: 'Map',
           tabBarIcon: ({ color }) => <RNText style={{ fontSize: 20 }}>🗺️</RNText>,
@@ -87,10 +98,31 @@ function TabNavigator() {
       />
       <Tab.Screen 
         name="Budget" 
-        component={BudgetScreen}
+        component={EnhancedBudgetScreen}
         options={{ 
           tabBarLabel: 'Budget',
           tabBarIcon: ({ color }) => <RNText style={{ fontSize: 20 }}>💰</RNText>,
+        }}
+      />
+      <Tab.Screen 
+        name="Discovery" 
+        component={DiscoveryScreen}
+        options={{ 
+          tabBarLabel: 'Discover',
+          tabBarIcon: ({ color }) => <RNText style={{ fontSize: 20 }}>🌟</RNText>,
+        }}
+      />
+      <Tab.Screen 
+        name="Notifications" 
+        component={NotificationsScreen}
+        options={{ 
+          tabBarLabel: 'Notifications',
+          tabBarIcon: ({ color }) => (
+            <View>
+              <RNText style={{ fontSize: 20 }}>🔔</RNText>
+              <NotificationBadge />
+            </View>
+          ),
         }}
       />
       <Tab.Screen 
@@ -143,6 +175,16 @@ export default function AppNavigator() {
               name="Explore" 
               component={ExploreScreen}
               options={{ headerShown: true, title: 'Explore Places' }}
+            />
+            <Stack.Screen 
+              name="NotificationSettings" 
+              component={NotificationSettingsScreen}
+              options={{ headerShown: true, title: 'Notification Settings' }}
+            />
+            <Stack.Screen 
+              name="NotificationTest" 
+              component={NotificationTestScreen}
+              options={{ headerShown: true, title: 'Notification Test' }}
             />
           </>
         )}
