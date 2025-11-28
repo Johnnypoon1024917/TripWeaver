@@ -29,16 +29,16 @@ export const tripSyncSlice = createSlice({
   name: 'tripSync',
   initialState,
   reducers: {
-    setSyncing: (state, action: PayloadAction<boolean>) => {
+    setSyncing: (state: TripSyncState, action: PayloadAction<boolean>) => {
       state.isSyncing = action.payload;
     },
-    setSyncedTrip: (state, action: PayloadAction<string | null>) => {
+    setSyncedTrip: (state: TripSyncState, action: PayloadAction<string | null>) => {
       state.syncedTripId = action.payload;
     },
-    setLastSync: (state, action: PayloadAction<Date | null>) => {
+    setLastSync: (state: TripSyncState, action: PayloadAction<Date | null>) => {
       state.lastSync = action.payload;
     },
-    setHasUnsavedChanges: (state, action: PayloadAction<boolean>) => {
+    setHasUnsavedChanges: (state: TripSyncState, action: PayloadAction<boolean>) => {
       state.hasUnsavedChanges = action.payload;
     },
   },
@@ -60,7 +60,7 @@ export const startTripSync = (tripId: string) => {
       
       // Listen for trip changes
       const tripRef = doc(db, 'trips', tripId);
-      const unsubscribe = onSnapshot(tripRef, (doc) => {
+      const unsubscribe = onSnapshot(tripRef, (doc: any) => {
         if (doc.exists()) {
           const tripData = doc.data() as Trip;
           // Update local trip state
@@ -71,8 +71,8 @@ export const startTripSync = (tripId: string) => {
       
       // Listen for itinerary changes
       const itineraryRef = collection(db, 'trips', tripId, 'itinerary');
-      const itineraryUnsubscribe = onSnapshot(itineraryRef, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
+      const itineraryUnsubscribe = onSnapshot(itineraryRef, (snapshot: any) => {
+        snapshot.docChanges().forEach((change: any) => {
           if (change.type === 'added' || change.type === 'modified') {
             const dayData = change.doc.data() as DayItinerary;
             // Update local itinerary state

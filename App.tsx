@@ -3,47 +3,15 @@ import { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, ActivityIndicator, Platform } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { store, persistor } from './src/store';
 import AppNavigator from './src/navigation/AppNavigator';
 import { initAuthToken, loadUserData } from './src/services/api';
 import { setUser } from './src/store/slices/authSlice';
 import NotificationProvider from './src/components/NotificationProvider';
 
-// Firebase initialization
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { initializeAuth, browserLocalPersistence, inMemoryPersistence } from 'firebase/auth';
-// @ts-ignore
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import { firebaseConfig } from './src/config/firebase';
-
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore(firebaseApp);
-
-// Initialize Firebase Auth with platform-specific persistence
-let persistence;
-if (Platform.OS === 'web') {
-  // Use browser local persistence for web
-  persistence = browserLocalPersistence;
-} else {
-  // Use in-memory persistence as fallback for other platforms
-  // or implement React Native specific persistence
-  try {
-    // Try to use React Native persistence if available
-    // @ts-ignore
-    const authModule = require('firebase/auth');
-    persistence = authModule.getReactNativePersistence(ReactNativeAsyncStorage);
-  } catch (e) {
-    // Fallback to in-memory persistence
-    persistence = inMemoryPersistence;
-  }
-}
-
-export const auth = initializeAuth(firebaseApp, {
-  persistence: persistence
-});
+// Firebase instances are now exported from firebaseService
+// This file is kept for backward compatibility
 
 function AppContent() {
   const [loading, setLoading] = useState(true);

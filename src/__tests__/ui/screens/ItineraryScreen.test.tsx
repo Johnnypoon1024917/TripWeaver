@@ -75,9 +75,9 @@ describe('ItineraryScreen UI Tests', () => {
   });
 
   it('should render itinerary screen with destinations', () => {
-    const { getByText, getAllByTestId } = render(
+    const { getByText, getByTestId, getAllByTestId } = render(
       <Provider store={store}>
-        <ItineraryScreen navigation={mockNavigation} route={mockRoute} />
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
       </Provider>
     );
 
@@ -99,7 +99,7 @@ describe('ItineraryScreen UI Tests', () => {
   it('should navigate to add destination screen when add button is pressed', () => {
     const { getByTestId } = render(
       <Provider store={store}>
-        <ItineraryScreen navigation={mockNavigation} route={mockRoute} />
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
       </Provider>
     );
 
@@ -115,7 +115,7 @@ describe('ItineraryScreen UI Tests', () => {
   it('should display correct destination information', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <ItineraryScreen navigation={mockNavigation} route={mockRoute} />
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
       </Provider>
     );
 
@@ -149,9 +149,9 @@ describe('ItineraryScreen UI Tests', () => {
       useSelector: jest.fn().mockImplementation(selector => selector(emptyStore)),
     }));
 
-    const { getByText, getByTestId } = render(
+    const { getByText, getByTestId, getAllByTestId } = render(
       <Provider store={store}>
-        <ItineraryScreen navigation={mockNavigation} route={mockRoute} />
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
       </Provider>
     );
 
@@ -163,7 +163,7 @@ describe('ItineraryScreen UI Tests', () => {
   it('should allow dragging destinations to reorder them', () => {
     const { getAllByTestId } = render(
       <Provider store={store}>
-        <ItineraryScreen navigation={mockNavigation} route={mockRoute} />
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
       </Provider>
     );
 

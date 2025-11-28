@@ -18,7 +18,7 @@ import { colors, spacing, typography, shadows } from '../utils/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
 // Firebase imports
-import { db } from '../../App'; // Assuming db is exported from App.tsx
+import { db } from '../services/firebaseService';
 import { collection, query, orderBy, limit, getDocs, getDoc, doc as firestoreDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
 
 // Helper function to ensure we have proper Date objects

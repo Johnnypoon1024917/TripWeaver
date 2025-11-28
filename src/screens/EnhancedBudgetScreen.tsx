@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -13,13 +14,27 @@ import { Picker } from '@react-native-picker/picker';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { addExpense, addBudget } from '../store/slices/budgetSlice';
-import { Expense, SplitDetail } from '../types';
+import { Expense, SplitDetail, Budget } from '../types';
 import { colors, spacing, typography, shadows } from '../utils/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PieChart, BarChart } from 'react-native-svg-charts';
 import { Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 
-export default function EnhancedBudgetScreen() {
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { RootStackParamList } from '../navigation/AppNavigator';
+
+// Define navigation and route types
+type EnhancedBudgetScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TripDetail'>;
+
+type EnhancedBudgetScreenRouteProp = RouteProp<RootStackParamList, 'TripDetail'>;
+
+interface EnhancedBudgetScreenProps {
+  navigation?: EnhancedBudgetScreenNavigationProp;
+  route?: EnhancedBudgetScreenRouteProp;
+}
+
+export default function EnhancedBudgetScreen({ navigation, route }: EnhancedBudgetScreenProps) {
   const dispatch = useDispatch();
   const budgets = useSelector((state: RootState) => state.budget.budgets);
   const expenses = useSelector((state: RootState) => state.budget.expenses);
@@ -37,13 +52,13 @@ export default function EnhancedBudgetScreen() {
   });
   const [splitDetails, setSplitDetails] = useState<Record<string, { amount: string; percentage: string; shares: string }>>({});
   const [newBudget, setNewBudget] = useState({
-    category: 'accommodation' as any,
+    category: 'accommodation' as 'accommodation' | 'food' | 'transportation' | 'activities' | 'shopping' | 'other',
     amount: '',
     currency: 'USD',
   });
 
-  const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
-  const totalSpent = budgets.reduce((sum, b) => sum + b.spent, 0);
+  const totalBudget = budgets.reduce((sum: number, b: Budget) => sum + b.amount, 0);
+  const totalSpent = budgets.reduce((sum: number, b: Budget) => sum + b.spent, 0);
   const remaining = totalBudget - totalSpent;
 
   // Initialize split details when collaborators change

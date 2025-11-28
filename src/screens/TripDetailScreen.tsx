@@ -67,7 +67,7 @@ export default function TripDetailScreen() {
     new Animated.Value(0),
   ]).current;
 
-  const { tripId } = route.params;
+  const { tripId } = route.params as { tripId: string };
   const trip = useSelector((state: RootState) => 
     state.trips.items.find((t: Trip) => t.id === tripId) || state.trips.selectedTrip
   );
@@ -111,21 +111,21 @@ export default function TripDetailScreen() {
     if (trip) {
       dispatch(selectTrip(trip));
       // Navigate to MainTabs and then to Itinerary tab
-      navigation.navigate('MainTabs', { screen: 'Itinerary' });
+      navigation.navigate('MainTabs' as any, { screen: 'Itinerary' } as any);
     }
   };
 
   const handleViewMap = () => {
     if (trip) {
       dispatch(selectTrip(trip));
-      navigation.navigate('MainTabs', { screen: 'Map' });
+      navigation.navigate('MainTabs' as any, { screen: 'Map' } as any);
     }
   };
 
   const handleViewBudget = () => {
     if (trip) {
       dispatch(selectTrip(trip));
-      navigation.navigate('MainTabs', { screen: 'Budget' });
+      navigation.navigate('MainTabs' as any, { screen: 'Budget' } as any);
     }
   };
 
@@ -270,7 +270,7 @@ export default function TripDetailScreen() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Route Preview</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('MainTabs', { screen: 'Map' })}>
+              <TouchableOpacity onPress={() => navigation.navigate('MainTabs' as any, { screen: 'Map' } as any)}>
                 <Text style={styles.viewAllText}>View Full Map →</Text>
               </TouchableOpacity>
             </View>
@@ -298,7 +298,7 @@ export default function TripDetailScreen() {
               </MapView>
               <TouchableOpacity 
                 style={styles.mapOverlay}
-                onPress={() => navigation.navigate('MainTabs', { screen: 'Map' })}
+                onPress={() => navigation.navigate('MainTabs' as any, { screen: 'Map' } as any)}
               >
                 <View style={styles.mapOverlayContent}>
                   <Text style={styles.mapOverlayText}>Tap to explore</Text>

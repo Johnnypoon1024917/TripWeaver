@@ -7,17 +7,20 @@ import { TEST_CONSTANTS, SELECTORS } from '../config';
 import * as authAPI from '../../../services/api';
 
 // Mock the navigation
-const mockNavigation = {
+const mockNavigation: any = {
   navigate: jest.fn(),
   goBack: jest.fn(),
+  setOptions: jest.fn(),
+  dispatch: jest.fn(),
+  navigateDeprecated: jest.fn(),
+  preload: jest.fn(),
+  reset: jest.fn(),
+  goBackDeprecated: jest.fn(),
+  canGoBack: jest.fn(),
+  getId: jest.fn(),
+  getParent: jest.fn(),
+  getState: jest.fn(),
 };
-
-// Mock the auth API
-jest.mock('../../../services/api', () => ({
-  authAPI: {
-    login: jest.fn(),
-  },
-}));
 
 describe('LoginScreen UI Tests', () => {
   beforeEach(() => {

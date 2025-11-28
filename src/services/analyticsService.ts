@@ -1,4 +1,4 @@
-import { db } from '../../App';
+import { db } from '../services/firebaseService';
 import { 
   collection, 
   addDoc, 

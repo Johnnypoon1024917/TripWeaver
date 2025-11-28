@@ -87,9 +87,9 @@ describe('BudgetScreen UI Tests', () => {
   });
 
   it('should render budget screen with categories and expenses', () => {
-    const { getByText, getAllByTestId } = render(
+    const { getByText, getByTestId, getAllByTestId } = render(
       <Provider store={store}>
-        <EnhancedBudgetScreen navigation={mockNavigation} route={mockRoute} />
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }} />
       </Provider>
     );
 
@@ -116,7 +116,7 @@ describe('BudgetScreen UI Tests', () => {
   it('should display correct expense information', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <EnhancedBudgetScreen navigation={mockNavigation} route={mockRoute} />
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }} />
       </Provider>
     );
 
@@ -150,9 +150,9 @@ describe('BudgetScreen UI Tests', () => {
       useSelector: jest.fn().mockImplementation(selector => selector(emptyStore)),
     }));
 
-    const { getByText, getByTestId } = render(
+    const { getByText, getByTestId, getAllByTestId } = render(
       <Provider store={store}>
-        <EnhancedBudgetScreen navigation={mockNavigation} route={mockRoute} />
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }} />
       </Provider>
     );
 
@@ -164,7 +164,7 @@ describe('BudgetScreen UI Tests', () => {
   it('should calculate and display budget totals correctly', () => {
     const { getByText } = render(
       <Provider store={store}>
-        <EnhancedBudgetScreen navigation={mockNavigation} route={mockRoute} />
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }} />
       </Provider>
     );
 
@@ -183,7 +183,7 @@ describe('BudgetScreen UI Tests', () => {
   it('should allow adding new budget categories', () => {
     const { getByTestId } = render(
       <Provider store={store}>
-        <EnhancedBudgetScreen navigation={mockNavigation} route={mockRoute} />
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }} />
       </Provider>
     );
 
@@ -196,7 +196,7 @@ describe('BudgetScreen UI Tests', () => {
   it('should allow adding new expenses', () => {
     const { getByTestId } = render(
       <Provider store={store}>
-        <EnhancedBudgetScreen navigation={mockNavigation} route={mockRoute} />
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }} />
       </Provider>
     );
 

@@ -18,10 +18,18 @@ import { User } from '../types';
 import { useTranslation } from '../i18n/useTranslation';
 import { colors, spacing, typography, shadows } from '../utils/theme';
 import { authAPI } from '../services/api';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '../navigation/AppNavigator';
 
 const { width } = Dimensions.get('window');
 
-export default function LoginScreen({ navigation }: any) {
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+
+interface LoginScreenProps {
+  navigation: LoginScreenNavigationProp;
+}
+
+export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();

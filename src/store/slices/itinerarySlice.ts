@@ -84,6 +84,25 @@ const itinerarySlice = createSlice({
       state.days.push(action.payload);
       state.days.sort((a, b) => a.dayNumber - b.dayNumber);
     },
+    updateDay: (state, action: PayloadAction<{ id: string; title: string }>) => {
+      const dayIndex = state.days.findIndex(d => `day${d.dayNumber}` === action.payload.id);
+      if (dayIndex !== -1) {
+        // For now, we'll just update the date to be the title for display purposes
+        // In a real app, you might want a separate title property
+        state.days[dayIndex].date = new Date(action.payload.title);
+      }
+    },
+    deleteDay: (state, action: PayloadAction<string>) => {
+      const dayNumber = parseInt(action.payload.replace('day', ''), 10);
+      state.days = state.days.filter(d => d.dayNumber !== dayNumber);
+      // Re-number remaining days
+      state.days.forEach((day, index) => {
+        day.dayNumber = index + 1;
+      });
+      if (state.selectedDay > state.days.length) {
+        state.selectedDay = state.days.length || 1;
+      }
+    },
     removeDay: (state, action: PayloadAction<number>) => {
       state.days = state.days.filter(d => d.dayNumber !== action.payload);
       // Re-number remaining days
@@ -108,6 +127,8 @@ export const {
   setError,
   setDayDestinations,
   addDay,
+  updateDay,
+  deleteDay,
   removeDay,
 } = itinerarySlice.actions;
 
