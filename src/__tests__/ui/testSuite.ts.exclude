@@ -1,0 +1,26 @@
+/**
+ * TripWeaver UI Test Suite
+ * 
+ * This file exports all UI tests to be run as a comprehensive test suite.
+ * It includes tests for all major screens and navigation flows.
+ */
+
+// Import all UI tests
+import './screens/LoginScreen.test';
+import './screens/HomeScreen.test';
+import './screens/CreateTripScreen.test';
+import './screens/ItineraryScreen.test';
+import './screens/BudgetScreen.test';
+import './screens/MapScreen.test';
+import './screens/ProfileScreen.test';
+import './navigation/AppNavigator.test';
+
+// Export a function to run all tests
+export const runAllUITests = () => {
+  describe('TripWeaver UI Test Suite', () => {
+    // All tests are already defined in their respective files
+    // This is just a container to group them
+  });
+};
+
+export default runAllUITests;

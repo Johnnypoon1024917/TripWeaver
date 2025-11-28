@@ -17,6 +17,10 @@
       "bundleIdentifier": "com.tripweaver.app",
       "config": {
         "googleMapsApiKey": "AIzaSyBmFCy71VLlgNcbvEQNu2azuSM5flgArE4"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Show your location on the map",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Show your location on the map"
       }
     },
     "android": {

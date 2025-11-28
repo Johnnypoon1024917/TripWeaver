@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { db } from '../../..//App';
+import { db } from '../../services/firebaseService';
 import { 
   collection, 
   doc, 

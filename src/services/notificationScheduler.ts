@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
 import { NotificationUtils } from '../utils/notificationUtils';
 import { Trip } from '../types';
 

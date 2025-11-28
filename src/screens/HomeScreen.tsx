@@ -272,6 +272,7 @@ export default function HomeScreen({ navigation }: any) {
         }}
       >
         <TouchableOpacity
+          testID="trip-list-item"
           style={styles.tripCardGrid}
           onPress={() => navigation.navigate('TripDetail', { tripId: item.id })}
           activeOpacity={0.9}
@@ -377,6 +378,7 @@ export default function HomeScreen({ navigation }: any) {
             {t.startPlanningAdventure}
           </Text>
           <TouchableOpacity
+            testID="create-trip-button"
             onPress={() => setShowCreateModal(true)}
           >
             <LinearGradient

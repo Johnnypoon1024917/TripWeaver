@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import { useEffect } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';

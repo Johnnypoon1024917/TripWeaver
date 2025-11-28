@@ -1,79 +1,56 @@
 import { Platform } from 'react-native';
+import { Trip } from '../types';
+
+// Helper function to ensure we have proper Date objects
+const ensureDate = (date: Date | string): Date => {
+  if (date instanceof Date) {
+    return date;
+  }
+  return new Date(date);
+};
 
 export class PrintService {
-  static async printDocument(htmlContent: string, title: string = 'Document') {
+  static async printItinerary(trip: Trip, htmlContent: string) {
     if (Platform.OS === 'web') {
-      // Create a hidden iframe for printing
-      const iframe = document.createElement('iframe');
-      iframe.style.position = 'absolute';
-      iframe.style.top = '-1000px';
-      iframe.style.left = '-1000px';
-      
-      // Write content to iframe
-      document.body.appendChild(iframe);
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-      
-      if (iframeDoc) {
-        iframeDoc.open();
-        iframeDoc.write(`
+      // Web implementation
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        // Ensure dates are proper Date objects
+        const startDate = ensureDate(trip.startDate);
+        const endDate = ensureDate(trip.endDate);
+        
+        printWindow.document.write(`
           <!DOCTYPE html>
           <html>
           <head>
-            <title>${title}</title>
+            <title>${trip.title} - Itinerary</title>
             <style>
               body { font-family: Arial, sans-serif; margin: 20px; }
-              @media print {
-                body { margin: 0; }
-              }
+              .header { text-align: center; margin-bottom: 30px; }
+              .trip-info { margin-bottom: 20px; }
+              .section { margin-bottom: 20px; }
+              .day-header { background-color: #f0f0f0; padding: 10px; margin: 10px 0; }
+              table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+              th { background-color: #f2f2f2; }
             </style>
           </head>
           <body>
+            <div class="header">
+              <h1>${trip.title}</h1>
+              <p class="trip-info"><strong>Destination:</strong> ${trip.destination}</p>
+              <p class="trip-info"><strong>Dates:</strong> ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}</p>
+            </div>
             ${htmlContent}
           </body>
           </html>
         `);
-        iframeDoc.close();
-        
-        // Wait for content to load then print
-        iframe.onload = () => {
-          iframe.contentWindow?.focus();
-          iframe.contentWindow?.print();
-          // Clean up
-          setTimeout(() => {
-            document.body.removeChild(iframe);
-          }, 1000);
-        };
+        printWindow.document.close();
+        printWindow.print();
       }
     } else {
-      // For mobile, we would use a native printing solution
-      console.log('Print service not implemented for mobile');
-    }
-  }
-  
-  static async printTripItinerary(trip: any, itinerary: any[]) {
-    if (Platform.OS === 'web') {
-      // Generate HTML content for trip itinerary
-      let htmlContent = `
-        <h1>${trip.title}</h1>
-        <p><strong>Destination:</strong> ${trip.destination}</p>
-        <p><strong>Dates:</strong> ${trip.startDate.toLocaleDateString()} - ${trip.endDate.toLocaleDateString()}</p>
-        <hr>
-        <h2>Itinerary</h2>
-      `;
-      
-      itinerary.forEach((day: any) => {
-        htmlContent += `<h3>Day ${day.dayNumber}</h3><ul>`;
-        day.destinations.forEach((dest: any) => {
-          htmlContent += `<li>${dest.name}<br><small>${dest.address}</small></li>`;
-        });
-        htmlContent += `</ul>`;
-      });
-      
-      return this.printDocument(htmlContent, `${trip.title} Itinerary`);
-    } else {
-      console.log('Print service not implemented for mobile');
+      // Mobile implementation would use a native printing library
+      console.log('Print functionality not implemented for mobile');
     }
   }
 }
-
-export default PrintService;

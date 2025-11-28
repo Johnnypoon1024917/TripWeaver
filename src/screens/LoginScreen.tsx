@@ -108,6 +108,7 @@ export default function LoginScreen({ navigation }: any) {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>{t.email}</Text>
             <TextInput
+              testID="login-email-input"
               style={styles.input}
               placeholder="your.email@example.com"
               placeholderTextColor={colors.textLight}
@@ -121,6 +122,7 @@ export default function LoginScreen({ navigation }: any) {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>{t.password}</Text>
             <TextInput
+              testID="login-password-input"
               style={styles.input}
               placeholder={t.enterPassword}
               placeholderTextColor={colors.textLight}
@@ -134,7 +136,7 @@ export default function LoginScreen({ navigation }: any) {
             <Text style={styles.forgotPasswordText}>{t.forgotPassword}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={handleLogin}>
+          <TouchableOpacity testID="login-button" onPress={handleLogin}>
             <LinearGradient
               colors={[colors.primary, colors.gradientEnd]}
               style={styles.button}
@@ -151,13 +153,14 @@ export default function LoginScreen({ navigation }: any) {
             <View style={styles.dividerLine} />
           </View>
 
-          <TouchableOpacity onPress={handleGuestMode}>
+          <TouchableOpacity testID="guest-mode-button" onPress={handleGuestMode}>
             <View style={styles.guestButton}>
               <Text style={styles.guestButtonText}>🚀 {t.continueAsGuest}</Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity
+            testID="register-button"
             style={styles.linkButton}
             onPress={() => navigation.navigate('Register')}
           >

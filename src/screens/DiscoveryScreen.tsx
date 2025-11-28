@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
+  FlatList,
   TouchableOpacity,
   Image,
-  FlatList,
-  RefreshControl,
   TextInput,
+  Animated,
+  Platform,
+  RefreshControl,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { db } from '../../App';
-import { 
-  collection, 
-  query, 
-  orderBy, 
-  limit, 
-  getDocs,
-  doc as firestoreDoc,
-  getDoc,
-  updateDoc,
-  increment,
-  arrayUnion
-} from 'firebase/firestore';
 import { RootState } from '../store';
+import { Trip } from '../types';
 import { colors, spacing, typography, shadows } from '../utils/theme';
 import { LinearGradient } from 'expo-linear-gradient';
+
+// Firebase imports
+import { db } from '../../App'; // Assuming db is exported from App.tsx
+import { collection, query, orderBy, limit, getDocs, getDoc, doc as firestoreDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore';
+
+// Helper function to ensure we have proper Date objects
+const ensureDate = (date: Date | string): Date => {
+  if (date instanceof Date) {
+    return date;
+  }
+  return new Date(date);
+};
 
 interface PublicTrip {
   id: string;
@@ -140,14 +141,14 @@ export default function DiscoveryScreen() {
         filtered.sort((a, b) => b.likes - a.likes);
         break;
       case 'recent':
-        filtered.sort((a, b) => 
-          b.startDate.getTime() - a.startDate.getTime()
-        );
+        filtered.sort((a, b) => {
+          return ensureDate(b.startDate).getTime() - ensureDate(a.startDate).getTime();
+        });
         break;
       case 'duration':
         filtered.sort((a, b) => {
-          const durationA = a.endDate.getTime() - a.startDate.getTime();
-          const durationB = b.endDate.getTime() - b.startDate.getTime();
+          const durationA = ensureDate(a.endDate).getTime() - ensureDate(a.startDate).getTime();
+          const durationB = ensureDate(b.endDate).getTime() - ensureDate(b.startDate).getTime();
           return durationB - durationA;
         });
         break;
@@ -197,7 +198,7 @@ export default function DiscoveryScreen() {
   
   const renderTripItem = ({ item }: { item: PublicTrip }) => {
     const durationDays = Math.ceil(
-      (item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60 * 60 * 24)
+      (ensureDate(item.endDate).getTime() - ensureDate(item.startDate).getTime()) / (1000 * 60 * 60 * 24)
     );
     
     return (
@@ -227,7 +228,7 @@ export default function DiscoveryScreen() {
           
           <View style={styles.tripMeta}>
             <Text style={styles.tripDate}>
-              {item.startDate.toLocaleDateString()} - {item.endDate.toLocaleDateString()}
+              {ensureDate(item.startDate).toLocaleDateString()} - {ensureDate(item.endDate).toLocaleDateString()}
             </Text>
             <Text style={styles.tripDuration}>
               {durationDays} {durationDays === 1 ? 'day' : 'days'}

@@ -100,7 +100,7 @@ export default function ProfileScreen() {
             transform: [{ translateY: slideAnim }],
           }}
         >
-          <View style={styles.avatar}>
+          <View testID="profile-avatar" style={styles.avatar}>
             <Text style={styles.avatarText}>
               {user?.displayName?.charAt(0).toUpperCase() || 'U'}
             </Text>

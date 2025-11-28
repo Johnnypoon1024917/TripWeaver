@@ -1,0 +1,3 @@
+#!/bin/bash
+export RNMAPBOX_MAPS_DOWNLOAD_TOKEN=sk.eyJ1IjoieW91cnVzZXJuYW1lIiwiYSI6ImNsdXJzdG9uMDAwdHEybG8zcXV0bHd1YzgifQ.69Q40v5N7kMCjm7AhjD1-w
+npx expo run:ios

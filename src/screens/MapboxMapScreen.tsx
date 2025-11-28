@@ -12,7 +12,6 @@ import {
   Alert,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import MapboxGL from '@rnmapbox/maps';
 import { RootState } from '../store';
 import { addDestination, reorderDestinations } from '../store/slices/itinerarySlice';
 import { Destination } from '../types';
@@ -22,8 +21,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { routeOptimizationService } from '../services/routeOptimizationService';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 
-// Set Mapbox access token
-MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN);
+// Conditional import for Mapbox
+let MapboxGL: any;
+if (Platform.OS !== 'web') {
+  MapboxGL = require('@rnmapbox/maps').default;
+  // Set Mapbox access token only on native platforms
+  MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN);
+} else {
+  // For web, we'll use our WebMap component
+  MapboxGL = {
+    setAccessToken: () => {}, // No-op on web
+    setTelemetryEnabled: () => {}, // No-op on web
+    offlineManager: {
+      createPack: () => Promise.reject(new Error('Offline maps not supported on web'))
+    }
+  };
+}
 
 const { width, height } = Dimensions.get('window');
 
@@ -37,9 +50,21 @@ interface Place {
   rating?: number;
 }
 
+// Add type definitions for MapboxGL components
+interface MapboxGLComponents {
+  MapView: any;
+  Camera: any;
+  ShapeSource: any;
+  LineLayer: any;
+  SymbolLayer: any;
+  PointAnnotation: any;
+}
+
+const TypedMapboxGL: MapboxGLComponents = MapboxGL;
+
 export default function MapboxMapScreen({ navigation }: any) {
-  const mapRef = useRef<MapboxGL.MapView>(null);
-  const cameraRef = useRef<MapboxGL.Camera>(null);
+  const mapRef = useRef<any>(null);
+  const cameraRef = useRef<any>(null);
   const dispatch = useDispatch();
   
   const selectedTrip = useSelector((state: RootState) => state.trips.selectedTrip);
@@ -214,6 +239,15 @@ export default function MapboxMapScreen({ navigation }: any) {
   const downloadOfflineMap = async () => {
     if (!selectedTrip) return;
     
+    // Show alert for web platform since offline maps are not supported
+    if (Platform.OS === 'web') {
+      Alert.alert(
+        'Not Supported', 
+        'Offline maps are not supported on web platform. Please use the mobile app for this feature.'
+      );
+      return;
+    }
+    
     setIsDownloading(true);
     
     try {
@@ -229,7 +263,7 @@ export default function MapboxMapScreen({ navigation }: any) {
         bounds,
         minZoom: 10,
         maxZoom: 16,
-      }, (progress) => {
+      }, (progress: any) => {
         console.log('Download progress:', (progress as any).percentage || progress);
       });
       
@@ -261,79 +295,90 @@ export default function MapboxMapScreen({ navigation }: any) {
   
   return (
     <View style={styles.container}>
-      <MapboxGL.MapView
-        ref={mapRef}
-        style={styles.map}
-        styleURL={MapboxGL.StyleURL.Street}
-        zoomEnabled={true}
-        scrollEnabled={true}
-        pitchEnabled={true}
-        rotateEnabled={true}
-      >
-        <MapboxGL.Camera
-          ref={cameraRef}
-          defaultSettings={{
-            centerCoordinate: [region.longitude, region.latitude],
-            zoomLevel: 12,
-          }}
-        />
-        
-        {/* Current day destinations */}
-        {currentDayDestinations.map((dest, index) => (
-          <MapboxGL.PointAnnotation
-            key={dest.id}
-            id={`destination-${dest.id}`}
-            coordinate={[dest.longitude, dest.latitude]}
-          >
-            <View style={[styles.markerContainer, { backgroundColor: getMarkerColor(index) }]}>
-              <Text style={styles.markerText}>{index + 1}</Text>
-            </View>
-            
-            <MapboxGL.Callout title={dest.name}>
-              <View style={styles.calloutContainer}>
-                <Text style={styles.calloutTitle}>{dest.name}</Text>
-                <Text style={styles.calloutAddress}>{dest.address}</Text>
-              </View>
-            </MapboxGL.Callout>
-          </MapboxGL.PointAnnotation>
-        ))}
-        
-        {/* Selected place marker */}
-        {selectedPlace && (
-          <MapboxGL.PointAnnotation
-            id={`selected-place-${selectedPlace.id}`}
-            coordinate={[selectedPlace.longitude, selectedPlace.latitude]}
-          >
-            <View style={[styles.markerContainer, { backgroundColor: colors.accent }]}>
-              <Text style={styles.markerText}>📍</Text>
-            </View>
-          </MapboxGL.PointAnnotation>
-        )}
-        
-        {/* Route line */}
-        {currentDayDestinations.length > 1 && (
-          <MapboxGL.ShapeSource
-            id="routeSource"
-            shape={{
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'LineString',
-                coordinates: currentDayDestinations.map(dest => [dest.longitude, dest.latitude]),
-              },
+      {Platform.OS === 'web' ? (
+        // Render WebMap component for web platform
+        <View style={styles.map}>
+          <Text style={styles.webMapPlaceholder}>
+            Map functionality is not available on web platform. 
+            Please use the mobile app for full map features.
+          </Text>
+        </View>
+      ) : (
+        // Render Mapbox components for native platforms
+        <MapboxGL.MapView
+          ref={mapRef}
+          style={styles.map}
+          styleURL={MapboxGL.StyleURL.Street}
+          zoomEnabled={true}
+          scrollEnabled={true}
+          pitchEnabled={true}
+          rotateEnabled={true}
+        >
+          <MapboxGL.Camera
+            ref={cameraRef}
+            defaultSettings={{
+              centerCoordinate: [region.longitude, region.latitude],
+              zoomLevel: 12,
             }}
-          >
-            <MapboxGL.LineLayer
-              id="routeLine"
-              style={{
-                lineColor: colors.primary,
-                lineWidth: 4,
-                lineDasharray: [2, 2],
+          />
+          
+          {/* Current day destinations */}
+          {currentDayDestinations.map((dest, index) => (
+            <MapboxGL.PointAnnotation
+              key={dest.id}
+              id={`destination-${dest.id}`}
+              coordinate={[dest.longitude, dest.latitude]}
+            >
+              <View style={[styles.markerContainer, { backgroundColor: getMarkerColor(index) }]}>
+                <Text style={styles.markerText}>{index + 1}</Text>
+              </View>
+              
+              <MapboxGL.Callout title={dest.name}>
+                <View style={styles.calloutContainer}>
+                  <Text style={styles.calloutTitle}>{dest.name}</Text>
+                  <Text style={styles.calloutAddress}>{dest.address}</Text>
+                </View>
+              </MapboxGL.Callout>
+            </MapboxGL.PointAnnotation>
+          ))}
+          
+          {/* Selected place marker */}
+          {selectedPlace && (
+            <MapboxGL.PointAnnotation
+              id={`selected-place-${selectedPlace.id}`}
+              coordinate={[selectedPlace.longitude, selectedPlace.latitude]}
+            >
+              <View style={[styles.markerContainer, { backgroundColor: colors.accent }]}>
+                <Text style={styles.markerText}>📍</Text>
+              </View>
+            </MapboxGL.PointAnnotation>
+          )}
+          
+          {/* Route line */}
+          {currentDayDestinations.length > 1 && (
+            <MapboxGL.ShapeSource
+              id="routeSource"
+              shape={{
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'LineString',
+                  coordinates: currentDayDestinations.map(dest => [dest.longitude, dest.latitude]),
+                },
               }}
-            />
-          </MapboxGL.ShapeSource>
-        )}
-      </MapboxGL.MapView>
+            >
+              <MapboxGL.LineLayer
+                id="routeLine"
+                style={{
+                  lineColor: colors.primary,
+                  lineWidth: 4,
+                  lineDasharray: [2, 2],
+                }}
+              />
+            </MapboxGL.ShapeSource>
+          )}
+        </MapboxGL.MapView>
+      )}
       
       {/* Search Bar */}
       <View style={styles.searchContainer}>
@@ -714,5 +759,12 @@ const styles = StyleSheet.create({
   draggableItemAddress: {
     ...typography.caption,
     color: colors.textSecondary,
+  },
+  webMapPlaceholder: {
+    ...typography.body,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    marginTop: 50,
+    paddingHorizontal: 20,
   },
 });

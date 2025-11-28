@@ -1,13 +1,13 @@
 // Firebase configuration for TripWeaver
 // Replace these values with your actual Firebase project config
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456",
-  measurementId: "G-ABCDEF1234"
+  apiKey: "AIzaSyDheCC-C-6xMRJsR2EXhPxwlTIVY9hD_Qs",
+  authDomain: "tripwaver-96009.firebaseapp.com",
+  projectId: "tripwaver-96009",
+  storageBucket: "tripwaver-96009.firebasestorage.app",
+  messagingSenderId: "1037302258164",
+  appId: "1:1037302258164:web:ba8767a13e984f24e301a1",
+  measurementId: "G-TV2G87QQFJ"
 };
 
 // Firestore security rules (to be implemented in Firebase Console)

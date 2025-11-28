@@ -97,8 +97,11 @@ export class ShareService {
       const tripData = tripSnap.data() as Trip;
       const currentSharedWith = tripData.collaborators || [];
       
-      // Merge and deduplicate
-      const newSharedWith = [...new Set([...currentSharedWith, ...userIds])];
+      // Merge and deduplicate using filter instead of Set to avoid downlevelIteration issue
+      const mergedArray = [...currentSharedWith, ...userIds];
+      const newSharedWith = mergedArray.filter((item, index) => 
+        mergedArray.indexOf(item) === index
+      );
       
       // Update trip
       await updateDoc(tripRef, {

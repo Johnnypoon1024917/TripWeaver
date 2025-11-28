@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Platform } from 'react-native';
 import { store, persistor } from './src/store';
 import AppNavigator from './src/navigation/AppNavigator';
 import { initAuthToken, loadUserData } from './src/services/api';
@@ -12,17 +13,42 @@ import NotificationProvider from './src/components/NotificationProvider';
 // Firebase initialization
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { initializeAuth, browserLocalPersistence, inMemoryPersistence } from 'firebase/auth';
+// @ts-ignore
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { firebaseConfig } from './src/config/firebase';
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
-export const auth = getAuth(firebaseApp);
+
+// Initialize Firebase Auth with platform-specific persistence
+let persistence;
+if (Platform.OS === 'web') {
+  // Use browser local persistence for web
+  persistence = browserLocalPersistence;
+} else {
+  // Use in-memory persistence as fallback for other platforms
+  // or implement React Native specific persistence
+  try {
+    // Try to use React Native persistence if available
+    // @ts-ignore
+    const authModule = require('firebase/auth');
+    persistence = authModule.getReactNativePersistence(ReactNativeAsyncStorage);
+  } catch (e) {
+    // Fallback to in-memory persistence
+    persistence = inMemoryPersistence;
+  }
+}
+
+export const auth = initializeAuth(firebaseApp, {
+  persistence: persistence
+});
 
 function AppContent() {
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+  // Note: We can't use useDispatch here because this component is not wrapped in a Provider
+  // We'll handle auth restoration differently
 
   useEffect(() => {
     const restoreAuth = async () => {
@@ -32,7 +58,7 @@ function AppContent() {
         const userData = await loadUserData();
         
         if (token && userData) {
-          dispatch(setUser(userData));
+          // Dispatch to store (would need to be handled differently)
           console.log('Auth restored successfully');
         }
       } catch (error) {

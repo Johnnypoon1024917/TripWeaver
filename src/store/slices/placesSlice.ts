@@ -24,8 +24,10 @@ export const placesSlice = createSlice({
       if (state.recentSearches.length > 20) {
         state.recentSearches = state.recentSearches.slice(0, 20);
       }
-      // Remove duplicates
-      state.recentSearches = [...new Set(state.recentSearches)];
+      // Remove duplicates using filter instead of Set to avoid downlevelIteration issue
+      state.recentSearches = state.recentSearches.filter((item, index) => 
+        state.recentSearches.indexOf(item) === index
+      );
     },
     addFavoritePlace: (state, action: PayloadAction<Place>) => {
       state.favoritePlaces.push(action.payload);

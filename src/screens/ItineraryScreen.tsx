@@ -1,14 +1,41 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal, Platform, ImageBackground, Dimensions, Animated, FlatList, Alert, PanResponder, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Modal,
+  Platform,
+  ImageBackground,
+  Dimensions,
+  Animated,
+  FlatList,
+  Alert,
+  PanResponder,
+  ActivityIndicator,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
-import { setSelectedDay, deleteDestination as deleteDestinationAction, updateDestination as updateDestinationAction, setDayDestinations, addDestination as addDestinationAction, addDay, setItinerary, setLoading, setError, reorderDestinations } from '../store/slices/itinerarySlice';
+import {
+  setSelectedDay,
+  deleteDestination as deleteDestinationAction,
+  updateDestination as updateDestinationAction,
+  setDayDestinations,
+  addDestination as addDestinationAction,
+  addDay,
+  setItinerary,
+  setLoading,
+  setError,
+  reorderDestinations,
+} from '../store/slices/itinerarySlice';
 import { colors, spacing, typography, shadows } from '../utils/theme';
 import { useTranslation } from '../i18n/useTranslation';
 import routeOptimizationService from '../services/routeOptimizationService';
 import realtimeService from '../services/realtimeService';
-import pdfExportService from '../services/pdfExportService';
+import { pdfExportService } from '../services/pdfExportService';
 import shareService from '../services/shareService';
 import DatePicker from '../components/DatePicker';
 import PackingListModal from '../components/PackingListModal';
@@ -16,10 +43,22 @@ import placesService from '../services/placesService';
 import { Destination, DayItinerary } from '../types';
 import { tripAPI } from '../services/api';
 import { v4 as uuidv4 } from 'uuid';
-import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
-import travelTimeService, { TravelTime } from '../services/travelTimeService';
+import DraggableFlatList, {
+  RenderItemParams,
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 
 import { GOOGLE_MAPS_API_KEY } from '../config/maps';
+import travelTimeService, { TravelTime } from '../services/travelTimeService';
+
+
+// Helper function to ensure we have proper Date objects
+const ensureDate = (date: Date | string): Date => {
+  if (date instanceof Date) {
+    return date;
+  }
+  return new Date(date);
+};
 
 // Conditional imports for maps
 let MapView: any;
@@ -201,7 +240,7 @@ export default function ItineraryScreen({ navigation }: any) {
               allDays.push({
                 tripId: selectedTrip.id,
                 dayNumber: i,
-                date: new Date(selectedTrip.startDate.getTime() + (i - 1) * 24 * 60 * 60 * 1000),
+                date: new Date(ensureDate(selectedTrip.startDate).getTime() + (i - 1) * 24 * 60 * 60 * 1000),
                 destinations: [],
                 totalDistance: 0,
               });
@@ -236,7 +275,7 @@ export default function ItineraryScreen({ navigation }: any) {
   
   const getDuration = () => {
     if (!selectedTrip) return 0;
-    const days = Math.ceil((selectedTrip.endDate.getTime() - selectedTrip.startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const days = Math.ceil((ensureDate(selectedTrip.endDate).getTime() - ensureDate(selectedTrip.startDate).getTime()) / (1000 * 60 * 60 * 24));
     return days;
   };
 
@@ -391,9 +430,15 @@ export default function ItineraryScreen({ navigation }: any) {
   const handleExportPDF = async () => {
     if (selectedTrip) {
       try {
-        await pdfExportService.exportTripItinerary(selectedTrip, itinerary);
+        // Dynamically import pdfExportService to avoid Buffer issues on app startup
+        const { pdfExportService } = await import('../services/pdfExportService');
+        
+        // Flatten the itinerary to get all destinations
+        const allDestinations = itinerary.flatMap(day => day.destinations);
+        await pdfExportService.exportTripItinerary(selectedTrip, allDestinations);
         alert('PDF exported successfully!');
       } catch (error) {
+        console.error('PDF export error:', error);
         alert('Failed to export PDF');
       }
     }
@@ -451,7 +496,7 @@ export default function ItineraryScreen({ navigation }: any) {
     const newDayNumber = lastDay ? lastDay.dayNumber + 1 : 1;
     const newDate = lastDay 
       ? new Date(new Date(lastDay.date).getTime() + 24 * 60 * 60 * 1000)
-      : selectedTrip.startDate;
+      : ensureDate(selectedTrip.startDate);
 
     const newDay: DayItinerary = {
       tripId: selectedTrip.id,
@@ -857,7 +902,7 @@ export default function ItineraryScreen({ navigation }: any) {
             <View style={styles.tripInfo}>
               <View style={styles.tripDates}>
                 <Text style={styles.dateText}>
-                  {selectedTrip.startDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} - {selectedTrip.endDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                  {ensureDate(selectedTrip.startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} - {ensureDate(selectedTrip.endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
                 </Text>
                 <View style={styles.tripActions}>
                   <TouchableOpacity onPress={() => navigation.navigate('Collaborators', { tripId: selectedTrip.id })}>
@@ -1484,6 +1529,7 @@ export default function ItineraryScreen({ navigation }: any) {
                     <Text style={styles.emptyTimelineTitle}>{t.noDestinationsYet}</Text>
                     <Text style={styles.emptyTimelineText}>{t.startPlanningDay}</Text>
                     <TouchableOpacity 
+                      testID="add-destination-button"
                       style={styles.emptyTimelineButton}
                       onPress={() => setShowAddDestModal(true)}
                     >
@@ -1497,6 +1543,7 @@ export default function ItineraryScreen({ navigation }: any) {
                 {currentDayData.destinations.length > 0 && (
                   <View style={styles.addButtonsRow}>
                     <TouchableOpacity 
+                    testID="add-destination-button"
                     style={styles.addButton}
                     onPress={() => setShowAddDestModal(true)}
                   >
@@ -2023,7 +2070,7 @@ export default function ItineraryScreen({ navigation }: any) {
           <View style={styles.tripInfo}>
             <View style={styles.tripDates}>
               <Text style={styles.dateText}>
-                {selectedTrip.startDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} - {selectedTrip.endDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                {ensureDate(selectedTrip.startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} - {ensureDate(selectedTrip.endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
               </Text>
             </View>
             <Text style={styles.tripDestination}>{selectedTrip.destination}</Text>

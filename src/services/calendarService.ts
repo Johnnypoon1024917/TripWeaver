@@ -1,3 +1,13 @@
+import { Platform } from 'react-native';
+
+// Helper function to ensure we have proper Date objects
+const ensureDate = (date: Date | string): Date => {
+  if (date instanceof Date) {
+    return date;
+  }
+  return new Date(date);
+};
+
 export class CalendarService {
   /**
    * Check if calendar permissions are granted
@@ -91,7 +101,7 @@ export class CalendarService {
           console.log('Calendar API not available, showing notification instead');
           if ('Notification' in window && Notification.permission === 'granted') {
             new Notification('Trip Event', {
-              body: `${eventData.title} on ${eventData.startDate.toLocaleDateString()}`,
+              body: `${eventData.title} on ${ensureDate(eventData.startDate).toLocaleDateString()}`,
               icon: '/favicon.ico',
             });
           }

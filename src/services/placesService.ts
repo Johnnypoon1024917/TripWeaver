@@ -2,7 +2,7 @@ import { GOOGLE_MAPS_API_KEY } from '../config/maps';
 import { Platform } from 'react-native';
 
 // Backend API base URL
-const BACKEND_URL = __DEV__ 
+const BACKEND_URL = typeof __DEV__ !== 'undefined' && __DEV__ 
   ? (Platform.OS === 'web' ? 'http://localhost:3001' : 'http://localhost:3001')
   : 'https://your-production-backend.com';
 

@@ -141,7 +141,8 @@ router.get('/photo', async (req: Request, res: Response) => {
     // Stream the image back to client
     res.set('Content-Type', response.headers.get('content-type') || 'image/jpeg');
     const buffer = await response.arrayBuffer();
-    res.send(Buffer.from(buffer));
+    // Fix the Buffer.from call to properly handle ArrayBuffer
+    res.send(Buffer.from(new Uint8Array(buffer)));
   } catch (error) {
     console.error('Photo proxy error:', error);
     res.status(500).json({ error: 'Failed to fetch photo' });
