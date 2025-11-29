@@ -5,7 +5,7 @@ export const TEST_CONSTANTS = {
     email: 'test@example.com',
     password: 'password123',
     displayName: 'Test User'
-  },
+  ,
   
   // Trip data for testing
   TEST_TRIP: {
@@ -15,7 +15,7 @@ export const TEST_CONSTANTS = {
     startDate: new Date('2023-06-01'),
     endDate: new Date('2023-06-07'),
     description: 'A wonderful trip to Paris'
-  },
+  ,
   
   // Destination data for testing
   TEST_DESTINATION: {
@@ -28,7 +28,7 @@ export const TEST_CONSTANTS = {
     estimatedCost: 25,
     duration: 120,
     notes: 'Must visit at night for beautiful views'
-  },
+  ,
   
   // Budget data for testing
   TEST_BUDGET_ITEM: {
@@ -37,7 +37,7 @@ export const TEST_CONSTANTS = {
     allocated: 1000,
     spent: 0,
     currency: 'USD'
-  },
+  ,
   
   // Expense data for testing
   TEST_EXPENSE: {
@@ -47,8 +47,8 @@ export const TEST_CONSTANTS = {
     category: 'Accommodation',
     date: new Date('2023-06-01'),
     notes: 'Paid for 3 nights'
-  }
-};
+  
+;
 
 // Test selectors for UI elements
 export const SELECTORS = {
@@ -90,18 +90,18 @@ export const SELECTORS = {
   NAVIGATION_TAB_MAP: 'nav-tab-map',
   NAVIGATION_TAB_BUDGET: 'nav-tab-budget',
   NAVIGATION_TAB_PROFILE: 'nav-tab-profile'
-};
+;
 
 // Test timeouts
 export const TIMEOUTS = {
   SHORT: 1000,
   MEDIUM: 3000,
   LONG: 5000
-};
+;
 
 // Test assertions
 export const ASSERTIONS = {
   SUCCESS_MESSAGE: 'Operation completed successfully',
   ERROR_MESSAGE: 'An error occurred',
   LOADING_INDICATOR: 'loading-indicator'
-};
+;

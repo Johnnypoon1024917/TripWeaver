@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
-import { store } from '../../../store';
+import { render, fireEvent  from '@testing-library/react-native';
+import { Provider  from 'react-redux';
+import { store  from '../../../store';
 import AppNavigator from '../../../navigation/AppNavigator';
-import { TEST_CONSTANTS } from '../config';
+import { TEST_CONSTANTS  from '../config';
 // Mock Redux store with initial state
 const mockStore = {
     auth: {
@@ -12,24 +12,24 @@ const mockStore = {
             id: 'user-1',
             email: TEST_CONSTANTS.TEST_USER.email,
             displayName: TEST_CONSTANTS.TEST_USER.displayName,
-        },
+        ,
         loading: false,
         isGuest: false,
-    },
+    ,
     trips: {
         items: [
             TEST_CONSTANTS.TEST_TRIP,
         ],
         loading: false,
         error: null,
-    },
+    ,
     itinerary: {
         destinations: [
             TEST_CONSTANTS.TEST_DESTINATION,
         ],
         loading: false,
         error: null,
-    },
+    ,
     budget: {
         budgets: [
             TEST_CONSTANTS.TEST_BUDGET_ITEM,
@@ -39,28 +39,28 @@ const mockStore = {
         ],
         loading: false,
         error: null,
-    },
-};
+    ,
+;
 // Mock useSelector to return our mock store state
 jest.mock('react-redux', () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn().mockImplementation(selector => selector(mockStore)),
     useDispatch: () => jest.fn(),
-}));
+));
 // Mock navigation container
 jest.mock('@react-navigation/native', () => {
     const actualNav = jest.requireActual('@react-navigation/native');
     return {
         ...actualNav,
-        NavigationContainer: ({ children }) => <>{children}</>,
-    };
-});
+        NavigationContainer: ({ children ) => <>{children</>,
+    ;
+);
 describe('AppNavigator UI Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
+    );
     it('should render the main app navigator when user is authenticated', () => {
-        const { getByText } = render(<Provider store={store}>
+        const { getByText  = render(<Provider store={store>
         <AppNavigator />
       </Provider>);
         // Should render the main tabs navigator
@@ -69,7 +69,7 @@ describe('AppNavigator UI Tests', () => {
         expect(getByText('🗺️')).toBeTruthy(); // Map tab icon
         expect(getByText('💰')).toBeTruthy(); // Budget tab icon
         expect(getByText('👤')).toBeTruthy(); // Profile tab icon
-    });
+    );
     it('should render the login screen when user is not authenticated', () => {
         // Mock unauthenticated state
         const unauthStore = {
@@ -77,13 +77,13 @@ describe('AppNavigator UI Tests', () => {
             auth: {
                 ...mockStore.auth,
                 isAuthenticated: false,
-            },
-        };
+            ,
+        ;
         jest.mock('react-redux', () => ({
             ...jest.requireActual('react-redux'),
             useSelector: jest.fn().mockImplementation(selector => selector(unauthStore)),
-        }));
-        const { getByTestId, getByText } = render(<Provider store={store}>
+        ));
+        const { getByTestId, getByText  = render(<Provider store={store>
         <AppNavigator />
       </Provider>);
         // Should render the login screen
@@ -91,9 +91,9 @@ describe('AppNavigator UI Tests', () => {
         expect(getByTestId('login-password-input')).toBeTruthy();
         expect(getByTestId('login-button')).toBeTruthy();
         expect(getByText('Continue as Guest')).toBeTruthy();
-    });
+    );
     it('should allow navigation between main tabs', () => {
-        const { getByText, queryByText } = render(<Provider store={store}>
+        const { getByText, queryByText  = render(<Provider store={store>
         <AppNavigator />
       </Provider>);
         // Initially should show home screen content
@@ -118,9 +118,9 @@ describe('AppNavigator UI Tests', () => {
         fireEvent.press(profileTab);
         // Should show profile screen content
         expect(getByText(TEST_CONSTANTS.TEST_USER.displayName)).toBeTruthy();
-    });
+    );
     it('should allow navigation to detail screens', () => {
-        const { getByText, queryByText } = render(<Provider store={store}>
+        const { getByText, queryByText  = render(<Provider store={store>
         <AppNavigator />
       </Provider>);
         // Navigate to trip detail
@@ -128,7 +128,7 @@ describe('AppNavigator UI Tests', () => {
         fireEvent.press(tripItem);
         // Should navigate to trip detail screen
         // Note: Actual navigation verification would require more complex mocking
-    });
+    );
     it('should handle guest mode navigation', () => {
         // Mock guest user state
         const guestStore = {
@@ -136,17 +136,17 @@ describe('AppNavigator UI Tests', () => {
             auth: {
                 ...mockStore.auth,
                 isGuest: true,
-            },
-        };
+            ,
+        ;
         jest.mock('react-redux', () => ({
             ...jest.requireActual('react-redux'),
             useSelector: jest.fn().mockImplementation(selector => selector(guestStore)),
-        }));
-        const { getByText } = render(<Provider store={store}>
+        ));
+        const { getByText  = render(<Provider store={store>
         <AppNavigator />
       </Provider>);
         // Should render main app with guest mode indicator
         expect(getByText('🏠')).toBeTruthy(); // Home tab icon
         // Guest users should still be able to navigate the app
-    });
-});
+    );
+);

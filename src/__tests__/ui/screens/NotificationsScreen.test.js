@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
-import { store } from '../../../store';
+import { render, fireEvent  from '@testing-library/react-native';
+import { Provider  from 'react-redux';
+import { store  from '../../../store';
 import NotificationsScreen from '../../../screens/NotificationsScreen';
 import NotificationSettingsScreen from '../../../screens/NotificationSettingsScreen';
 // Mock the navigation
@@ -9,7 +9,7 @@ const mockNavigation = {
     navigate: jest.fn(),
     goBack: jest.fn(),
     setOptions: jest.fn(),
-};
+;
 // Mock Redux store with initial state
 const mockStore = {
     notifications: {
@@ -21,7 +21,7 @@ const mockStore = {
                 type: 'trip_reminder',
                 timestamp: new Date('2023-05-30T10:00:00Z'),
                 read: false,
-            },
+            ,
             {
                 id: 'notif-2',
                 title: 'Budget Alert',
@@ -29,7 +29,7 @@ const mockStore = {
                 type: 'budget_alert',
                 timestamp: new Date('2023-05-29T15:30:00Z'),
                 read: true,
-            },
+            ,
             {
                 id: 'notif-3',
                 title: 'New Collaborator',
@@ -37,25 +37,25 @@ const mockStore = {
                 type: 'collaboration',
                 timestamp: new Date('2023-05-28T09:15:00Z'),
                 read: false,
-            },
+            ,
         ],
         unreadCount: 2,
         loading: false,
         error: null,
-    },
-};
+    ,
+;
 // Mock useSelector to return our mock store state
 jest.mock('react-redux', () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn().mockImplementation(selector => selector(mockStore)),
     useDispatch: () => jest.fn(),
-}));
+));
 describe('NotificationsScreen UI Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
+    );
     it('should render notifications screen with notification list', () => {
-        const { getByText, getAllByTestId } = render(<Provider store={store}>
+        const { getByText, getAllByTestId  = render(<Provider store={store>
         <NotificationsScreen />
       </Provider>);
         // Check if screen title is displayed
@@ -65,9 +65,9 @@ describe('NotificationsScreen UI Tests', () => {
         expect(notificationItems).toHaveLength(3);
         // Check if unread count is displayed
         expect(getByText('2')).toBeTruthy(); // Unread count badge
-    });
+    );
     it('should display correct notification information', () => {
-        const { getByText, getAllByTestId } = render(<Provider store={store}>
+        const { getByText, getAllByTestId  = render(<Provider store={store>
         <NotificationsScreen />
       </Provider>);
         // Check first notification (unread)
@@ -82,9 +82,9 @@ describe('NotificationsScreen UI Tests', () => {
         expect(getByText('New Collaborator')).toBeTruthy();
         expect(getByText('John Doe has joined your trip to Paris')).toBeTruthy();
         expect(getByText('collaboration')).toBeTruthy();
-    });
+    );
     it('should allow marking notifications as read', () => {
-        const { getAllByTestId } = render(<Provider store={store}>
+        const { getAllByTestId  = render(<Provider store={store>
         <NotificationsScreen />
       </Provider>);
         const markAsReadButtons = getAllByTestId('mark-as-read-button');
@@ -92,9 +92,9 @@ describe('NotificationsScreen UI Tests', () => {
         // Mark first unread notification as read
         fireEvent.press(markAsReadButtons[0]);
         // TODO: Add actual verification when we can mock the dispatch function
-    });
+    );
     it('should allow deleting notifications', () => {
-        const { getAllByTestId } = render(<Provider store={store}>
+        const { getAllByTestId  = render(<Provider store={store>
         <NotificationsScreen />
       </Provider>);
         const deleteButtons = getAllByTestId('delete-notification-button');
@@ -102,15 +102,15 @@ describe('NotificationsScreen UI Tests', () => {
         // Delete first notification
         fireEvent.press(deleteButtons[0]);
         // TODO: Add actual verification when we can mock the dispatch function
-    });
+    );
     it('should allow clearing all notifications', () => {
-        const { getByText } = render(<Provider store={store}>
+        const { getByText  = render(<Provider store={store>
         <NotificationsScreen />
       </Provider>);
         const clearAllButton = getByText('Clear All');
         fireEvent.press(clearAllButton);
         // TODO: Add actual verification when we can mock the dispatch function
-    });
+    );
     it('should show empty state when no notifications exist', () => {
         // Mock empty notifications state
         const emptyStore = {
@@ -119,25 +119,25 @@ describe('NotificationsScreen UI Tests', () => {
                 ...mockStore.notifications,
                 items: [],
                 unreadCount: 0,
-            },
-        };
+            ,
+        ;
         jest.mock('react-redux', () => ({
             ...jest.requireActual('react-redux'),
             useSelector: jest.fn().mockImplementation(selector => selector(emptyStore)),
-        }));
-        const { getByText } = render(<Provider store={store}>
+        ));
+        const { getByText  = render(<Provider store={store>
         <NotificationsScreen />
       </Provider>);
         expect(getByText('No notifications')).toBeTruthy();
         expect(getByText('You have no notifications at the moment')).toBeTruthy();
-    });
-});
+    );
+);
 describe('NotificationSettingsScreen UI Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
+    );
     it('should render notification settings screen with toggle options', () => {
-        const { getByText } = render(<Provider store={store}>
+        const { getByText  = render(<Provider store={store>
         <NotificationSettingsScreen />
       </Provider>);
         // Check if screen title is displayed
@@ -147,9 +147,9 @@ describe('NotificationSettingsScreen UI Tests', () => {
         expect(getByText('Trip Reminders')).toBeTruthy();
         expect(getByText('Budget Alerts')).toBeTruthy();
         expect(getByText('Collaboration Updates')).toBeTruthy();
-    });
+    );
     it('should allow toggling notification preferences', () => {
-        const { getByTestId } = render(<Provider store={store}>
+        const { getByTestId  = render(<Provider store={store>
         <NotificationSettingsScreen />
       </Provider>);
         const notificationToggle = getByTestId('notifications-toggle');
@@ -162,13 +162,13 @@ describe('NotificationSettingsScreen UI Tests', () => {
         fireEvent.press(budgetAlertsToggle);
         fireEvent.press(collaborationToggle);
         // TODO: Add actual verification when we can mock the dispatch function
-    });
+    );
     it('should allow saving notification settings', () => {
-        const { getByText } = render(<Provider store={store}>
+        const { getByText  = render(<Provider store={store>
         <NotificationSettingsScreen />
       </Provider>);
         const saveButton = getByText('Save Settings');
         fireEvent.press(saveButton);
         // TODO: Add actual verification when we can mock the dispatch function
-    });
-});
+    );
+);

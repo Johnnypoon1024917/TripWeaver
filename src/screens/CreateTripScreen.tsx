@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState  from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,17 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
-} from 'react-native';
+ from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { addTrip } from '../store/slices/tripsSlice';
-import { Trip } from '../types';
+import { useDispatch, useSelector  from 'react-redux';
+import { RootState  from '../store';
+import { addTrip  from '../store/slices/tripsSlice';
+import { Trip  from '../types';
 import placesService from '../services/placesService';
-import { tripAPI } from '../services/api';
-import { colors, spacing, typography } from '../utils/theme';
+import { tripAPI  from '../services/api';
+import { colors, spacing, typography  from '../utils/theme';
 
-export default function CreateTripScreen({ navigation }: any) {
+export default function CreateTripScreen({ navigation : any) {
   const [title, setTitle] = useState('');
   const [destination, setDestination] = useState('');
   const [destinationQuery, setDestinationQuery] = useState('');
@@ -41,22 +41,22 @@ export default function CreateTripScreen({ navigation }: any) {
     if (query.length < 3) {
       setDestinationSuggestions([]);
       return;
-    }
+    
 
     try {
       const results = await placesService.autocomplete(query);
       setDestinationSuggestions(results);
-    } catch (error) {
+     catch (error) {
       console.error('Destination search error:', error);
-    }
-  };
+    
+  ;
 
   const selectDestination = (place: any) => {
     setDestination(place.description);
     setDestinationQuery(place.description);
     setShowDestinationModal(false);
     setDestinationSuggestions([]);
-  };
+  ;
 
   const handleStartDateChange = (event: any, selectedDate?: Date) => {
     setShowStartDatePicker(Platform.OS === 'ios');
@@ -64,27 +64,27 @@ export default function CreateTripScreen({ navigation }: any) {
       setStartDate(selectedDate);
       if (selectedDate > endDate) {
         setEndDate(new Date(selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000));
-      }
-    }
-  };
+      
+    
+  ;
 
   const handleEndDateChange = (event: any, selectedDate?: Date) => {
     setShowEndDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
       setEndDate(selectedDate);
-    }
-  };
+    
+  ;
 
   const handleCreateTrip = async () => {
     if (!title || !destination) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
-    }
+    
 
     if (endDate < startDate) {
       Alert.alert('Error', 'End date must be after start date');
       return;
-    }
+    
 
     setCreating(true);
     try {
@@ -99,7 +99,7 @@ export default function CreateTripScreen({ navigation }: any) {
         collaborators: [],
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
+      ;
 
       // Save to database
       const savedTrip = await tripAPI.create(newTrip);
@@ -108,187 +108,187 @@ export default function CreateTripScreen({ navigation }: any) {
       dispatch(addTrip(savedTrip));
       
       Alert.alert('Success', 'Trip created and saved to database!', [
-        { text: 'OK', onPress: () => navigation.goBack() },
+        { text: 'OK', onPress: () => navigation.goBack() ,
       ]);
-    } catch (error) {
+     catch (error) {
       console.error('Failed to create trip:', error);
       Alert.alert('Error', 'Failed to create trip. Please try again.');
-    } finally {
+     finally {
       setCreating(false);
-    }
-  };
+    
+  ;
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.form}>
-        <Text style={styles.label}>Trip Title *</Text>
+    <ScrollView style={styles.container>
+      <View style={styles.form>
+        <Text style={styles.label>Trip Title *</Text>
         <TextInput
-          style={styles.input}
+          style={styles.input
           placeholder="e.g., Summer Europe Adventure"
-          value={title}
-          onChangeText={setTitle}
+          value={title
+          onChangeText={setTitle
         />
 
-        <Text style={styles.label}>Destination *</Text>
+        <Text style={styles.label>Destination *</Text>
         <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowDestinationModal(true)}
+          style={styles.input
+          onPress={() => setShowDestinationModal(true)
         >
-          <Text style={destination ? styles.inputText : styles.placeholderText}>
-            {destination || 'Search for destination...'}
+          <Text style={destination ? styles.inputText : styles.placeholderText>
+            {destination || 'Search for destination...'
           </Text>
         </TouchableOpacity>
 
-        <Text style={styles.label}>Start Date *</Text>
+        <Text style={styles.label>Start Date *</Text>
         <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowStartDatePicker(true)}
+          style={styles.input
+          onPress={() => setShowStartDatePicker(true)
         >
-          <Text style={styles.inputText}>
+          <Text style={styles.inputText>
             {startDate.toLocaleDateString('en-US', { 
               weekday: 'short', 
               year: 'numeric', 
               month: 'short', 
               day: 'numeric' 
-            })}
+            )
           </Text>
         </TouchableOpacity>
 
-        <Text style={styles.label}>End Date *</Text>
+        <Text style={styles.label>End Date *</Text>
         <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowEndDatePicker(true)}
+          style={styles.input
+          onPress={() => setShowEndDatePicker(true)
         >
-          <Text style={styles.inputText}>
+          <Text style={styles.inputText>
             {endDate.toLocaleDateString('en-US', { 
               weekday: 'short', 
               year: 'numeric', 
               month: 'short', 
               day: 'numeric' 
-            })}
+            )
           </Text>
         </TouchableOpacity>
 
-        <Text style={styles.label}>Description (Optional)</Text>
+        <Text style={styles.label>Description (Optional)</Text>
         <TextInput
-          style={[styles.input, styles.textArea]}
+          style={[styles.input, styles.textArea]
           placeholder="Add notes about your trip..."
-          value={description}
-          onChangeText={setDescription}
+          value={description
+          onChangeText={setDescription
           multiline
-          numberOfLines={4}
+          numberOfLines={4
         />
 
         <TouchableOpacity 
-          style={[styles.button, creating && styles.buttonDisabled]} 
-          onPress={handleCreateTrip}
-          disabled={creating}
+          style={[styles.button, creating && styles.buttonDisabled] 
+          onPress={handleCreateTrip
+          disabled={creating
         >
           {creating ? (
-            <View style={styles.loadingRow}>
+            <View style={styles.loadingRow>
               <ActivityIndicator size="small" color="#FFF" />
-              <Text style={[styles.buttonText, { marginLeft: 8 }]}>Creating...</Text>
+              <Text style={[styles.buttonText, { marginLeft: 8 ]>Creating...</Text>
             </View>
           ) : (
-            <Text style={styles.buttonText}>Create Trip</Text>
-          )}
+            <Text style={styles.buttonText>Create Trip</Text>
+          )
         </TouchableOpacity>
       </View>
 
-      {/* Destination Search Modal */}
+      {/* Destination Search Modal */
       <Modal
-        visible={showDestinationModal}
+        visible={showDestinationModal
         transparent
         animationType="slide"
-        onRequestClose={() => setShowDestinationModal(false)}
+        onRequestClose={() => setShowDestinationModal(false)
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Search Destination</Text>
-              <TouchableOpacity onPress={() => setShowDestinationModal(false)}>
-                <Text style={styles.closeButton}>✕</Text>
+        <View style={styles.modalOverlay>
+          <View style={styles.modalContent>
+            <View style={styles.modalHeader>
+              <Text style={styles.modalTitle>Search Destination</Text>
+              <TouchableOpacity onPress={() => setShowDestinationModal(false)>
+                <Text style={styles.closeButton>✕</Text>
               </TouchableOpacity>
             </View>
             
             <TextInput
-              style={styles.searchInput}
+              style={styles.searchInput
               placeholder="Type destination name..."
-              value={destinationQuery}
+              value={destinationQuery
               onChangeText={(text) => {
                 setDestinationQuery(text);
                 searchDestinations(text);
-              }}
+              
               autoFocus
             />
 
             <FlatList
-              data={destinationSuggestions}
-              keyExtractor={(item) => item.place_id}
-              renderItem={({ item }) => (
+              data={destinationSuggestions
+              keyExtractor={(item) => item.place_id
+              renderItem={({ item ) => (
                 <TouchableOpacity
-                  style={styles.suggestionItem}
-                  onPress={() => selectDestination(item)}
+                  style={styles.suggestionItem
+                  onPress={() => selectDestination(item)
                 >
-                  <Text style={styles.suggestionMain}>
-                    {item.structured_formatting.main_text}
+                  <Text style={styles.suggestionMain>
+                    {item.structured_formatting.main_text
                   </Text>
-                  <Text style={styles.suggestionSecondary}>
-                    {item.structured_formatting.secondary_text}
+                  <Text style={styles.suggestionSecondary>
+                    {item.structured_formatting.secondary_text
                   </Text>
                 </TouchableOpacity>
-              )}
+              )
               ListEmptyComponent={
                 destinationQuery.length >= 3 ? (
-                  <Text style={styles.emptyText}>No destinations found</Text>
+                  <Text style={styles.emptyText>No destinations found</Text>
                 ) : (
-                  <Text style={styles.emptyText}>Type at least 3 characters to search</Text>
+                  <Text style={styles.emptyText>Type at least 3 characters to search</Text>
                 )
-              }
+              
             />
           </View>
         </View>
       </Modal>
 
-      {/* Date Pickers */}
+      {/* Date Pickers */
       {showStartDatePicker && (
         <DateTimePicker
-          value={startDate}
+          value={startDate
           mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          onChange={handleStartDateChange}
-          minimumDate={new Date()}
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'
+          onChange={handleStartDateChange
+          minimumDate={new Date()
         />
-      )}
+      )
 
       {showEndDatePicker && (
         <DateTimePicker
-          value={endDate}
+          value={endDate
           mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          onChange={handleEndDateChange}
-          minimumDate={startDate}
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'
+          onChange={handleEndDateChange
+          minimumDate={startDate
         />
-      )}
+      )
     </ScrollView>
   );
-}
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-  },
+  ,
   form: {
     padding: 20,
-  },
+  ,
   label: {
     fontSize: 16,
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
     marginTop: 15,
-  },
+  ,
   input: {
     backgroundColor: 'white',
     padding: 15,
@@ -297,68 +297,68 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     justifyContent: 'center',
-  },
+  ,
   inputText: {
     fontSize: 16,
     color: '#333',
-  },
+  ,
   placeholderText: {
     fontSize: 16,
     color: '#999',
-  },
+  ,
   textArea: {
     height: 100,
     textAlignVertical: 'top',
-  },
+  ,
   button: {
     backgroundColor: '#007AFF',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 30,
-  },
+  ,
   buttonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
-  },
+  ,
   buttonDisabled: {
     backgroundColor: '#95A5A6',
     opacity: 0.6,
-  },
+  ,
   loadingRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  ,
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'flex-end',
-  },
+  ,
   modalContent: {
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     maxHeight: '80%',
-  },
+  ,
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
-  },
+  ,
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
-  },
+  ,
   closeButton: {
     fontSize: 28,
     color: '#666',
     fontWeight: '300',
-  },
+  ,
   searchInput: {
     backgroundColor: '#f5f5f5',
     padding: 15,
@@ -367,26 +367,26 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderColor: '#ddd',
-  },
+  ,
   suggestionItem: {
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
-  },
+  ,
   suggestionMain: {
     fontSize: 16,
     fontWeight: '600',
     color: '#333',
     marginBottom: 4,
-  },
+  ,
   suggestionSecondary: {
     fontSize: 14,
     color: '#666',
-  },
+  ,
   emptyText: {
     textAlign: 'center',
     color: '#999',
     padding: 20,
     fontSize: 14,
-  },
-});
+  ,
+);

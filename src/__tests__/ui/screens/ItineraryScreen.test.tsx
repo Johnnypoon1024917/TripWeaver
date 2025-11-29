@@ -1,23 +1,23 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
-import { store } from '../../../store';
+import { render, fireEvent, waitFor  from '@testing-library/react-native';
+import { Provider  from 'react-redux';
+import { store  from '../../../store';
 import ItineraryScreen from '../../../screens/ItineraryScreen';
-import { TEST_CONSTANTS, SELECTORS } from '../config';
+import { TEST_CONSTANTS, SELECTORS  from '../config';
 
 // Mock the navigation
 const mockNavigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
   setOptions: jest.fn(),
-};
+;
 
 // Mock route params
 const mockRoute = {
   params: {
     tripId: TEST_CONSTANTS.TEST_TRIP.id,
-  },
-};
+  ,
+;
 
 // Mock Redux store with initial state
 const mockStore = {
@@ -37,7 +37,7 @@ const mockStore = {
         duration: 120,
         notes: 'Must visit at night for beautiful views',
         imageUrl: 'https://example.com/eiffel-tower.jpg',
-      },
+      ,
       {
         id: 'dest-2',
         tripId: TEST_CONSTANTS.TEST_TRIP.id,
@@ -52,32 +52,32 @@ const mockStore = {
         duration: 180,
         notes: 'Book tickets in advance',
         imageUrl: 'https://example.com/louvre.jpg',
-      },
+      ,
     ],
     loading: false,
     error: null,
-  },
+  ,
   trips: {
     items: [TEST_CONSTANTS.TEST_TRIP],
-  },
-};
+  ,
+;
 
 // Mock useSelector to return our mock store state
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useSelector: jest.fn().mockImplementation(selector => selector(mockStore)),
   useDispatch: () => jest.fn(),
-}));
+));
 
 describe('ItineraryScreen UI Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
+  );
 
   it('should render itinerary screen with destinations', () => {
-    const { getByText, getByTestId, getAllByTestId } = render(
-      <Provider store={store}>
-        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
+    const { getByText, getByTestId, getAllByTestId  = render(
+      <Provider store={store>
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary'  />
       </Provider>
     );
 
@@ -94,12 +94,12 @@ describe('ItineraryScreen UI Tests', () => {
     // Check if destination details are displayed correctly
     expect(getByText('Eiffel Tower')).toBeTruthy();
     expect(getByText('Louvre Museum')).toBeTruthy();
-  });
+  );
 
   it('should navigate to add destination screen when add button is pressed', () => {
-    const { getByTestId } = render(
-      <Provider store={store}>
-        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
+    const { getByTestId  = render(
+      <Provider store={store>
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary'  />
       </Provider>
     );
 
@@ -109,13 +109,13 @@ describe('ItineraryScreen UI Tests', () => {
     expect(mockNavigation.navigate).toHaveBeenCalledWith('AddDestination', {
       tripId: TEST_CONSTANTS.TEST_TRIP.id,
       dayNumber: 1, // Assuming day 1 by default
-    });
-  });
+    );
+  );
 
   it('should display correct destination information', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
+    const { getByText  = render(
+      <Provider store={store>
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary'  />
       </Provider>
     );
 
@@ -132,7 +132,7 @@ describe('ItineraryScreen UI Tests', () => {
     expect(getByText('🕒 3h')).toBeTruthy();
     expect(getByText('$17')).toBeTruthy();
     expect(getByText('Book tickets in advance')).toBeTruthy();
-  });
+  );
 
   it('should show empty state when no destinations exist', () => {
     // Mock empty destinations state
@@ -141,29 +141,29 @@ describe('ItineraryScreen UI Tests', () => {
       itinerary: {
         ...mockStore.itinerary,
         destinations: [],
-      },
-    };
+      ,
+    ;
     
     jest.mock('react-redux', () => ({
       ...jest.requireActual('react-redux'),
       useSelector: jest.fn().mockImplementation(selector => selector(emptyStore)),
-    }));
+    ));
 
-    const { getByText, getByTestId, getAllByTestId } = render(
-      <Provider store={store}>
-        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
+    const { getByText, getByTestId, getAllByTestId  = render(
+      <Provider store={store>
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary'  />
       </Provider>
     );
 
     expect(getByText('No destinations yet')).toBeTruthy();
     expect(getByText('Add your first destination to get started')).toBeTruthy();
     expect(getByTestId(SELECTORS.ADD_DESTINATION_BUTTON)).toBeTruthy();
-  });
+  );
 
   it('should allow dragging destinations to reorder them', () => {
-    const { getAllByTestId } = render(
-      <Provider store={store}>
-        <ItineraryScreen route={{ key: 'test', name: 'Itinerary' }} />
+    const { getAllByTestId  = render(
+      <Provider store={store>
+        <ItineraryScreen route={{ key: 'test', name: 'Itinerary'  />
       </Provider>
     );
 
@@ -175,5 +175,5 @@ describe('ItineraryScreen UI Tests', () => {
     expect(dragHandles).toHaveLength(2);
     
     // TODO: Add actual drag-and-drop interaction tests when we can mock the DraggableFlatList component
-  });
-});
+  );
+);

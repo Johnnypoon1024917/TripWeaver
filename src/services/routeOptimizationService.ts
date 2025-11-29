@@ -1,5 +1,5 @@
-import { GOOGLE_MAPS_API_KEY } from '../config/maps';
-import { Destination } from '../types';
+import { GOOGLE_MAPS_API_KEY  from '../config/maps';
+import { Destination  from '../types';
 
 export interface RouteSegment {
   from: Destination;
@@ -7,31 +7,31 @@ export interface RouteSegment {
   distance: number;
   duration: number;
   mode: 'driving' | 'walking' | 'transit';
-}
+
 
 export interface OptimizedRoute {
   orderedDestinations: Destination[];
   totalDistance: number;
   totalDuration: number;
   segments: RouteSegment[];
-}
+
 
 export interface DirectionsResult {
   routes: Array<{
     legs: Array<{
-      distance: { value: number; text: string };
-      duration: { value: number; text: string };
+      distance: { value: number; text: string ;
+      duration: { value: number; text: string ;
       steps: Array<{
         html_instructions: string;
-        distance: { value: number; text: string };
-        duration: { value: number; text: string };
+        distance: { value: number; text: string ;
+        duration: { value: number; text: string ;
         travel_mode: string;
-        polyline: { points: string };
-      }>;
-    }>;
-    overview_polyline: { points: string };
-  }>;
-}
+        polyline: { points: string ;
+      >;
+    >;
+    overview_polyline: { points: string ;
+  >;
+
 
 class RouteOptimizationService {
   private baseUrl = 'https://maps.googleapis.com/maps/api/directions/json';
@@ -50,8 +50,8 @@ class RouteOptimizationService {
         totalDistance: 0,
         totalDuration: 0,
         segments: [],
-      };
-    }
+      ;
+    
 
     // Get distance matrix for all destinations
     const distanceMatrix = await this.getDistanceMatrix(destinations, mode);
@@ -76,20 +76,20 @@ class RouteOptimizationService {
       segments.push(segment);
       totalDistance += segment.distance;
       totalDuration += segment.duration;
-    }
+    
 
     // Update order property
     orderedDestinations.forEach((dest, index) => {
       dest.order = index;
-    });
+    );
 
     return {
       orderedDestinations,
       totalDistance,
       totalDuration,
       segments,
-    };
-  }
+    ;
+  
 
   /**
    * Get distance matrix for all destinations
@@ -99,11 +99,11 @@ class RouteOptimizationService {
     mode: string
   ): Promise<number[][]> {
     const origins = destinations
-      .map((d) => `${d.latitude},${d.longitude}`)
+      .map((d) => `${d.latitude,${d.longitude`)
       .join('|');
     const dests = origins;
 
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origins}&destinations=${dests}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origins&destinations=${dests&mode=${mode&key=${GOOGLE_MAPS_API_KEY`;
 
     try {
       const response = await fetch(url);
@@ -116,16 +116,16 @@ class RouteOptimizationService {
             (el: any) => el.distance?.value || Infinity
           );
           matrix.push(distances);
-        });
+        );
         return matrix;
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Distance matrix error:', error);
-    }
+    
 
     // Fallback: calculate straight-line distances
     return this.calculateStraightLineMatrix(destinations);
-  }
+  
 
   /**
    * Nearest neighbor TSP algorithm
@@ -146,17 +146,17 @@ class RouteOptimizationService {
         if (!visited[j] && distanceMatrix[current][j] < minDistance) {
           nearest = j;
           minDistance = distanceMatrix[current][j];
-        }
-      }
+        
+      
 
       if (nearest !== -1) {
         path.push(nearest);
         visited[nearest] = true;
-      }
-    }
+      
+    
 
     return path;
-  }
+  
 
   /**
    * Get route segment between two destinations
@@ -166,10 +166,10 @@ class RouteOptimizationService {
     to: Destination,
     mode: 'driving' | 'walking' | 'transit'
   ): Promise<RouteSegment> {
-    const origin = `${from.latitude},${from.longitude}`;
-    const destination = `${to.latitude},${to.longitude}`;
+    const origin = `${from.latitude,${from.longitude`;
+    const destination = `${to.latitude,${to.longitude`;
 
-    const url = `${this.baseUrl}?origin=${origin}&destination=${destination}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`;
+    const url = `${this.baseUrl?origin=${origin&destination=${destination&mode=${mode&key=${GOOGLE_MAPS_API_KEY`;
 
     try {
       const response = await fetch(url);
@@ -183,16 +183,16 @@ class RouteOptimizationService {
           distance: leg.distance.value,
           duration: leg.duration.value,
           mode,
-        };
-      }
-    } catch (error) {
+        ;
+      
+     catch (error) {
       console.error('Route segment error:', error);
-    }
+    
 
     // Fallback: straight-line distance
     const distance = this.calculateDistance(
-      { lat: from.latitude, lng: from.longitude },
-      { lat: to.latitude, lng: to.longitude }
+      { lat: from.latitude, lng: from.longitude ,
+      { lat: to.latitude, lng: to.longitude 
     );
 
     return {
@@ -201,8 +201,8 @@ class RouteOptimizationService {
       distance: distance * 1000, // Convert to meters
       duration: (distance / 50) * 3600, // Assume 50 km/h
       mode,
-    };
-  }
+    ;
+  
 
   /**
    * Calculate straight-line distance matrix
@@ -215,26 +215,26 @@ class RouteOptimizationService {
       for (let j = 0; j < destinations.length; j++) {
         if (i === j) {
           row.push(0);
-        } else {
+        
           const dist = this.calculateDistance(
-            { lat: destinations[i].latitude, lng: destinations[i].longitude },
-            { lat: destinations[j].latitude, lng: destinations[j].longitude }
+            { lat: destinations[i].latitude, lng: destinations[i].longitude ,
+            { lat: destinations[j].latitude, lng: destinations[j].longitude 
           );
           row.push(dist * 1000); // Convert to meters
-        }
-      }
+        
+      
       matrix.push(row);
-    }
+    
 
     return matrix;
-  }
+  
 
   /**
    * Calculate distance between two coordinates (Haversine formula)
    */
   private calculateDistance(
-    point1: { lat: number; lng: number },
-    point2: { lat: number; lng: number }
+    point1: { lat: number; lng: number ,
+    point2: { lat: number; lng: number 
   ): number {
     const R = 6371; // Earth's radius in km
     const dLat = this.toRad(point2.lat - point1.lat);
@@ -249,11 +249,11 @@ class RouteOptimizationService {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  }
+  
 
   private toRad(degrees: number): number {
     return degrees * (Math.PI / 180);
-  }
+  
 
   /**
    * Get detailed directions between destinations
@@ -263,10 +263,10 @@ class RouteOptimizationService {
     to: Destination,
     mode: 'driving' | 'walking' | 'transit' = 'driving'
   ): Promise<DirectionsResult | null> {
-    const origin = `${from.latitude},${from.longitude}`;
-    const destination = `${to.latitude},${to.longitude}`;
+    const origin = `${from.latitude,${from.longitude`;
+    const destination = `${to.latitude,${to.longitude`;
 
-    const url = `${this.baseUrl}?origin=${origin}&destination=${destination}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`;
+    const url = `${this.baseUrl?origin=${origin&destination=${destination&mode=${mode&key=${GOOGLE_MAPS_API_KEY`;
 
     try {
       const response = await fetch(url);
@@ -274,13 +274,13 @@ class RouteOptimizationService {
 
       if (data.status === 'OK') {
         return data;
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Get directions error:', error);
-    }
+    
 
     return null;
-  }
+  
 
   /**
    * Format duration in human-readable format
@@ -290,21 +290,21 @@ class RouteOptimizationService {
     const minutes = Math.floor((seconds % 3600) / 60);
 
     if (hours > 0) {
-      return `${hours}h ${minutes}min`;
-    }
-    return `${minutes}min`;
-  }
+      return `${hoursh ${minutesmin`;
+    
+    return `${minutesmin`;
+  
 
   /**
    * Format distance in human-readable format
    */
   formatDistance(meters: number): string {
     if (meters >= 1000) {
-      return `${(meters / 1000).toFixed(1)} km`;
-    }
-    return `${Math.round(meters)} m`;
-  }
-}
+      return `${(meters / 1000).toFixed(1) km`;
+    
+    return `${Math.round(meters) m`;
+  
+
 
 export const routeOptimizationService = new RouteOptimizationService();
 export default routeOptimizationService;

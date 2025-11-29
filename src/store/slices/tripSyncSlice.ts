@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { db } from '../../services/firebaseService';
+import { createSlice, PayloadAction  from '@reduxjs/toolkit';
+import { db  from '../../services/firebaseService';
 import { 
   collection, 
   doc, 
@@ -8,22 +8,22 @@ import {
   updateDoc, 
   deleteDoc,
   serverTimestamp
-} from 'firebase/firestore';
-import { Trip, Destination, DayItinerary } from '../../types';
+ from 'firebase/firestore';
+import { Trip, Destination, DayItinerary  from '../../types';
 
 interface TripSyncState {
   isSyncing: boolean;
   syncedTripId: string | null;
   lastSync: Date | null;
   hasUnsavedChanges: boolean;
-}
+
 
 const initialState: TripSyncState = {
   isSyncing: false,
   syncedTripId: null,
   lastSync: null,
   hasUnsavedChanges: false,
-};
+;
 
 export const tripSyncSlice = createSlice({
   name: 'tripSync',
@@ -31,25 +31,25 @@ export const tripSyncSlice = createSlice({
   reducers: {
     setSyncing: (state: TripSyncState, action: PayloadAction<boolean>) => {
       state.isSyncing = action.payload;
-    },
+    ,
     setSyncedTrip: (state: TripSyncState, action: PayloadAction<string | null>) => {
       state.syncedTripId = action.payload;
-    },
+    ,
     setLastSync: (state: TripSyncState, action: PayloadAction<Date | null>) => {
       state.lastSync = action.payload;
-    },
+    ,
     setHasUnsavedChanges: (state: TripSyncState, action: PayloadAction<boolean>) => {
       state.hasUnsavedChanges = action.payload;
-    },
-  },
-});
+    ,
+  ,
+);
 
 export const {
   setSyncing,
   setSyncedTrip,
   setLastSync,
   setHasUnsavedChanges,
-} = tripSyncSlice.actions;
+ = tripSyncSlice.actions;
 
 // Thunk to start syncing a trip
 export const startTripSync = (tripId: string) => {
@@ -66,8 +66,8 @@ export const startTripSync = (tripId: string) => {
           // Update local trip state
           // This would dispatch actions to update the trips slice
           console.log('Trip updated:', tripData);
-        }
-      });
+        
+      );
       
       // Listen for itinerary changes
       const itineraryRef = collection(db, 'trips', tripId, 'itinerary');
@@ -77,24 +77,24 @@ export const startTripSync = (tripId: string) => {
             const dayData = change.doc.data() as DayItinerary;
             // Update local itinerary state
             console.log('Day itinerary updated:', dayData);
-          } else if (change.type === 'removed') {
+           else if (change.type === 'removed') {
             // Remove day from local state
             console.log('Day removed:', change.doc.id);
-          }
-        });
-      });
+          
+        );
+      );
       
       // Clean up function
       return () => {
         unsubscribe();
         itineraryUnsubscribe();
-      };
-    } catch (error) {
+      ;
+     catch (error) {
       console.error('Error starting trip sync:', error);
       dispatch(setSyncing(false));
-    }
-  };
-};
+    
+  ;
+;
 
 // Thunk to sync trip data to Firestore
 export const syncTripToFirestore = (trip: Trip) => {
@@ -106,15 +106,15 @@ export const syncTripToFirestore = (trip: Trip) => {
       await updateDoc(tripRef, {
         ...trip,
         updatedAt: serverTimestamp(),
-      });
+      );
       
       dispatch(setLastSync(new Date()));
-    } catch (error) {
+     catch (error) {
       console.error('Error syncing trip:', error);
       dispatch(setHasUnsavedChanges(true));
-    }
-  };
-};
+    
+  ;
+;
 
 // Thunk to sync itinerary data to Firestore
 export const syncItineraryToFirestore = (tripId: string, dayItinerary: DayItinerary) => {
@@ -122,10 +122,10 @@ export const syncItineraryToFirestore = (tripId: string, dayItinerary: DayItiner
     try {
       const dayRef = doc(collection(db, 'trips', tripId, 'itinerary'), dayItinerary.dayNumber.toString());
       await setDoc(dayRef, dayItinerary);
-    } catch (error) {
+     catch (error) {
       console.error('Error syncing itinerary:', error);
-    }
-  };
-};
+    
+  ;
+;
 
 export default tripSyncSlice.reducer;

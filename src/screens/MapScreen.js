@@ -4,23 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addDestination } from '../store/slices/itinerarySlice';
 import { colors, spacing, typography, shadows } from '../utils/theme';
 import { GOOGLE_MAPS_API_KEY, mapStyle, defaultMapRegion } from '../config/maps';
-import { LinearGradient } from 'expo-linear-gradient';
-const { width, height } = Dimensions.get('window');
-// Conditional import for maps
-let MapView;
-let Marker;
-let Polyline;
-let PROVIDER_GOOGLE;
-if (Platform.OS !== 'web') {
-    const maps = require('react-native-maps');
-    MapView = maps.default;
-    Marker = maps.Marker;
-    Polyline = maps.Polyline;
-    PROVIDER_GOOGLE = maps.PROVIDER_GOOGLE;
-}
-else {
-    MapView = require('../components/WebMap').default;
-}
+import LinearGradient from 'react-native-linear-gradient';
+import MapView from 'react-native-maps';
+import { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 export default function MapScreen({ navigation }) {
     const mapRef = useRef(null);
     const dispatch = useDispatch();
@@ -53,9 +39,6 @@ export default function MapScreen({ navigation }) {
                 tension: 50,
                 friction: 7,
             }).start();
-        }
-        else {
-            placeInfoAnim.setValue(0);
         }
     }, [selectedPlace]);
     // Get all destinations for current trip
@@ -132,10 +115,9 @@ export default function MapScreen({ navigation }) {
         return colors[index % colors.length];
     };
     return (<View style={styles.container}>
-      <MapView ref={mapRef} provider={Platform.OS !== 'web' ? PROVIDER_GOOGLE : undefined} style={styles.map} initialRegion={region} region={region} customMapStyle={Platform.OS !== 'web' ? mapStyle : undefined} showsUserLocation={Platform.OS !== 'web'} showsMyLocationButton={Platform.OS !== 'web'} onRegionChangeComplete={Platform.OS !== 'web' ? setRegion : undefined}>
-        {Platform.OS !== 'web' && (<>
-            {/* Current day destinations */}
-            {currentDayDestinations.map((dest, index) => {
+      <MapView ref={mapRef} provider={PROVIDER_GOOGLE} style={styles.map} initialRegion={region} region={region} customMapStyle={mapStyle} showsUserLocation={true} showsMyLocationButton={true} onRegionChangeComplete={setRegion}>
+        {/* Current day destinations */}
+        {currentDayDestinations.map((dest, index) => {
                 // Create animation for this marker if it doesn't exist
                 if (!markerAnims.has(dest.id)) {
                     const anim = new Animated.Value(0);
@@ -469,3 +451,4 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
 });
+export default MapScreen;

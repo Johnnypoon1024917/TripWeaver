@@ -1,17 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
-const NotificationBadge = ({ size = 'small' }) => {
+import { View, Text, StyleSheet  from 'react-native';
+import { useSelector  from 'react-redux';
+const NotificationBadge = ({ size = 'small' ) => {
     const unreadCount = useSelector((state) => state.notifications.unreadCount);
     if (unreadCount === 0) {
         return null;
-    }
-    return (<View style={[styles.badge, size === 'large' && styles.largeBadge]}>
-      <Text style={[styles.count, size === 'large' && styles.largeCount]}>
-        {unreadCount > 99 ? '99+' : unreadCount}
+    
+    return (<View style={[styles.badge, size === 'large' && styles.largeBadge]>
+      <Text style={[styles.count, size === 'large' && styles.largeCount]>
+        {unreadCount > 99 ? '99+' : unreadCount
       </Text>
     </View>);
-};
+;
 const styles = StyleSheet.create({
     badge: {
         backgroundColor: '#FF3B30',
@@ -23,20 +23,20 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -8,
         right: -8,
-    },
+    ,
     largeBadge: {
         minWidth: 24,
         height: 24,
         top: -10,
         right: -10,
-    },
+    ,
     count: {
         color: '#FFFFFF',
         fontSize: 12,
         fontWeight: 'bold',
-    },
+    ,
     largeCount: {
         fontSize: 14,
-    },
-});
+    ,
+);
 export default NotificationBadge;

@@ -8,15 +8,15 @@ export const firebaseConfig = {
   messagingSenderId: "1037302258164",
   appId: "1:1037302258164:web:ba8767a13e984f24e301a1",
   measurementId: "G-TV2G87QQFJ"
-};
+;
 
 // Firestore security rules (to be implemented in Firebase Console)
 /*
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
+  match /databases/{database/documents {
     // Trips collection
-    match /trips/{tripId} {
+    match /trips/{tripId {
       allow read, write: if request.auth != null && 
         (resource.data.visibility == 'public' || 
          resource.data.owner == request.auth.uid ||
@@ -26,22 +26,22 @@ service cloud.firestore {
       allow create: if request.auth != null;
       
       // Subcollections
-      match /onlineUsers/{userId} {
+      match /onlineUsers/{userId {
         allow read, write: if request.auth != null;
-      }
-    }
+      
+    
     
     // Public trips collection
-    match /publicTrips/{tripId} {
+    match /publicTrips/{tripId {
       allow read: if true;
       allow write: if request.auth != null;
-    }
+    
     
     // Feedback collection
-    match /feedback/{feedbackId} {
+    match /feedback/{feedbackId {
       allow read: if false;
       allow write: if request.auth != null;
-    }
-  }
-}
+    
+  
+
 */

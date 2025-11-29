@@ -1,4 +1,4 @@
-import { Trip, DayItinerary, Destination } from '../types';
+import { Trip, DayItinerary, Destination  from '../types';
 
 const STORAGE_KEYS = {
   TRIPS: 'tripweaver_trips',
@@ -9,7 +9,7 @@ const STORAGE_KEYS = {
   OFFLINE_MAPS: 'tripweaver_offline_maps',
   WEATHER_DATA: 'tripweaver_weather_data',
   PLACE_PHOTOS: 'tripweaver_place_photos',
-};
+;
 
 interface OfflineAction {
   id: string;
@@ -17,7 +17,7 @@ interface OfflineAction {
   entity: 'trip' | 'destination' | 'itinerary';
   data: any;
   timestamp: number;
-}
+
 
 class OfflineStorageService {
   /**
@@ -27,11 +27,11 @@ class OfflineStorageService {
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.TRIPS, JSON.stringify(trips));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to save trips:', error);
-    }
-  }
+    
+  
 
   /**
    * Load trips from local storage
@@ -42,13 +42,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.TRIPS);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to load trips:', error);
-    }
+    
     return [];
-  }
+  
 
   /**
    * Save itineraries to local storage
@@ -57,11 +57,11 @@ class OfflineStorageService {
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.ITINERARIES, JSON.stringify(itineraries));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to save itineraries:', error);
-    }
-  }
+    
+  
 
   /**
    * Load itineraries from local storage
@@ -72,13 +72,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.ITINERARIES);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to load itineraries:', error);
-    }
+    
     return [];
-  }
+  
 
   /**
    * Queue action for offline sync
@@ -91,14 +91,14 @@ class OfflineStorageService {
           ...action,
           id: Date.now().toString(),
           timestamp: Date.now(),
-        };
+        ;
         queue.push(newAction);
         localStorage.setItem(STORAGE_KEYS.OFFLINE_QUEUE, JSON.stringify(queue));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to queue offline action:', error);
-    }
-  }
+    
+  
 
   /**
    * Get offline queue
@@ -109,13 +109,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.OFFLINE_QUEUE);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to get offline queue:', error);
-    }
+    
     return [];
-  }
+  
 
   /**
    * Clear offline queue
@@ -124,11 +124,11 @@ class OfflineStorageService {
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.OFFLINE_QUEUE, JSON.stringify([]));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to clear offline queue:', error);
-    }
-  }
+    
+  
 
   /**
    * Process offline queue (sync with server)
@@ -142,25 +142,25 @@ class OfflineStorageService {
         const success = await apiCallback(action);
         if (success) {
           processed++;
-        } else {
+        
           break; // Stop processing if one fails
-        }
-      } catch (error) {
+        
+       catch (error) {
         console.error('Failed to process offline action:', error);
         break;
-      }
-    }
+      
+    
 
     // Remove processed actions from queue
     if (processed > 0) {
       const remainingQueue = queue.slice(processed);
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.OFFLINE_QUEUE, JSON.stringify(remainingQueue));
-      }
-    }
+      
+    
 
     return processed;
-  }
+  
 
   /**
    * Save user preferences
@@ -169,11 +169,11 @@ class OfflineStorageService {
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.USER_PREFERENCES, JSON.stringify(preferences));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to save preferences:', error);
-    }
-  }
+    
+  
 
   /**
    * Load user preferences
@@ -184,13 +184,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.USER_PREFERENCES);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to load preferences:', error);
-    }
+    
     return null;
-  }
+  
 
   /**
    * Update last sync timestamp
@@ -199,11 +199,11 @@ class OfflineStorageService {
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEYS.LAST_SYNC, Date.now().toString());
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to update last sync:', error);
-    }
-  }
+    
+  
 
   /**
    * Get last sync timestamp
@@ -214,13 +214,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.LAST_SYNC);
         if (data) {
           return parseInt(data, 10);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to get last sync:', error);
-    }
+    
     return null;
-  }
+  
 
   /**
    * Save offline map data
@@ -232,13 +232,13 @@ class OfflineStorageService {
         existingMaps[mapId] = {
           ...mapData,
           timestamp: Date.now(),
-        };
+        ;
         localStorage.setItem(STORAGE_KEYS.OFFLINE_MAPS, JSON.stringify(existingMaps));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to save offline map:', error);
-    }
-  }
+    
+  
 
   /**
    * Get offline maps
@@ -249,13 +249,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.OFFLINE_MAPS);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to get offline maps:', error);
-    }
-    return {};
-  }
+    
+    return {;
+  
 
   /**
    * Save weather data for a trip
@@ -267,13 +267,13 @@ class OfflineStorageService {
         existingWeather[tripId] = {
           ...weatherData,
           timestamp: Date.now(),
-        };
+        ;
         localStorage.setItem(STORAGE_KEYS.WEATHER_DATA, JSON.stringify(existingWeather));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to save weather data:', error);
-    }
-  }
+    
+  
 
   /**
    * Get weather data
@@ -284,13 +284,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.WEATHER_DATA);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to get weather data:', error);
-    }
-    return {};
-  }
+    
+    return {;
+  
 
   /**
    * Save place photos
@@ -302,13 +302,13 @@ class OfflineStorageService {
         existingPhotos[placeId] = {
           photos,
           timestamp: Date.now(),
-        };
+        ;
         localStorage.setItem(STORAGE_KEYS.PLACE_PHOTOS, JSON.stringify(existingPhotos));
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Failed to save place photos:', error);
-    }
-  }
+    
+  
 
   /**
    * Get place photos
@@ -319,13 +319,13 @@ class OfflineStorageService {
         const data = localStorage.getItem(STORAGE_KEYS.PLACE_PHOTOS);
         if (data) {
           return JSON.parse(data);
-        }
-      }
-    } catch (error) {
+        
+      
+     catch (error) {
       console.error('Failed to get place photos:', error);
-    }
-    return {};
-  }
+    
+    return {;
+  
 
   /**
    * Clear all storage
@@ -335,12 +335,12 @@ class OfflineStorageService {
       if (typeof localStorage !== 'undefined') {
         Object.values(STORAGE_KEYS).forEach((key) => {
           localStorage.removeItem(key);
-        });
-      }
-    } catch (error) {
+        );
+      
+     catch (error) {
       console.error('Failed to clear storage:', error);
-    }
-  }
+    
+  
 
   /**
    * Check if online
@@ -348,10 +348,10 @@ class OfflineStorageService {
   isOnline(): boolean {
     if (typeof navigator !== 'undefined') {
       return navigator.onLine;
-    }
+    
     return true;
-  }
-}
+  
+
 
 export const offlineStorageService = new OfflineStorageService();
 export default offlineStorageService;

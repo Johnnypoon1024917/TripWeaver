@@ -7,12 +7,12 @@ export const mapStyle = [
   {
     featureType: 'poi',
     elementType: 'labels',
-    stylers: [{ visibility: 'on' }],
-  },
+    stylers: [{ visibility: 'on' ],
+  ,
   {
     featureType: 'poi.business',
-    stylers: [{ visibility: 'simplified' }],
-  },
+    stylers: [{ visibility: 'simplified' ],
+  ,
 ];
 
 export const defaultMapRegion = {
@@ -20,4 +20,4 @@ export const defaultMapRegion = {
   longitude: 121.5654,
   latitudeDelta: 0.0922,
   longitudeDelta: 0.0421,
-};
+;

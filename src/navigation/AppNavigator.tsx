@@ -13,7 +13,6 @@ import HomeScreen from '../screens/HomeScreen';
 import TripDetailScreen from '../screens/TripDetailScreen';
 import ItineraryScreen from '../screens/ItineraryScreen';
 import MapScreen from '../screens/MapScreen';
-import MapboxMapScreen from '../screens/MapboxMapScreen';
 import BudgetScreen from '../screens/BudgetScreen';
 import EnhancedBudgetScreen from '../screens/EnhancedBudgetScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -90,7 +89,7 @@ function TabNavigator() {
       />
       <Tab.Screen 
         name="Map" 
-        component={MapboxMapScreen}
+        component={MapScreen}
         options={{ 
           tabBarLabel: 'Map',
           tabBarIcon: ({ color }) => <RNText style={{ fontSize: 20 }}>🗺️</RNText>,

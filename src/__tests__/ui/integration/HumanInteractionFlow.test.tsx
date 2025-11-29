@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Text, View, Button, TextInput } from 'react-native';
+import { render, fireEvent, waitFor  from '@testing-library/react-native';
+import { Text, View, Button, TextInput  from 'react-native';
 
 // Simple mock components to simulate the app flow
-const MockHomeScreen = ({ navigation }: any) => (
+const MockHomeScreen = ({ navigation : any) => (
   <View>
     <Text testID="home-title">✈️ TripWeaver</Text>
     <TextInput 
@@ -13,17 +13,17 @@ const MockHomeScreen = ({ navigation }: any) => (
     <Button 
       testID="create-trip-button" 
       title="Create New Trip" 
-      onPress={() => navigation.navigate('CreateTrip')} 
+      onPress={() => navigation.navigate('CreateTrip') 
     />
     <Button 
       testID="trip-item" 
       title="Test Trip to Paris" 
-      onPress={() => navigation.navigate('TripDetail')} 
+      onPress={() => navigation.navigate('TripDetail') 
     />
   </View>
 );
 
-const MockCreateTripScreen = ({ navigation }: any) => (
+const MockCreateTripScreen = ({ navigation : any) => (
   <View>
     <Text testID="create-title">Create New Trip</Text>
     <TextInput 
@@ -37,33 +37,33 @@ const MockCreateTripScreen = ({ navigation }: any) => (
     <Button 
       testID="create-button" 
       title="Create Trip" 
-      onPress={() => navigation.navigate('Home')} 
+      onPress={() => navigation.navigate('Home') 
     />
   </View>
 );
 
-const MockTripDetailScreen = ({ navigation }: any) => (
+const MockTripDetailScreen = ({ navigation : any) => (
   <View>
     <Text testID="trip-detail-title">Test Trip to Paris</Text>
     <Button 
       testID="itinerary-tab" 
       title="📋 Itinerary" 
-      onPress={() => {}} 
+      onPress={() => { 
     />
     <Button 
       testID="map-tab" 
       title="🗺️ Map" 
-      onPress={() => {}} 
+      onPress={() => { 
     />
     <Button 
       testID="budget-tab" 
       title="💰 Budget" 
-      onPress={() => {}} 
+      onPress={() => { 
     />
     <Button 
       testID="profile-tab" 
       title="👤 Profile" 
-      onPress={() => navigation.navigate('Profile')} 
+      onPress={() => navigation.navigate('Profile') 
     />
   </View>
 );
@@ -80,17 +80,17 @@ const MockProfileScreen = () => (
 const mockNavigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
-};
+;
 
 describe('Human Interaction Flow Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
+  );
 
   it('should simulate a complete human user journey through the app', async () => {
     // 1. User lands on Home Screen
-    const { getByTestId, getByPlaceholderText } = render(
-      <MockHomeScreen navigation={mockNavigation} />
+    const { getByTestId, getByPlaceholderText  = render(
+      <MockHomeScreen navigation={mockNavigation />
     );
     
     expect(getByTestId('home-title')).toBeTruthy();
@@ -106,8 +106,8 @@ describe('Human Interaction Flow Tests', () => {
     expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateTrip');
 
     // 4. User fills in trip details
-    const { getByTestId: getByTestIdCreate, getByPlaceholderText: getByPlaceholderTextCreate } = render(
-      <MockCreateTripScreen navigation={mockNavigation} />
+    const { getByTestId: getByTestIdCreate, getByPlaceholderText: getByPlaceholderTextCreate  = render(
+      <MockCreateTripScreen navigation={mockNavigation />
     );
     
     const tripTitleInput = getByPlaceholderTextCreate('Enter trip title');
@@ -123,8 +123,8 @@ describe('Human Interaction Flow Tests', () => {
     expect(mockNavigation.navigate).toHaveBeenCalledWith('Home');
 
     // 6. User navigates to trip detail
-    const { getByTestId: getByTestIdHome } = render(
-      <MockHomeScreen navigation={mockNavigation} />
+    const { getByTestId: getByTestIdHome  = render(
+      <MockHomeScreen navigation={mockNavigation />
     );
     
     const tripItem = getByTestIdHome('trip-item');
@@ -133,8 +133,8 @@ describe('Human Interaction Flow Tests', () => {
     expect(mockNavigation.navigate).toHaveBeenCalledWith('TripDetail');
 
     // 7. User explores different tabs
-    const { getByTestId: getByTestIdDetail } = render(
-      <MockTripDetailScreen navigation={mockNavigation} />
+    const { getByTestId: getByTestIdDetail  = render(
+      <MockTripDetailScreen navigation={mockNavigation />
     );
     
     const itineraryTab = getByTestIdDetail('itinerary-tab');
@@ -152,15 +152,15 @@ describe('Human Interaction Flow Tests', () => {
     expect(mockNavigation.navigate).toHaveBeenCalledWith('Profile');
 
     // 8. User views profile
-    const { getByTestId: getByTestIdProfile } = render(<MockProfileScreen />);
+    const { getByTestId: getByTestIdProfile  = render(<MockProfileScreen />);
     
     expect(getByTestIdProfile('profile-title')).toBeTruthy();
     expect(getByTestIdProfile('user-name')).toBeTruthy();
     expect(getByTestIdProfile('user-email')).toBeTruthy();
-  });
+  );
 
   it('should handle error scenarios gracefully like a human would', async () => {
     // This would test error handling in a real app
     expect(true).toBe(true);
-  });
-});
+  );
+);

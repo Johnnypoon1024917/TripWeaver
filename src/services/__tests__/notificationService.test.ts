@@ -4,14 +4,14 @@ describe('NotificationService', () => {
   beforeEach(async () => {
     // Clear all notifications before each test
     await NotificationService.clearAllNotifications();
-  });
+  );
 
   it('should add a notification', async () => {
     const notification = {
       title: 'Test Notification',
       body: 'This is a test notification',
       type: 'general' as const,
-    };
+    ;
 
     await NotificationService.addNotification(notification);
     const notifications = await NotificationService.getAllNotifications();
@@ -23,14 +23,14 @@ describe('NotificationService', () => {
     expect(notifications[0].read).toBe(false);
     expect(notifications[0]).toHaveProperty('id');
     expect(notifications[0]).toHaveProperty('timestamp');
-  });
+  );
 
   it('should mark a notification as read', async () => {
     const notification = {
       title: 'Test Notification',
       body: 'This is a test notification',
       type: 'general' as const,
-    };
+    ;
 
     await NotificationService.addNotification(notification);
     let notifications = await NotificationService.getAllNotifications();
@@ -40,20 +40,20 @@ describe('NotificationService', () => {
     notifications = await NotificationService.getAllNotifications();
 
     expect(notifications[0].read).toBe(true);
-  });
+  );
 
   it('should mark all notifications as read', async () => {
     const notification1 = {
       title: 'Test Notification 1',
       body: 'This is test notification 1',
       type: 'general' as const,
-    };
+    ;
 
     const notification2 = {
       title: 'Test Notification 2',
       body: 'This is test notification 2',
       type: 'general' as const,
-    };
+    ;
 
     await NotificationService.addNotification(notification1);
     await NotificationService.addNotification(notification2);
@@ -63,14 +63,14 @@ describe('NotificationService', () => {
 
     expect(notifications[0].read).toBe(true);
     expect(notifications[1].read).toBe(true);
-  });
+  );
 
   it('should delete a notification', async () => {
     const notification = {
       title: 'Test Notification',
       body: 'This is a test notification',
       type: 'general' as const,
-    };
+    ;
 
     await NotificationService.addNotification(notification);
     let notifications = await NotificationService.getAllNotifications();
@@ -80,20 +80,20 @@ describe('NotificationService', () => {
     notifications = await NotificationService.getAllNotifications();
 
     expect(notifications).toHaveLength(0);
-  });
+  );
 
   it('should clear all notifications', async () => {
     const notification1 = {
       title: 'Test Notification 1',
       body: 'This is test notification 1',
       type: 'general' as const,
-    };
+    ;
 
     const notification2 = {
       title: 'Test Notification 2',
       body: 'This is test notification 2',
       type: 'general' as const,
-    };
+    ;
 
     await NotificationService.addNotification(notification1);
     await NotificationService.addNotification(notification2);
@@ -102,20 +102,20 @@ describe('NotificationService', () => {
     const notifications = await NotificationService.getAllNotifications();
 
     expect(notifications).toHaveLength(0);
-  });
+  );
 
   it('should get unread count', async () => {
     const notification1 = {
       title: 'Test Notification 1',
       body: 'This is test notification 1',
       type: 'general' as const,
-    };
+    ;
 
     const notification2 = {
       title: 'Test Notification 2',
       body: 'This is test notification 2',
       type: 'general' as const,
-    };
+    ;
 
     await NotificationService.addNotification(notification1);
     await NotificationService.addNotification(notification2);
@@ -126,7 +126,7 @@ describe('NotificationService', () => {
 
     const unreadCount = await NotificationService.getUnreadCount();
     expect(unreadCount).toBe(1);
-  });
+  );
 
   it('should schedule trip reminders', async () => {
     const startDate = new Date();
@@ -141,7 +141,7 @@ describe('NotificationService', () => {
     const notifications = await NotificationService.getAllNotifications();
     expect(notifications).toHaveLength(1);
     expect(notifications[0].title).toContain('Upcoming Trip');
-  });
+  );
 
   it('should schedule budget alerts', async () => {
     await NotificationService.scheduleBudgetAlert(
@@ -154,5 +154,5 @@ describe('NotificationService', () => {
     const notifications = await NotificationService.getAllNotifications();
     expect(notifications).toHaveLength(1);
     expect(notifications[0].title).toBe('Budget Alert');
-  });
-});
+  );
+);

@@ -1,21 +1,21 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
-import { store } from '../../../store';
+import { render, fireEvent  from '@testing-library/react-native';
+import { Provider  from 'react-redux';
+import { store  from '../../../store';
 import EnhancedBudgetScreen from '../../../screens/EnhancedBudgetScreen';
-import { TEST_CONSTANTS, SELECTORS } from '../config';
+import { TEST_CONSTANTS, SELECTORS  from '../config';
 // Mock the navigation
 const mockNavigation = {
     navigate: jest.fn(),
     goBack: jest.fn(),
     setOptions: jest.fn(),
-};
+;
 // Mock route params
 const mockRoute = {
     params: {
         tripId: TEST_CONSTANTS.TEST_TRIP.id,
-    },
-};
+    ,
+;
 // Mock Redux store with initial state
 const mockStore = {
     budget: {
@@ -27,7 +27,7 @@ const mockStore = {
                 allocated: 1000,
                 spent: 350,
                 currency: 'USD',
-            },
+            ,
             {
                 id: 'budget-2',
                 tripId: TEST_CONSTANTS.TEST_TRIP.id,
@@ -35,7 +35,7 @@ const mockStore = {
                 allocated: 500,
                 spent: 120,
                 currency: 'USD',
-            },
+            ,
         ],
         expenses: [
             {
@@ -45,7 +45,7 @@ const mockStore = {
                 amount: 150,
                 date: new Date('2023-06-01'),
                 notes: '3 nights at Hotel ABC',
-            },
+            ,
             {
                 id: 'expense-2',
                 budgetId: 'budget-1',
@@ -53,7 +53,7 @@ const mockStore = {
                 amount: 200,
                 date: new Date('2023-06-02'),
                 notes: '4 nights at Airbnb XYZ',
-            },
+            ,
             {
                 id: 'expense-3',
                 budgetId: 'budget-2',
@@ -61,28 +61,28 @@ const mockStore = {
                 amount: 45,
                 date: new Date('2023-06-01'),
                 notes: 'Dinner at Restaurant ABC',
-            },
+            ,
         ],
         loading: false,
         error: null,
-    },
+    ,
     trips: {
         items: [TEST_CONSTANTS.TEST_TRIP],
-    },
-};
+    ,
+;
 // Mock useSelector to return our mock store state
 jest.mock('react-redux', () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn().mockImplementation(selector => selector(mockStore)),
     useDispatch: () => jest.fn(),
-}));
+));
 describe('BudgetScreen UI Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
+    );
     it('should render budget screen with categories and expenses', () => {
-        const { getByText, getByTestId, getAllByTestId } = render(<Provider store={store}>
-        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }}/>
+        const { getByText, getByTestId, getAllByTestId  = render(<Provider store={store>
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id'  />
       </Provider>);
         // Check if trip title is displayed
         expect(getByText(TEST_CONSTANTS.TEST_TRIP.name)).toBeTruthy();
@@ -98,10 +98,10 @@ describe('BudgetScreen UI Tests', () => {
         expect(getByText('$350 / $1000')).toBeTruthy();
         expect(getByText('Food')).toBeTruthy();
         expect(getByText('$120 / $500')).toBeTruthy();
-    });
+    );
     it('should display correct expense information', () => {
-        const { getByText } = render(<Provider store={store}>
-        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }}/>
+        const { getByText  = render(<Provider store={store>
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id'  />
       </Provider>);
         // Check expense details
         expect(getByText('Hotel Room')).toBeTruthy();
@@ -113,7 +113,7 @@ describe('BudgetScreen UI Tests', () => {
         expect(getByText('Restaurant Dinner')).toBeTruthy();
         expect(getByText('$45')).toBeTruthy();
         expect(getByText('Dinner at Restaurant ABC')).toBeTruthy();
-    });
+    );
     it('should show empty state when no budget categories exist', () => {
         // Mock empty budget state
         const emptyStore = {
@@ -122,22 +122,22 @@ describe('BudgetScreen UI Tests', () => {
                 ...mockStore.budget,
                 budgets: [],
                 expenses: [],
-            },
-        };
+            ,
+        ;
         jest.mock('react-redux', () => ({
             ...jest.requireActual('react-redux'),
             useSelector: jest.fn().mockImplementation(selector => selector(emptyStore)),
-        }));
-        const { getByText, getByTestId, getAllByTestId } = render(<Provider store={store}>
-        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }}/>
+        ));
+        const { getByText, getByTestId, getAllByTestId  = render(<Provider store={store>
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id'  />
       </Provider>);
         expect(getByText('No budget categories yet')).toBeTruthy();
         expect(getByText('Add your first budget category to get started')).toBeTruthy();
         expect(getByTestId(SELECTORS.ADD_BUDGET_CATEGORY_BUTTON)).toBeTruthy();
-    });
+    );
     it('should calculate and display budget totals correctly', () => {
-        const { getByText } = render(<Provider store={store}>
-        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }}/>
+        const { getByText  = render(<Provider store={store>
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id'  />
       </Provider>);
         // Check total budget calculation
         // Accommodation: $1000 allocated, $350 spent
@@ -148,21 +148,21 @@ describe('BudgetScreen UI Tests', () => {
         // Check remaining amount
         expect(getByText('Remaining')).toBeTruthy();
         expect(getByText('$1030')).toBeTruthy();
-    });
+    );
     it('should allow adding new budget categories', () => {
-        const { getByTestId } = render(<Provider store={store}>
-        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }}/>
+        const { getByTestId  = render(<Provider store={store>
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id'  />
       </Provider>);
         const addCategoryButton = getByTestId(SELECTORS.ADD_BUDGET_CATEGORY_BUTTON);
         fireEvent.press(addCategoryButton);
         // TODO: Add actual modal interaction tests when we can mock the modal component
-    });
+    );
     it('should allow adding new expenses', () => {
-        const { getByTestId } = render(<Provider store={store}>
-        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id' } }}/>
+        const { getByTestId  = render(<Provider store={store>
+        <EnhancedBudgetScreen route={{ key: 'test', name: 'TripDetail', params: { tripId: 'test-trip-id'  />
       </Provider>);
         const addExpenseButton = getByTestId(SELECTORS.ADD_EXPENSE_BUTTON);
         fireEvent.press(addExpenseButton);
         // TODO: Add actual modal interaction tests when we can mock the modal component
-    });
-});
+    );
+);

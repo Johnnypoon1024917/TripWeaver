@@ -1,5 +1,5 @@
-import { GOOGLE_MAPS_API_KEY } from '../config/maps';
-import { Platform } from 'react-native';
+import { GOOGLE_MAPS_API_KEY  from '../config/maps';
+import { Platform  from 'react-native';
 
 // Backend API base URL
 const BACKEND_URL = typeof __DEV__ !== 'undefined' && __DEV__ 
@@ -14,8 +14,8 @@ export interface Place {
     location: {
       lat: number;
       lng: number;
-    };
-  };
+    ;
+  ;
   rating?: number;
   user_ratings_total?: number;
   price_level?: number;
@@ -24,11 +24,11 @@ export interface Place {
     photo_reference: string;
     height: number;
     width: number;
-  }>;
+  >;
   opening_hours?: {
     open_now?: boolean;
-  };
-}
+  ;
+
 
 export interface PlaceDetails extends Place {
   formatted_phone_number?: string;
@@ -38,12 +38,12 @@ export interface PlaceDetails extends Place {
     rating: number;
     text: string;
     time: number;
-  }>;
+  >;
   opening_hours?: {
     open_now?: boolean;
     weekday_text?: string[];
-  };
-}
+  ;
+
 
 export type PlaceCategory =
   | 'restaurant'
@@ -73,7 +73,7 @@ const CATEGORY_TYPE_MAPPING: Record<PlaceCategory, string[]> = {
   museum: ['museum', 'art_gallery'],
   park: ['park', 'natural_feature'],
   all: [],
-};
+;
 
 class PlacesService {
   private baseUrl = BACKEND_URL + '/api/v1/places';
@@ -83,101 +83,101 @@ class PlacesService {
    */
   async searchText(
     query: string,
-    location?: { lat: number; lng: number },
+    location?: { lat: number; lng: number ,
     category: PlaceCategory = 'all'
   ): Promise<Place[]> {
     try {
-      let url = `${this.baseUrl}/textsearch?query=${encodeURIComponent(query)}`;
+      let url = `${this.baseUrl/textsearch?query=${encodeURIComponent(query)`;
 
       if (location) {
-        url += `&location=${location.lat},${location.lng}`;
-      }
+        url += `&location=${location.lat,${location.lng`;
+      
 
       if (category !== 'all') {
         const types = CATEGORY_TYPE_MAPPING[category];
         if (types.length > 0) {
-          url += `&type=${types[0]}`;
-        }
-      }
+          url += `&type=${types[0]`;
+        
+      
 
       const response = await fetch(url);
       const data = await response.json();
 
       if (data.status === 'OK') {
         return data.results;
-      } else if (data.status === 'ZERO_RESULTS') {
+       else if (data.status === 'ZERO_RESULTS') {
         return [];
-      } else {
+      
         console.error('Places API error:', data.status, data.error_message);
         return [];
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Search text error:', error);
       return [];
-    }
-  }
+    
+  
 
   /**
    * Search for nearby places
    */
   async searchNearby(
-    location: { lat: number; lng: number },
+    location: { lat: number; lng: number ,
     radius: number = 5000,
     category: PlaceCategory = 'all',
     keyword?: string
   ): Promise<Place[]> {
     try {
-      let url = `${this.baseUrl}/nearbysearch?location=${location.lat},${location.lng}&radius=${radius}`;
+      let url = `${this.baseUrl/nearbysearch?location=${location.lat,${location.lng&radius=${radius`;
 
       if (category !== 'all') {
         const types = CATEGORY_TYPE_MAPPING[category];
         if (types.length > 0) {
-          url += `&type=${types[0]}`;
-        }
-      }
+          url += `&type=${types[0]`;
+        
+      
 
       if (keyword) {
-        url += `&keyword=${encodeURIComponent(keyword)}`;
-      }
+        url += `&keyword=${encodeURIComponent(keyword)`;
+      
 
       const response = await fetch(url);
       const data = await response.json();
 
       if (data.status === 'OK') {
         return data.results;
-      } else if (data.status === 'ZERO_RESULTS') {
+       else if (data.status === 'ZERO_RESULTS') {
         return [];
-      } else {
+      
         console.error('Places API error:', data.status, data.error_message);
         return [];
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Search nearby error:', error);
       return [];
-    }
-  }
+    
+  
 
   /**
    * Get place details
    */
   async getPlaceDetails(placeId: string): Promise<PlaceDetails | null> {
     try {
-      const url = `${this.baseUrl}/details?place_id=${placeId}`;
+      const url = `${this.baseUrl/details?place_id=${placeId`;
 
       const response = await fetch(url);
       const data = await response.json();
 
       if (data.status === 'OK') {
         return data.result;
-      } else {
+      
         console.error('Place details error:', data.status, data.error_message);
         return null;
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Get place details error:', error);
       return null;
-    }
-  }
+    
+  
 
   /**
    * Get photo URL from photo reference
@@ -187,15 +187,15 @@ class PlacesService {
     maxWidth: number = 400,
     maxHeight: number = 400
   ): string {
-    return `${this.baseUrl}/photo?photo_reference=${photoReference}&maxwidth=${maxWidth}&maxheight=${maxHeight}`;
-  }
+    return `${this.baseUrl/photo?photo_reference=${photoReference&maxwidth=${maxWidth&maxheight=${maxHeight`;
+  
 
   /**
    * Autocomplete search
    */
   async autocomplete(
     input: string,
-    location?: { lat: number; lng: number },
+    location?: { lat: number; lng: number ,
     radius: number = 50000
   ): Promise<
     Array<{
@@ -204,15 +204,15 @@ class PlacesService {
       structured_formatting: {
         main_text: string;
         secondary_text: string;
-      };
-    }>
+      ;
+    >
   > {
     try {
-      let url = `${this.baseUrl}/autocomplete?input=${encodeURIComponent(input)}`;
+      let url = `${this.baseUrl/autocomplete?input=${encodeURIComponent(input)`;
 
       if (location) {
-        url += `&location=${location.lat},${location.lng}&radius=${radius}`;
-      }
+        url += `&location=${location.lat,${location.lng&radius=${radius`;
+      
 
       console.log('Autocomplete URL:', url);
       const response = await fetch(url);
@@ -221,18 +221,18 @@ class PlacesService {
 
       if (data.status === 'OK') {
         return data.predictions;
-      } else if (data.status === 'ZERO_RESULTS') {
+       else if (data.status === 'ZERO_RESULTS') {
         console.log('No autocomplete results found');
         return [];
-      } else {
+      
         console.error('Autocomplete API error:', data.status, data.error_message);
         return [];
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Autocomplete error:', error);
       return [];
-    }
-  }
+    
+  
 
   /**
    * Get popular attractions for a destination
@@ -243,23 +243,23 @@ class PlacesService {
   ): Promise<Place[]> {
     try {
       const places = await this.searchText(
-        `${destination} top attractions`,
+        `${destination top attractions`,
         undefined,
         'attraction'
       );
       return places.slice(0, limit);
-    } catch (error) {
+     catch (error) {
       console.error('Get popular attractions error:', error);
       return [];
-    }
-  }
+    
+  
 
   /**
    * Filter places by rating
    */
   filterByRating(places: Place[], minRating: number = 4.0): Place[] {
     return places.filter((place) => (place.rating || 0) >= minRating);
-  }
+  
 
   /**
    * Sort places by rating
@@ -269,15 +269,15 @@ class PlacesService {
       const ratingA = a.rating || 0;
       const ratingB = b.rating || 0;
       return descending ? ratingB - ratingA : ratingA - ratingB;
-    });
-  }
+    );
+  
 
   /**
    * Sort places by distance
    */
   sortByDistance(
     places: Place[],
-    userLocation: { lat: number; lng: number }
+    userLocation: { lat: number; lng: number 
   ): Place[] {
     return [...places].sort((a, b) => {
       const distA = this.calculateDistance(
@@ -289,15 +289,15 @@ class PlacesService {
         b.geometry.location
       );
       return distA - distB;
-    });
-  }
+    );
+  
 
   /**
    * Calculate distance between two coordinates (in kilometers)
    */
   private calculateDistance(
-    point1: { lat: number; lng: number },
-    point2: { lat: number; lng: number }
+    point1: { lat: number; lng: number ,
+    point2: { lat: number; lng: number 
   ): number {
     const R = 6371; // Earth's radius in km
     const dLat = this.toRad(point2.lat - point1.lat);
@@ -312,12 +312,12 @@ class PlacesService {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  }
+  
 
   private toRad(degrees: number): number {
     return degrees * (Math.PI / 180);
-  }
-}
+  
+
 
 export const placesService = new PlacesService();
 export default placesService;

@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { configureStore  from '@reduxjs/toolkit';
+import { persistStore, persistReducer  from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { combineReducers } from 'redux';
+import { combineReducers  from 'redux';
 import authReducer from './slices/authSlice';
 import tripsReducer from './slices/tripsSlice';
 import itineraryReducer from './slices/itinerarySlice';
@@ -17,7 +17,7 @@ const persistConfig = {
     storage: AsyncStorage,
     whitelist: ['auth', 'trips', 'itinerary', 'packing', 'places', 'collaboration', 'tripSync', 'notifications'], // Only persist these reducers
     timeout: 10000, // 10 seconds timeout
-};
+;
 const rootReducer = combineReducers({
     auth: authReducer,
     trips: tripsReducer,
@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
     collaboration: collaborationReducer,
     tripSync: tripSyncReducer,
     notifications: notificationsReducer,
-});
+);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
     reducer: persistedReducer,
@@ -42,7 +42,7 @@ export const store = configureStore({
                 'trips/updateTrip'
             ],
             ignoredPaths: ['trips.items'],
-        },
-    }),
-});
+        ,
+    ),
+);
 export const persistor = persistStore(store);

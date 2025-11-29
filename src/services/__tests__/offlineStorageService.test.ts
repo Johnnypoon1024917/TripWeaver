@@ -1,32 +1,32 @@
-import { offlineStorageService } from '../offlineStorageService';
-import { PlaceCategory } from '../../types';
+import { offlineStorageService  from '../offlineStorageService';
+import { PlaceCategory  from '../../types';
 
 // Mock localStorage
 const mockLocalStorage = (() => {
-  let store: Record<string, string> = {};
+  let store: Record<string, string> = {;
   
   return {
     getItem: (key: string) => store[key] || null,
     setItem: (key: string, value: string) => {
       store[key] = value.toString();
-    },
+    ,
     removeItem: (key: string) => {
       delete store[key];
-    },
+    ,
     clear: () => {
-      store = {};
-    },
-  };
-})();
+      store = {;
+    ,
+  ;
+)();
 
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
-});
+);
 
 describe('OfflineStorageService', () => {
   beforeEach(() => {
     mockLocalStorage.clear();
-  });
+  );
 
   describe('saveTrips and loadTrips', () => {
     it('should save and load trips correctly', async () => {
@@ -41,7 +41,7 @@ describe('OfflineStorageService', () => {
           collaborators: [],
           createdAt: new Date(),
           updatedAt: new Date(),
-        },
+        ,
       ];
 
       await offlineStorageService.saveTrips(trips);
@@ -50,13 +50,13 @@ describe('OfflineStorageService', () => {
       expect(loadedTrips).toHaveLength(1);
       expect(loadedTrips[0].id).toBe('1');
       expect(loadedTrips[0].title).toBe('Test Trip');
-    });
+    );
 
     it('should return empty array when no trips are saved', async () => {
       const trips = await offlineStorageService.loadTrips();
       expect(trips).toEqual([]);
-    });
-  });
+    );
+  );
 
   describe('saveItineraries and loadItineraries', () => {
     it('should save and load itineraries correctly', async () => {
@@ -76,9 +76,9 @@ describe('OfflineStorageService', () => {
               longitude: 2.2945,
               category: 'attraction' as PlaceCategory,
               order: 0,
-            },
+            ,
           ],
-        },
+        ,
       ];
 
       await offlineStorageService.saveItineraries(itineraries);
@@ -88,16 +88,16 @@ describe('OfflineStorageService', () => {
       expect(loadedItineraries[0].dayNumber).toBe(1);
       expect(loadedItineraries[0].destinations).toHaveLength(1);
       expect(loadedItineraries[0].destinations[0].name).toBe('Eiffel Tower');
-    });
-  });
+    );
+  );
 
   describe('offline queue', () => {
     it('should queue and retrieve offline actions', async () => {
       const action = {
         type: 'create' as const,
         entity: 'trip' as const,
-        data: { id: '1', title: 'Test Trip' },
-      };
+        data: { id: '1', title: 'Test Trip' ,
+      ;
 
       await offlineStorageService.queueOfflineAction(action);
       const queue = await offlineStorageService.getOfflineQueue();
@@ -106,33 +106,33 @@ describe('OfflineStorageService', () => {
       expect(queue[0].type).toBe('create');
       expect(queue[0].entity).toBe('trip');
       expect(queue[0].data.title).toBe('Test Trip');
-    });
+    );
 
     it('should process offline queue with callback', async () => {
       const actions = [
         {
           type: 'create' as const,
           entity: 'trip' as const,
-          data: { id: '1', title: 'Test Trip 1' },
-        },
+          data: { id: '1', title: 'Test Trip 1' ,
+        ,
         {
           type: 'update' as const,
           entity: 'trip' as const,
-          data: { id: '2', title: 'Test Trip 2' },
-        },
+          data: { id: '2', title: 'Test Trip 2' ,
+        ,
       ];
 
       for (const action of actions) {
         await offlineStorageService.queueOfflineAction(action);
-      }
+      
 
       const mockCallback = jest.fn().mockResolvedValue(true);
       const processed = await offlineStorageService.processOfflineQueue(mockCallback);
 
       expect(processed).toBe(2);
       expect(mockCallback).toHaveBeenCalledTimes(2);
-    });
-  });
+    );
+  );
 
   describe('preferences', () => {
     it('should save and load user preferences', async () => {
@@ -140,14 +140,14 @@ describe('OfflineStorageService', () => {
         theme: 'dark',
         language: 'en',
         notifications: true,
-      };
+      ;
 
       await offlineStorageService.savePreferences(preferences);
       const loadedPreferences = await offlineStorageService.loadPreferences();
 
       expect(loadedPreferences).toEqual(preferences);
-    });
-  });
+    );
+  );
 
   describe('sync tracking', () => {
     it('should track last sync timestamp', async () => {
@@ -159,8 +159,8 @@ describe('OfflineStorageService', () => {
       
       expect(lastSync).toBeGreaterThanOrEqual(beforeSync);
       expect(lastSync).toBeLessThanOrEqual(afterSync);
-    });
-  });
+    );
+  );
 
   describe('network status', () => {
     it('should detect online status', () => {
@@ -168,9 +168,9 @@ describe('OfflineStorageService', () => {
       Object.defineProperty(navigator, 'onLine', {
         value: true,
         writable: true,
-      });
+      );
       
       expect(offlineStorageService.isOnline()).toBe(true);
-    });
-  });
-});
+    );
+  );
+);

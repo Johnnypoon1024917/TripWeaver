@@ -5,7 +5,7 @@ interface PerformanceMetric {
   duration?: number;
   metadata?: any;
   traceId?: string;
-}
+
 
 class PerformanceMonitor {
   private metrics: Map<string, PerformanceMetric> = new Map();
@@ -18,10 +18,10 @@ class PerformanceMonitor {
     try {
       // This would be implemented if Firebase is available
       // this.firebasePerf = getPerformance();
-    } catch (error) {
+     catch (error) {
       console.debug('Firebase Performance Monitoring not available');
-    }
-  }
+    
+  
 
   /**
    * Start measuring performance
@@ -36,18 +36,18 @@ class PerformanceMonitor {
         trace = (window as any).firebase.performance.trace(name);
         trace.start();
         this.traces.set(name, trace);
-      } catch (error) {
+       catch (error) {
         console.debug('Failed to start Firebase trace:', error);
-      }
-    }
+      
+    
 
     this.metrics.set(name, {
       name,
       startTime: Date.now(),
       metadata,
       traceId: trace ? name : undefined,
-    });
-  }
+    );
+  
 
   /**
    * End measuring performance
@@ -57,9 +57,9 @@ class PerformanceMonitor {
 
     const metric = this.metrics.get(name);
     if (!metric) {
-      console.warn(`Performance metric "${name}" not found`);
+      console.warn(`Performance metric "${name" not found`);
       return null;
-    }
+    
 
     metric.endTime = Date.now();
     metric.duration = metric.endTime - metric.startTime;
@@ -72,19 +72,19 @@ class PerformanceMonitor {
           trace.putMetric('duration', metric.duration || 0);
           trace.stop();
           this.traces.delete(metric.traceId);
-        }
-      } catch (error) {
+        
+       catch (error) {
         console.debug('Failed to stop Firebase trace:', error);
-      }
-    }
+      
+    
 
     // Log if duration exceeds threshold
     if (metric.duration > 2000) {
-      console.warn(`Slow operation detected: ${name} took ${metric.duration}ms`, metric.metadata);
-    }
+      console.warn(`Slow operation detected: ${name took ${metric.durationms`, metric.metadata);
+    
 
     return metric.duration;
-  }
+  
 
   /**
    * Measure async function
@@ -94,10 +94,10 @@ class PerformanceMonitor {
     try {
       const result = await fn();
       return result;
-    } finally {
+     finally {
       this.endMeasure(name);
-    }
-  }
+    
+  
 
   /**
    * Measure sync function
@@ -106,38 +106,38 @@ class PerformanceMonitor {
     this.startMeasure(name, metadata);
     try {
       return fn();
-    } finally {
+     finally {
       this.endMeasure(name);
-    }
-  }
+    
+  
 
   /**
    * Get all metrics
    */
   getAllMetrics(): PerformanceMetric[] {
     return Array.from(this.metrics.values());
-  }
+  
 
   /**
    * Get metric by name
    */
   getMetric(name: string): PerformanceMetric | undefined {
     return this.metrics.get(name);
-  }
+  
 
   /**
    * Clear all metrics
    */
   clearMetrics(): void {
     this.metrics.clear();
-  }
+  
 
   /**
    * Enable/disable monitoring
    */
   setEnabled(enabled: boolean): void {
     this.enabled = enabled;
-  }
+  
 
   /**
    * Generate performance report
@@ -147,7 +147,7 @@ class PerformanceMonitor {
 
     if (metrics.length === 0) {
       return 'No performance metrics collected';
-    }
+    
 
     const totalDuration = metrics.reduce((sum, m) => sum + (m.duration || 0), 0);
     const avgDuration = totalDuration / metrics.length;
@@ -156,15 +156,15 @@ class PerformanceMonitor {
     return `
 Performance Report
 ==================
-Total Metrics: ${metrics.length}
-Total Duration: ${totalDuration}ms
-Average Duration: ${avgDuration.toFixed(2)}ms
-Slowest Operation: ${slowest.name} (${slowest.duration}ms)
+Total Metrics: ${metrics.length
+Total Duration: ${totalDurationms
+Average Duration: ${avgDuration.toFixed(2)ms
+Slowest Operation: ${slowest.name (${slowest.durationms)
 
 Metrics:
-${metrics.map((m) => `- ${m.name}: ${m.duration}ms`).join('\n')}
+${metrics.map((m) => `- ${m.name: ${m.durationms`).join('\n')
     `.trim();
-  }
+  
 
   /**
    * Monitor memory usage (if available)
@@ -176,10 +176,10 @@ ${metrics.map((m) => `- ${m.name}: ${m.duration}ms`).join('\n')}
         usedJSHeapSize: (memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB',
         totalJSHeapSize: (memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB',
         jsHeapSizeLimit: (memory.jsHeapSizeLimit / 1048576).toFixed(2) + ' MB',
-      };
-    }
+      ;
+    
     return null;
-  }
+  
 
   /**
    * Monitor network latency
@@ -187,14 +187,14 @@ ${metrics.map((m) => `- ${m.name}: ${m.duration}ms`).join('\n')}
   async measureNetworkLatency(url: string): Promise<number> {
     const startTime = Date.now();
     try {
-      await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+      await fetch(url, { method: 'HEAD', mode: 'no-cors' );
       return Date.now() - startTime;
-    } catch (error) {
+     catch (error) {
       console.error('Network latency measurement failed:', error);
       return -1;
-    }
-  }
-}
+    
+  
+
 
 export const performanceMonitor = new PerformanceMonitor();
 export default performanceMonitor;

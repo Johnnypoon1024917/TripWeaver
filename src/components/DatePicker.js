@@ -1,8 +1,8 @@
 import React from 'react';
-import { Platform, Modal, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, Modal, View, StyleSheet, TouchableOpacity  from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 export default function DatePicker(props) {
-    const { value, mode = 'date', display, onChange, minimumDate, maximumDate } = props;
+    const { value, mode = 'date', display, onChange, minimumDate, maximumDate  = props;
     // For web, use HTML5 input type="date" or "time" wrapped in Modal
     if (Platform.OS === 'web') {
         const inputType = mode === 'time' ? 'time' : 'date';
@@ -16,44 +16,44 @@ export default function DatePicker(props) {
                 const [hours, minutes] = newValue.split(':').map(Number);
                 newDate = new Date(value);
                 newDate.setHours(hours, minutes);
-            }
+            
             else {
                 // Parse date (YYYY-MM-DD format)
                 newDate = new Date(newValue);
-            }
+            
             onChange(event, newDate);
-        };
+        ;
         const handleClose = () => {
             // Trigger onChange with undefined to close the picker
-            onChange({ target: { value: '' } }, undefined);
-        };
+            onChange({ target: { value: ''  , undefined);
+        ;
         const formatValue = () => {
             if (mode === 'time') {
                 // Format as HH:mm
                 const hours = value.getHours().toString().padStart(2, '0');
                 const minutes = value.getMinutes().toString().padStart(2, '0');
-                return `${hours}:${minutes}`;
-            }
+                return `${hours:${minutes`;
+            
             else {
                 // Format as YYYY-MM-DD
                 const year = value.getFullYear();
                 const month = (value.getMonth() + 1).toString().padStart(2, '0');
                 const day = value.getDate().toString().padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            }
-        };
+                return `${year-${month-${day`;
+            
+        ;
         const formatMinMax = (date) => {
             if (!date)
                 return undefined;
             const year = date.getFullYear();
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const day = date.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        };
-        return (<Modal visible={true} transparent={true} animationType="fade" onRequestClose={handleClose}>
-        <TouchableOpacity style={webStyles.overlay} activeOpacity={1} onPress={handleClose}>
-          <TouchableOpacity activeOpacity={1}>
-            <View style={webStyles.pickerContainer}>
+            return `${year-${month-${day`;
+        ;
+        return (<Modal visible={true transparent={true animationType="fade" onRequestClose={handleClose>
+        <TouchableOpacity style={webStyles.overlay activeOpacity={1 onPress={handleClose>
+          <TouchableOpacity activeOpacity={1>
+            <View style={webStyles.pickerContainer>
               {React.createElement('input', {
                 type: inputType,
                 value: formatValue(),
@@ -69,31 +69,31 @@ export default function DatePicker(props) {
                     backgroundColor: 'white',
                     outline: 'none',
                     minWidth: '250px',
-                },
-            })}
+                ,
+            )
             </View>
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>);
-    }
+    
     // For native platforms, use the native DateTimePicker
-    return (<DateTimePicker value={value} mode={mode} display={display || (Platform.OS === 'ios' ? 'spinner' : 'default')} onChange={onChange} minimumDate={minimumDate} maximumDate={maximumDate}/>);
-}
+    return (<DateTimePicker value={value mode={mode display={display || (Platform.OS === 'ios' ? 'spinner' : 'default') onChange={onChange minimumDate={minimumDate maximumDate={maximumDate/>);
+
 const webStyles = StyleSheet.create({
     overlay: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
-    },
+    ,
     pickerContainer: {
         backgroundColor: 'white',
         borderRadius: 16,
         padding: 24,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: { width: 0, height: 4 ,
         shadowOpacity: 0.3,
         shadowRadius: 20,
         elevation: 10,
-    },
-});
+    ,
+);

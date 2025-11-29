@@ -241,7 +241,7 @@ export interface Translations {
   
   // Carbon emissions
   carbonEmissionsText: string;
-}
+
 
 export const translations: Record<Language, Translations> = {
   'en': {
@@ -484,8 +484,8 @@ export const translations: Record<Language, Translations> = {
     goToHome: 'Go to Home',
     
     // Carbon emissions
-    carbonEmissionsText: 'The total carbon emissions for this trip are approximately {emissions} kg, covering {places} attractions and traveling a total of {distance} kilometers.',
-  },
+    carbonEmissionsText: 'The total carbon emissions for this trip are approximately {emissions kg, covering {places attractions and traveling a total of {distance kilometers.',
+  ,
   
   'zh-TW': {
     // Navigation
@@ -727,8 +727,8 @@ export const translations: Record<Language, Translations> = {
     goToHome: '前往首頁',
     
     // Carbon emissions
-    carbonEmissionsText: '此旅程的總碳排放量約為 {emissions} 公斤，涵蓋 {places} 個景點，總旅行距離為 {distance} 公里。',
-  },
+    carbonEmissionsText: '此旅程的總碳排放量約為 {emissions 公斤，涵蓋 {places 個景點，總旅行距離為 {distance 公里。',
+  ,
   
   'zh-CN': {
     // Navigation
@@ -970,6 +970,6 @@ export const translations: Record<Language, Translations> = {
     goToHome: '前往首页',
     
     // Carbon emissions
-    carbonEmissionsText: '此旅程的总碳排放量约为 {emissions} 公斤，涵盖 {places} 个景点，总旅行距离为 {distance} 公里。',
-  },
-};
+    carbonEmissionsText: '此旅程的总碳排放量约为 {emissions 公斤，涵盖 {places 个景点，总旅行距离为 {distance 公里。',
+  ,
+;

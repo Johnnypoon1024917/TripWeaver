@@ -1,21 +1,21 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
-import { store } from '../../../store';
+import { render  from '@testing-library/react-native';
+import { Provider  from 'react-redux';
+import { store  from '../../../store';
 import MapScreen from '../../../screens/MapScreen';
-import { TEST_CONSTANTS } from '../config';
+import { TEST_CONSTANTS  from '../config';
 // Mock the navigation
 const mockNavigation = {
     navigate: jest.fn(),
     goBack: jest.fn(),
     setOptions: jest.fn(),
-};
+;
 // Mock route params
 const mockRoute = {
     params: {
         tripId: TEST_CONSTANTS.TEST_TRIP.id,
-    },
-};
+    ,
+;
 // Mock Redux store with initial state
 const mockStore = {
     itinerary: {
@@ -34,7 +34,7 @@ const mockStore = {
                 duration: 120,
                 notes: 'Must visit at night for beautiful views',
                 imageUrl: 'https://example.com/eiffel-tower.jpg',
-            },
+            ,
             {
                 id: 'dest-2',
                 tripId: TEST_CONSTANTS.TEST_TRIP.id,
@@ -49,61 +49,61 @@ const mockStore = {
                 duration: 180,
                 notes: 'Book tickets in advance',
                 imageUrl: 'https://example.com/louvre.jpg',
-            },
+            ,
         ],
         loading: false,
         error: null,
-    },
+    ,
     trips: {
         items: [TEST_CONSTANTS.TEST_TRIP],
-    },
-};
+    ,
+;
 // Mock useSelector to return our mock store state
 jest.mock('react-redux', () => ({
     ...jest.requireActual('react-redux'),
     useSelector: jest.fn().mockImplementation(selector => selector(mockStore)),
     useDispatch: () => jest.fn(),
-}));
+));
 // Mock react-native-maps
 jest.mock('react-native-maps', () => {
     const React = require('react');
-    const { View } = require('react-native');
+    const { View  = require('react-native');
     return {
-        default: React.forwardRef((props, ref) => <View {...props} ref={ref} testID="map-view"/>),
-        Marker: (props) => <View {...props} testID="map-marker"/>,
-        Polyline: (props) => <View {...props}/>,
-    };
-});
+        default: React.forwardRef((props, ref) => <View {...props ref={ref testID="map-view"/>),
+        Marker: (props) => <View {...props testID="map-marker"/>,
+        Polyline: (props) => <View {...props/>,
+    ;
+);
 describe('MapScreen UI Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
+    );
     it('should render map screen with markers', () => {
-        const { getByTestId, getAllByTestId } = render(<Provider store={store}>
-        <MapScreen navigation={mockNavigation} route={mockRoute}/>
+        const { getByTestId, getAllByTestId  = render(<Provider store={store>
+        <MapScreen navigation={mockNavigation route={mockRoute/>
       </Provider>);
         // Check if map view is present
         expect(getByTestId('map-view')).toBeTruthy();
         // Check if map markers are rendered
         const markers = getAllByTestId('map-marker');
         expect(markers).toHaveLength(2);
-    });
+    );
     it('should display correct marker information', () => {
-        const { getAllByTestId } = render(<Provider store={store}>
-        <MapScreen navigation={mockNavigation} route={mockRoute}/>
+        const { getAllByTestId  = render(<Provider store={store>
+        <MapScreen navigation={mockNavigation route={mockRoute/>
       </Provider>);
         const markers = getAllByTestId('map-marker');
         expect(markers).toHaveLength(2);
         // TODO: Add more specific marker content checks when we can access marker props
-    });
+    );
     it('should show polyline connecting destinations', () => {
-        const { getByTestId } = render(<Provider store={store}>
-        <MapScreen navigation={mockNavigation} route={mockRoute}/>
+        const { getByTestId  = render(<Provider store={store>
+        <MapScreen navigation={mockNavigation route={mockRoute/>
       </Provider>);
         // Check if map view is present (polyline would be a child of this)
         expect(getByTestId('map-view')).toBeTruthy();
         // TODO: Add polyline verification when we can mock and access polyline components
-    });
+    );
     it('should show empty state when no destinations exist', () => {
         // Mock empty destinations state
         const emptyStore = {
@@ -111,21 +111,21 @@ describe('MapScreen UI Tests', () => {
             itinerary: {
                 ...mockStore.itinerary,
                 destinations: [],
-            },
-        };
+            ,
+        ;
         jest.mock('react-redux', () => ({
             ...jest.requireActual('react-redux'),
             useSelector: jest.fn().mockImplementation(selector => selector(emptyStore)),
-        }));
-        const { getByText } = render(<Provider store={store}>
-        <MapScreen navigation={mockNavigation} route={mockRoute}/>
+        ));
+        const { getByText  = render(<Provider store={store>
+        <MapScreen navigation={mockNavigation route={mockRoute/>
       </Provider>);
         expect(getByText('No destinations to display on map')).toBeTruthy();
         expect(getByText('Add destinations to your itinerary to see them on the map')).toBeTruthy();
-    });
+    );
     it('should allow user to interact with map controls', () => {
-        const { getByText } = render(<Provider store={store}>
-        <MapScreen navigation={mockNavigation} route={mockRoute}/>
+        const { getByText  = render(<Provider store={store>
+        <MapScreen navigation={mockNavigation route={mockRoute/>
       </Provider>);
         // Check if map controls are present
         expect(getByText('🧭')).toBeTruthy(); // Recenter button
@@ -133,5 +133,5 @@ describe('MapScreen UI Tests', () => {
         expect(getByText('+')).toBeTruthy(); // Zoom in
         expect(getByText('−')).toBeTruthy(); // Zoom out
         // TODO: Add actual interaction tests when we can mock the map functions
-    });
-});
+    );
+);

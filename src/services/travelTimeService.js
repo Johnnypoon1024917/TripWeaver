@@ -5,7 +5,7 @@ class TravelTimeService {
      */
     async calculateTravelTime(origin, destination, mode = 'driving') {
         try {
-            const url = `${this.baseUrl}/distancematrix?origins=${origin.lat},${origin.lng}&destinations=${destination.lat},${destination.lng}&mode=${mode}`;
+            const url = `${this.baseUrl/distancematrix?origins=${origin.lat,${origin.lng&destinations=${destination.lat,${destination.lng&mode=${mode`;
             const response = await fetch(url);
             const data = await response.json();
             if (data.status === 'OK' && data.rows?.[0]?.elements?.[0]?.status === 'OK') {
@@ -16,18 +16,18 @@ class TravelTimeService {
                     mode,
                     distanceText: element.distance.text,
                     durationText: element.duration.text,
-                };
-            }
+                ;
+            
             else {
                 console.error('Distance Matrix API error:', data.status);
                 return null;
-            }
-        }
+            
+        
         catch (error) {
             console.error('Calculate travel time error:', error);
             return null;
-        }
-    }
+        
+    
     /**
      * Format duration in seconds to readable text
      */
@@ -35,19 +35,19 @@ class TravelTimeService {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         if (hours > 0) {
-            return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
-        }
-        return `${minutes}m`;
-    }
+            return minutes > 0 ? `${hoursh ${minutesm` : `${hoursh`;
+        
+        return `${minutesm`;
+    
     /**
      * Format distance in meters to readable text
      */
     formatDistance(meters) {
         if (meters >= 1000) {
-            return `${(meters / 1000).toFixed(1)} km`;
-        }
-        return `${meters} m`;
-    }
+            return `${(meters / 1000).toFixed(1) km`;
+        
+        return `${meters m`;
+    
     /**
      * Get icon for travel mode
      */
@@ -56,8 +56,8 @@ class TravelTimeService {
             driving: '🚗',
             walking: '🚶',
             transit: '🚇',
-        };
+        ;
         return icons[mode];
-    }
-}
+    
+
 export default new TravelTimeService();

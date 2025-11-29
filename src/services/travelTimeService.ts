@@ -1,4 +1,4 @@
-import { GOOGLE_MAPS_API_KEY } from '../config/maps';
+import { GOOGLE_MAPS_API_KEY  from '../config/maps';
 
 export interface TravelTime {
   distance: number; // in meters
@@ -6,7 +6,7 @@ export interface TravelTime {
   mode: 'driving' | 'walking' | 'transit';
   distanceText: string; // e.g., "2.5 km"
   durationText: string; // e.g., "5 mins"
-}
+
 
 class TravelTimeService {
   private baseUrl = 'http://localhost:3001/api/v1/places';
@@ -15,12 +15,12 @@ class TravelTimeService {
    * Calculate travel time between two locations
    */
   async calculateTravelTime(
-    origin: { lat: number; lng: number },
-    destination: { lat: number; lng: number },
+    origin: { lat: number; lng: number ,
+    destination: { lat: number; lng: number ,
     mode: 'driving' | 'walking' | 'transit' = 'driving'
   ): Promise<TravelTime | null> {
     try {
-      const url = `${this.baseUrl}/distancematrix?origins=${origin.lat},${origin.lng}&destinations=${destination.lat},${destination.lng}&mode=${mode}`;
+      const url = `${this.baseUrl/distancematrix?origins=${origin.lat,${origin.lng&destinations=${destination.lat,${destination.lng&mode=${mode`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -33,16 +33,16 @@ class TravelTimeService {
           mode,
           distanceText: element.distance.text,
           durationText: element.duration.text,
-        };
-      } else {
+        ;
+      
         console.error('Distance Matrix API error:', data.status);
         return null;
-      }
-    } catch (error) {
+      
+     catch (error) {
       console.error('Calculate travel time error:', error);
       return null;
-    }
-  }
+    
+  
 
   /**
    * Format duration in seconds to readable text
@@ -52,20 +52,20 @@ class TravelTimeService {
     const minutes = Math.floor((seconds % 3600) / 60);
 
     if (hours > 0) {
-      return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
-    }
-    return `${minutes}m`;
-  }
+      return minutes > 0 ? `${hoursh ${minutesm` : `${hoursh`;
+    
+    return `${minutesm`;
+  
 
   /**
    * Format distance in meters to readable text
    */
   formatDistance(meters: number): string {
     if (meters >= 1000) {
-      return `${(meters / 1000).toFixed(1)} km`;
-    }
-    return `${meters} m`;
-  }
+      return `${(meters / 1000).toFixed(1) km`;
+    
+    return `${meters m`;
+  
 
   /**
    * Get icon for travel mode
@@ -75,9 +75,9 @@ class TravelTimeService {
       driving: '🚗',
       walking: '🚶',
       transit: '🚇',
-    };
+    ;
     return icons[mode];
-  }
-}
+  
+
 
 export default new TravelTimeService();

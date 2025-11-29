@@ -1,7 +1,7 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store';
-import { setLanguage } from '../store/slices/settingsSlice';
-import { translations, Language } from './translations';
+import { useSelector, useDispatch  from 'react-redux';
+import { RootState  from '../store';
+import { setLanguage  from '../store/slices/settingsSlice';
+import { translations, Language  from './translations';
 
 export const useTranslation = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ export const useTranslation = () => {
 
   const changeLanguage = (newLanguage: Language) => {
     dispatch(setLanguage(newLanguage));
-  };
+  ;
 
-  return { t, language, changeLanguage };
-};
+  return { t, language, changeLanguage ;
+;

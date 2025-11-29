@@ -1,33 +1,33 @@
-import { NotificationUtils } from '../utils/notificationUtils';
+import { NotificationUtils  from '../utils/notificationUtils';
 class NotificationScheduler {
     static instance;
     intervalId = null;
     checkInterval = 60 * 60 * 1000; // Check every hour
-    constructor() { }
+    constructor() { 
     static getInstance() {
         if (!NotificationScheduler.instance) {
             NotificationScheduler.instance = new NotificationScheduler();
-        }
+        
         return NotificationScheduler.instance;
-    }
+    
     startScheduler() {
         // Clear any existing interval
         if (this.intervalId) {
             clearInterval(this.intervalId);
-        }
+        
         // Start the scheduler
         this.intervalId = setInterval(() => {
             this.checkAndSendNotifications();
-        }, this.checkInterval);
+        , this.checkInterval);
         // Run immediately on start
         this.checkAndSendNotifications();
-    }
+    
     stopScheduler() {
         if (this.intervalId) {
             clearInterval(this.intervalId);
             this.intervalId = null;
-        }
-    }
+        
+    
     async checkAndSendNotifications() {
         try {
             // In a real implementation, you would get trips from the store or API
@@ -41,11 +41,11 @@ class NotificationScheduler {
             // 2. Budget thresholds for alerts
             // 3. Weather conditions for alerts
             // 4. Collaboration updates
-        }
+        
         catch (error) {
             console.error('Error checking notifications:', error);
-        }
-    }
+        
+    
     // Schedule trip reminders
     async scheduleTripReminders(trip) {
         try {
@@ -58,41 +58,41 @@ class NotificationScheduler {
             // Only send reminders for trips within 7 days
             if (daysUntil <= 7 && daysUntil >= 0) {
                 await NotificationUtils.sendTripReminder(trip.id, trip.title, daysUntil);
-            }
-        }
+            
+        
         catch (error) {
             console.error('Error scheduling trip reminders:', error);
-        }
-    }
+        
+    
     // Schedule budget alerts
     async scheduleBudgetAlerts(trip) {
         try {
             // This would check all budget categories for the trip
             // For now, we'll just log that the check happened
-            console.log(`Checking budget alerts for trip: ${trip.title}`);
+            console.log(`Checking budget alerts for trip: ${trip.title`);
             // In a real implementation, you would:
             // 1. Get budget data for the trip
             // 2. Calculate spending percentages
             // 3. Send alerts for categories over threshold
-        }
+        
         catch (error) {
             console.error('Error scheduling budget alerts:', error);
-        }
-    }
+        
+    
     // Schedule weather alerts
     async scheduleWeatherAlerts(trip) {
         try {
             // This would check weather forecasts for trip destinations
             // For now, we'll just log that the check happened
-            console.log(`Checking weather alerts for trip: ${trip.title}`);
+            console.log(`Checking weather alerts for trip: ${trip.title`);
             // In a real implementation, you would:
             // 1. Get destination locations for the trip
             // 2. Fetch weather forecasts
             // 3. Send alerts for severe weather conditions
-        }
+        
         catch (error) {
             console.error('Error scheduling weather alerts:', error);
-        }
-    }
-}
+        
+    
+
 export default NotificationScheduler.getInstance();

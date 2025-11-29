@@ -6,7 +6,7 @@ export interface User {
   displayName: string;
   photoURL?: string;
   createdAt: Date;
-}
+
 
 export interface Trip {
   id: string;
@@ -20,7 +20,7 @@ export interface Trip {
   collaborators: string[];
   createdAt: Date;
   updatedAt: Date;
-}
+
 
 export interface Destination {
   id: string;
@@ -40,7 +40,7 @@ export interface Destination {
   startTime?: string;
   endTime?: string;
   order: number;
-}
+
 
 export type PlaceCategory = 
   | 'restaurant'
@@ -59,7 +59,7 @@ export interface DayItinerary {
   totalDistance?: number;
   totalDuration?: number;
   notes?: string;
-}
+
 
 export interface Budget {
   id: string;
@@ -68,7 +68,7 @@ export interface Budget {
   amount: number;
   spent: number;
   currency: string;
-}
+
 
 export type BudgetCategory = 
   | 'accommodation'
@@ -91,14 +91,14 @@ export interface Expense {
   splitType: 'even' | 'percentage' | 'exact' | 'shares';
   splitDetails: SplitDetail[];
   splitWith?: string[];
-}
+
 
 export interface SplitDetail {
   userId: string;
   amount: number;
   percentage?: number;
   shares?: number;
-}
+
 
 export interface Memory {
   id: string;
@@ -110,9 +110,9 @@ export interface Memory {
   location?: {
     latitude: number;
     longitude: number;
-  };
+  ;
   createdAt: Date;
-}
+
 
 export interface Collaboration {
   tripId: string;
@@ -120,17 +120,17 @@ export interface Collaboration {
   role: 'owner' | 'editor' | 'viewer';
   invitedAt: Date;
   acceptedAt?: Date;
-}
+
 
 export interface RouteInfo {
   distance: number;
   duration: number;
   polyline: string;
   steps: RouteStep[];
-}
+
 
 export interface RouteStep {
   instruction: string;
   distance: number;
   duration: number;
-}
+

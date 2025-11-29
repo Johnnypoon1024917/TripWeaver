@@ -220,8 +220,8 @@ export const translations = {
         selectTripToViewItinerary: 'Please select a trip from the Home screen to view its itinerary.',
         goToHome: 'Go to Home',
         // Carbon emissions
-        carbonEmissionsText: 'The total carbon emissions for this trip are approximately {emissions} kg, covering {places} attractions and traveling a total of {distance} kilometers.',
-    },
+        carbonEmissionsText: 'The total carbon emissions for this trip are approximately {emissions kg, covering {places attractions and traveling a total of {distance kilometers.',
+    ,
     'zh-TW': {
         // Navigation
         home: '首頁',
@@ -443,8 +443,8 @@ export const translations = {
         selectTripToViewItinerary: '請從首頁選擇一個旅程以查看其行程。',
         goToHome: '前往首頁',
         // Carbon emissions
-        carbonEmissionsText: '此旅程的總碳排放量約為 {emissions} 公斤，涵蓋 {places} 個景點，總旅行距離為 {distance} 公里。',
-    },
+        carbonEmissionsText: '此旅程的總碳排放量約為 {emissions 公斤，涵蓋 {places 個景點，總旅行距離為 {distance 公里。',
+    ,
     'zh-CN': {
         // Navigation
         home: '首页',
@@ -666,6 +666,6 @@ export const translations = {
         selectTripToViewItinerary: '请从首页选择一个旅程以查看其行程。',
         goToHome: '前往首页',
         // Carbon emissions
-        carbonEmissionsText: '此旅程的总碳排放量约为 {emissions} 公斤，涵盖 {places} 个景点，总旅行距离为 {distance} 公里。',
-    },
-};
+        carbonEmissionsText: '此旅程的总碳排放量约为 {emissions 公斤，涵盖 {places 个景点，总旅行距离为 {distance 公里。',
+    ,
+;
